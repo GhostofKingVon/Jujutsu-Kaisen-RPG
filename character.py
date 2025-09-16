@@ -218,22 +218,22 @@ class Player(Character):
         """Check if new techniques should be unlocked at current level."""
         new_techniques = []
         
-        if self.level >= 3 and not any(t.name == "Shadow Clone" for t in self.techniques):
-            shadow_clone = CursedTechnique(
-                "Shadow Clone",
+        if self.level >= 3 and not any(t.name == "Spirit Mirage" for t in self.techniques):
+            spirit_mirage = CursedTechnique(
+                "Spirit Mirage",
                 damage=35,
                 cost=25,
-                description="Create a shadow clone to attack the enemy.",
+                description="Create ethereal copies of yourself that confuse enemies and strike from unexpected angles.",
                 cooldown=2
             )
-            new_techniques.append(shadow_clone)
+            new_techniques.append(spirit_mirage)
         
         if self.level >= 5 and not any(t.name == "Cursed Energy Burst" for t in self.techniques):
             burst = CursedTechnique(
                 "Cursed Energy Burst",
                 damage=50,
                 cost=35,
-                description="A powerful burst of cursed energy.",
+                description="A powerful burst of raw cursed energy.",
                 cooldown=3
             )
             new_techniques.append(burst)
@@ -243,7 +243,7 @@ class Player(Character):
                 "Wukong Technique",
                 damage=60,
                 cost=40,
-                description="Original technique inspired by the Monkey King.",
+                description="Original technique inspired by the Monkey King's agility and strength.",
                 cooldown=4
             )
             new_techniques.append(wukong)
