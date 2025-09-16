@@ -37,8 +37,11 @@ class StoryManager:
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.downtime_activities = {}
+        self.in_downtime = False
         self._initialize_story()
         self._initialize_locations()
+        self._initialize_downtime_activities()
     
     def _initialize_story(self):
         """Initialize all story scenes."""
@@ -273,6 +276,101 @@ and faculty.""",
             "Tokyo Jujutsu High - Meeting Room"
         )
     
+    def _initialize_downtime_activities(self):
+        """Initialize downtime activities for between-mission periods."""
+        self.downtime_activities = {
+            "training": {
+                "name": "Train Your Abilities",
+                "description": "Focus on improving your cursed techniques and physical conditioning.",
+                "effects": {
+                    "experience": lambda level: 20 + (level * 2),
+                    "cursed_energy": lambda player: min(10, player.max_cursed_energy - player.cursed_energy),
+                    "trait_bonus": "focused"
+                },
+                "flavor_text": [
+                    "You spend hours perfecting your cursed energy control.",
+                    "Your technique precision improves through dedicated practice.",
+                    "The training grounds echo with your determined efforts."
+                ]
+            },
+            
+            "socialize": {
+                "name": "Spend Time with Classmates",
+                "description": "Build relationships and learn from your fellow sorcerers.",
+                "effects": {
+                    "relationships": {"yuji": 5, "megumi": 5, "nobara": 5},
+                    "trait_bonus": "compassionate",
+                    "technique_hint": True
+                },
+                "flavor_text": [
+                    "You share stories and bond with your classmates over meals.",
+                    "Yuji shows you a new way to apply cursed energy.",
+                    "The shared experiences strengthen your bonds."
+                ]
+            },
+            
+            "study": {
+                "name": "Research Cursed Spirits",
+                "description": "Study ancient texts and curse documentation in the library.",
+                "effects": {
+                    "experience": lambda level: 15 + level,
+                    "trait_bonus": "analytical",
+                    "knowledge": True
+                },
+                "flavor_text": [
+                    "You discover fascinating historical accounts of powerful curses.",
+                    "The ancient texts reveal patterns in cursed spirit behavior.",
+                    "Your understanding of jujutsu theory deepens significantly."
+                ]
+            },
+            
+            "explore": {
+                "name": "Explore the Campus",
+                "description": "Search for hidden areas and secrets around the school.",
+                "effects": {
+                    "discovery_chance": 0.3,
+                    "trait_bonus": "reckless",
+                    "cursed_energy": lambda player: 5
+                },
+                "flavor_text": [
+                    "You find a hidden meditation spot with strong spiritual energy.",
+                    "The old buildings hold many secrets waiting to be discovered.",
+                    "Your curiosity leads you to unexpected places."
+                ]
+            },
+            
+            "rest": {
+                "name": "Rest and Recover",
+                "description": "Take time to relax and restore your energy.",
+                "effects": {
+                    "hp_restore": lambda player: min(20, player.max_hp - player.hp),
+                    "cursed_energy": lambda player: min(15, player.max_cursed_energy - player.cursed_energy),
+                    "trait_bonus": "cautious"
+                },
+                "flavor_text": [
+                    "You feel refreshed and ready for new challenges.",
+                    "The peaceful rest restores both body and spirit.",
+                    "Sometimes the best action is knowing when to rest."
+                ]
+            },
+            
+            "mentor_session": {
+                "name": "Seek Guidance from Teachers",
+                "description": "Learn from experienced sorcerers and gain wisdom.",
+                "effects": {
+                    "experience": lambda level: 25 + level,
+                    "relationships": {"gojo": 3, "nanami": 3},
+                    "trait_bonus": "determined",
+                    "technique_progress": True
+                },
+                "flavor_text": [
+                    "Gojo-sensei shares insights that change your perspective.",
+                    "Nanami's practical advice helps you see techniques differently.", 
+                    "The wisdom of experienced sorcerers guides your growth."
+                ]
+            }
+        }
+    
     def _initialize_locations(self):
         """Initialize exploration locations."""
         
@@ -340,6 +438,10 @@ and faculty.""",
     
     def display_current_scene(self, game_state):
         """Display the current story scene."""
+        if self.in_downtime:
+            self._display_downtime_scene(game_state)
+            return
+        
         if self.current_scene not in self.story_scenes:
             print("You explore the area, looking for new adventures...")
             return
@@ -356,14 +458,61 @@ and faculty.""",
                 trait_names = [trait.value for trait in dominant_traits]
                 print(f"\n🌟 Your dominant traits: {', '.join(trait_names)}")
     
+    def _display_downtime_scene(self, game_state):
+        """Display downtime scene information."""
+        print(f"\n🏫 Downtime at {game_state.current_location}")
+        print("=" * 50)
+        print("You have some free time to focus on personal development.")
+        print("What would you like to do?")
+        
+        # Show character status
+        player = game_state.player
+        print(f"\n📊 Character Status:")
+        print(f"   HP: {player.hp}/{player.max_hp}")
+        print(f"   Cursed Energy: {player.cursed_energy}/{player.max_cursed_energy}")
+        print(f"   Level: {player.level} (EXP: {player.experience})")
+        
+        # Show dominant traits
+        dominant_traits = player.get_dominant_traits()
+        if dominant_traits:
+            trait_names = [trait.value for trait in dominant_traits]
+            print(f"   Dominant Traits: {', '.join(trait_names)}")
+        
+        # Show relationships
+        if game_state.relationships:
+            print(f"\n💭 Key Relationships:")
+            for npc, level in game_state.relationships.items():
+                if level > 0:
+                    relationship_status = self._get_relationship_status(level)
+                    print(f"   {npc.title()}: {level} ({relationship_status})")
+    
+    def _get_relationship_status(self, level: int) -> str:
+        """Get relationship status description."""
+        if level >= 80:
+            return "Unbreakable Bond"
+        elif level >= 60:
+            return "Close Friend"
+        elif level >= 40:
+            return "Good Friend"
+        elif level >= 20:
+            return "Friend"
+        elif level >= 10:
+            return "Acquaintance"
+        else:
+            return "Distant"
+    
     def get_available_actions(self, game_state) -> List[Dict[str, Any]]:
         """Get available actions for the current scene."""
+        if self.in_downtime:
+            return self._get_downtime_actions(game_state)
+        
         if self.current_scene not in self.story_scenes:
             # Default exploration actions
             return [
                 {"text": "Explore the area", "type": "explore"},
                 {"text": "Talk to NPCs", "type": "social"},
-                {"text": "Train your abilities", "type": "training"}
+                {"text": "Train your abilities", "type": "training"},
+                {"text": "Enter downtime period", "type": "enter_downtime"}
             ]
         
         scene = self.story_scenes[self.current_scene]
@@ -374,7 +523,141 @@ and faculty.""",
             if self._check_requirements(choice.consequences, game_state):
                 actions.append({"text": choice.text, "choice": choice})
         
+        # Add downtime option after major story beats
+        if game_state.current_chapter > 2:
+            actions.append({"text": "Take some downtime before continuing", "type": "enter_downtime"})
+        
         return actions
+    
+    def _get_downtime_actions(self, game_state) -> List[Dict[str, Any]]:
+        """Get available actions during downtime."""
+        actions = []
+        
+        # Add downtime activities
+        for activity_key, activity in self.downtime_activities.items():
+            actions.append({
+                "text": activity["name"],
+                "description": activity["description"],
+                "type": "downtime_activity",
+                "activity": activity_key
+            })
+        
+        # Add option to continue main story
+        actions.append({
+            "text": "Continue the main story",
+            "description": "Resume your mission and advance the plot.",
+            "type": "continue_story"
+        })
+        
+        return actions
+    
+    def enter_downtime(self, game_state):
+        """Enter downtime mode."""
+        self.in_downtime = True
+        print("\n" + "=" * 60)
+        print("               DOWNTIME PERIOD")
+        print("=" * 60)
+        print("You have some free time between missions. This is a chance to")
+        print("develop your character, build relationships, and prepare for")
+        print("upcoming challenges.")
+        print("\nChoose how you'd like to spend your time, or continue with")
+        print("the main story when you're ready.")
+        print("=" * 60)
+    
+    def exit_downtime(self, game_state):
+        """Exit downtime mode and continue story."""
+        self.in_downtime = False
+        print("\n📖 Returning to the main story...")
+        print("Your downtime has prepared you for what lies ahead.")
+    
+    def process_downtime_activity(self, activity_key: str, game_state) -> Dict[str, Any]:
+        """Process a downtime activity and apply its effects."""
+        if activity_key not in self.downtime_activities:
+            return {"error": "Invalid activity"}
+        
+        activity = self.downtime_activities[activity_key]
+        effects = activity["effects"]
+        
+        print(f"\n🎯 {activity['name']}")
+        print("-" * 40)
+        print(activity["description"])
+        print()
+        
+        # Apply effects
+        result = {"activity_completed": True}
+        
+        # Experience gain
+        if "experience" in effects:
+            if callable(effects["experience"]):
+                exp_gain = effects["experience"](game_state.player.level)
+            else:
+                exp_gain = effects["experience"]
+            game_state.player.gain_experience(exp_gain)
+            print(f"📈 Gained {exp_gain} experience!")
+        
+        # HP restoration
+        if "hp_restore" in effects:
+            if callable(effects["hp_restore"]):
+                hp_gain = effects["hp_restore"](game_state.player)
+            else:
+                hp_gain = effects["hp_restore"]
+            if hp_gain > 0:
+                actual_heal = game_state.player.heal(hp_gain)
+                print(f"💚 Restored {actual_heal} HP!")
+        
+        # Cursed energy restoration
+        if "cursed_energy" in effects:
+            if callable(effects["cursed_energy"]):
+                ce_gain = effects["cursed_energy"](game_state.player)
+            else:
+                ce_gain = effects["cursed_energy"]
+            if ce_gain > 0:
+                actual_restore = game_state.player.restore_cursed_energy(ce_gain)
+                print(f"⚡ Restored {actual_restore} cursed energy!")
+        
+        # Relationship changes
+        if "relationships" in effects:
+            for npc, change in effects["relationships"].items():
+                game_state.update_relationship(npc, change)
+                print(f"💭 Relationship with {npc.title()} improved by {change}!")
+        
+        # Trait bonuses
+        if "trait_bonus" in effects:
+            from character import Trait
+            trait_name = effects["trait_bonus"]
+            for trait in Trait:
+                if trait.value.lower() == trait_name.lower():
+                    game_state.player.modify_trait(trait, 5)
+                    print(f"🌟 {trait.value} trait increased!")
+                    break
+        
+        # Special effects
+        if effects.get("discovery_chance", 0) > 0:
+            if random.random() < effects["discovery_chance"]:
+                discoveries = [
+                    "a hidden cursed tool fragment",
+                    "an ancient training manual",
+                    "a secret meditation spot",
+                    "a rare cursed energy crystal"
+                ]
+                discovery = random.choice(discoveries)
+                print(f"✨ You discovered {discovery}!")
+                game_state.add_to_inventory(discovery)
+        
+        if effects.get("technique_hint"):
+            print("💡 You gained insight into advanced cursed techniques!")
+        
+        if effects.get("knowledge"):
+            print("📚 Your understanding of jujutsu theory has deepened!")
+        
+        if effects.get("technique_progress"):
+            print("🎓 Your technical skills have improved significantly!")
+        
+        # Display flavor text
+        flavor_text = random.choice(activity["flavor_text"])
+        print(f"\n✨ {flavor_text}")
+        
+        return result
     
     def _check_requirements(self, consequences: Dict[str, Any], game_state) -> bool:
         """Check if requirements are met for a choice."""
@@ -409,6 +692,17 @@ and faculty.""",
         
         action = actions[choice_index]
         
+        # Handle downtime-related actions
+        if action.get("type") == "enter_downtime":
+            self.enter_downtime(game_state)
+            return {}
+        elif action.get("type") == "continue_story":
+            self.exit_downtime(game_state)
+            return {}
+        elif action.get("type") == "downtime_activity":
+            return self.process_downtime_activity(action["activity"], game_state)
+        
+        # Handle regular actions
         if action.get("type") == "explore":
             return self._handle_exploration(game_state)
         elif action.get("type") == "social":
