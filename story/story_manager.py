@@ -1,33 +1,17 @@
 """
-Story and Exploration System
+Story Manager for Modular Story System
 
-Manages story progression, character choices, exploration, and narrative branching
-following the Jujutsu Kaisen manga with player-driven deviations.
+Manages the overall story progression and exploration by dynamically loading
+story content from separate modules for each arc.
 """
 
 from typing import Dict, List, Any, Optional
 import random
 from character import Player, Enemy, Trait
 
-
-class StoryChoice:
-    """Represents a story choice with its consequences."""
-    
-    def __init__(self, text: str, consequences: Dict[str, Any]):
-        self.text = text
-        self.consequences = consequences  # Effects on traits, relationships, story flags
-
-
-class StoryScene:
-    """Represents a story scene with description and choices."""
-    
-    def __init__(self, title: str, description: str, choices: List[StoryChoice], 
-                 location: str = None, requirements: Dict = None):
-        self.title = title
-        self.description = description
-        self.choices = choices
-        self.location = location or "Unknown Location"
-        self.requirements = requirements or {}  # Requirements to access this scene
+# Import story arc modules
+from . import story1, story2, story3, story4
+from .base import StoryChoice, StoryScene
 
 
 class StoryManager:
@@ -41,237 +25,17 @@ class StoryManager:
         self._initialize_locations()
     
     def _initialize_story(self):
-        """Initialize all story scenes."""
+        """
+        Initialize all story scenes by loading from modular story files.
         
-        # Introduction Scene
-        intro_choices = [
-            StoryChoice(
-                "Help the injured student immediately",
-                {
-                    "traits": {Trait.COMPASSIONATE: 10, Trait.PROTECTIVE: 5},
-                    "next_scene": "first_mission_compassionate",
-                    "relationships": {"yuji": 10},
-                    "story_flags": {"helped_student": True}
-                }
-            ),
-            StoryChoice(
-                "Assess the situation carefully first",
-                {
-                    "traits": {Trait.ANALYTICAL: 10, Trait.CAUTIOUS: 5},
-                    "next_scene": "first_mission_analytical",
-                    "relationships": {"megumi": 10},
-                    "story_flags": {"assessed_situation": True}
-                }
-            ),
-            StoryChoice(
-                "Charge in to fight the curse immediately",
-                {
-                    "traits": {Trait.AGGRESSIVE: 10, Trait.RECKLESS: 5},
-                    "next_scene": "first_mission_aggressive",
-                    "relationships": {"nobara": 10},
-                    "story_flags": {"fought_immediately": True}
-                }
-            )
-        ]
-        
-        self.story_scenes["intro"] = StoryScene(
-            "Arrival at Tokyo Jujutsu High",
-            """You arrive at Tokyo Jujutsu High as a new first-year student. The imposing 
-traditional buildings are surrounded by powerful barriers, and you can feel the cursed 
-energy in the air. As you walk through the courtyard, you notice a commotion ahead.
-
-A fellow student has been cornered by a Grade 3 cursed spirit near the training grounds. 
-The curse spirit writhes with malevolent energy, and the student looks terrified and injured.
-
-What do you do?""",
-            intro_choices,
-            "Tokyo Jujutsu High - Courtyard"
-        )
-        
-        # Compassionate Path
-        self.story_scenes["first_mission_compassionate"] = StoryScene(
-            "The Rescuer's Path",
-            """You rush to help the injured student without hesitation. Your quick action 
-surprises the cursed spirit, giving you the advantage. As you engage the curse, 
-Yuji Itadori appears, impressed by your immediate response to help others.
-
-"That was brave!" Yuji says with a grin. "You remind me of myself when I first got here."
-
-The curse spirit snarls and prepares to attack both of you.""",
-            [
-                StoryChoice(
-                    "Fight alongside Yuji",
-                    {
-                        "combat": True,
-                        "enemy": "grade_3_curse",
-                        "ally": "yuji",
-                        "traits": {Trait.DETERMINED: 5},
-                        "next_scene": "post_first_battle"
-                    }
-                ),
-                StoryChoice(
-                    "Protect the injured student while Yuji fights",
-                    {
-                        "traits": {Trait.PROTECTIVE: 10},
-                        "relationships": {"yuji": 5, "injured_student": 15},
-                        "next_scene": "protective_outcome"
-                    }
-                )
-            ],
-            "Tokyo Jujutsu High - Training Grounds"
-        )
-        
-        # Analytical Path
-        self.story_scenes["first_mission_analytical"] = StoryScene(
-            "The Strategist's Path",
-            """You carefully observe the cursed spirit, noting its movement patterns and energy 
-signature. Your analytical approach catches the attention of Megumi Fushiguro, who nods 
-approvingly from nearby.
-
-"Smart. Understanding your enemy before acting is crucial," Megumi says quietly. 
-"That curse has a weakness on its left side."
-
-Your careful observation reveals the optimal strategy for defeating this spirit.""",
-            [
-                StoryChoice(
-                    "Use Megumi's advice to exploit the weakness",
-                    {
-                        "combat": True,
-                        "enemy": "grade_3_curse_weakened",
-                        "traits": {Trait.FOCUSED: 10},
-                        "relationships": {"megumi": 10},
-                        "next_scene": "strategic_victory"
-                    }
-                ),
-                StoryChoice(
-                    "Share your own analysis with Megumi",
-                    {
-                        "traits": {Trait.ANALYTICAL: 5, Trait.FOCUSED: 5},
-                        "relationships": {"megumi": 15},
-                        "story_flags": {"impressed_megumi": True},
-                        "next_scene": "analytical_bond"
-                    }
-                )
-            ],
-            "Tokyo Jujutsu High - Training Grounds"
-        )
-        
-        # Aggressive Path
-        self.story_scenes["first_mission_aggressive"] = StoryScene(
-            "The Warrior's Path",
-            """You charge directly at the cursed spirit with fierce determination. Your bold 
-approach catches everyone off guard, including Nobara Kugisaki who was approaching 
-from the other side.
-
-"Finally, someone who doesn't overthink everything!" Nobara grins, readying her hammer 
-and nails. "Let's crush this thing!"
-
-The curse spirit, startled by your aggressive approach, becomes more dangerous but 
-also more reckless.""",
-            [
-                StoryChoice(
-                    "Coordinate with Nobara for a combined assault",
-                    {
-                        "combat": True,
-                        "enemy": "grade_3_curse_enraged",
-                        "ally": "nobara",
-                        "traits": {Trait.AGGRESSIVE: 5},
-                        "relationships": {"nobara": 15},
-                        "next_scene": "aggressive_victory"
-                    }
-                ),
-                StoryChoice(
-                    "Go all-out on your own",
-                    {
-                        "combat": True,
-                        "enemy": "grade_3_curse_enraged",
-                        "traits": {Trait.RECKLESS: 10, Trait.DETERMINED: 5},
-                        "next_scene": "solo_battle"
-                    }
-                )
-            ],
-            "Tokyo Jujutsu High - Training Grounds"
-        )
-        
-        # Meeting Todo Scene
-        self.story_scenes["meet_todo"] = StoryScene(
-            "Encounter with Todo",
-            """During a joint training exercise with Kyoto School, you encounter the imposing 
-figure of Aoi Todo. His massive frame and confident stance make it clear he's evaluating 
-you as a potential sparring partner.
-
-"What's your type of woman?" Todo asks with complete seriousness.
-
-The question catches you off guard, but you realize this might be Todo's way of 
-understanding your character.""",
-            [
-                StoryChoice(
-                    "Give a thoughtful, honest answer",
-                    {
-                        "traits": {Trait.COMPASSIONATE: 5},
-                        "relationships": {"todo": 20},
-                        "story_flags": {"todo_approves": True},
-                        "next_scene": "todo_training"
-                    }
-                ),
-                StoryChoice(
-                    "Deflect with humor",
-                    {
-                        "traits": {Trait.FOCUSED: 5},
-                        "relationships": {"todo": 5},
-                        "next_scene": "todo_neutral"
-                    }
-                ),
-                StoryChoice(
-                    "Challenge him to a fight instead",
-                    {
-                        "traits": {Trait.AGGRESSIVE: 10},
-                        "combat": True,
-                        "enemy": "todo_sparring",
-                        "next_scene": "todo_fight"
-                    }
-                )
-            ],
-            "Kyoto Jujutsu High - Training Grounds"
-        )
-        
-        # Shibuya Incident preparation
-        self.story_scenes["shibuya_preparation"] = StoryScene(
-            "Before the Shibuya Incident",
-            """Halloween night approaches, and intelligence suggests a major cursed spirit 
-incident will occur in Shibuya. You've grown stronger, but this will be your biggest 
-challenge yet. The atmosphere is tense as everyone prepares.
-
-Gojo-sensei is nowhere to be found, and there's a sense of unease among the students 
-and faculty.""",
-            [
-                StoryChoice(
-                    "Volunteer for the front-line assault team",
-                    {
-                        "traits": {Trait.DETERMINED: 10, Trait.PROTECTIVE: 5},
-                        "story_flags": {"frontline_volunteer": True},
-                        "next_scene": "shibuya_frontline"
-                    }
-                ),
-                StoryChoice(
-                    "Request to support rescue operations",
-                    {
-                        "traits": {Trait.COMPASSIONATE: 10, Trait.ANALYTICAL: 5},
-                        "story_flags": {"rescue_volunteer": True},
-                        "next_scene": "shibuya_rescue"
-                    }
-                ),
-                StoryChoice(
-                    "Suggest gathering more intelligence first",
-                    {
-                        "traits": {Trait.CAUTIOUS: 10, Trait.ANALYTICAL: 5},
-                        "story_flags": {"intelligence_focused": True},
-                        "next_scene": "shibuya_intel"
-                    }
-                )
-            ],
-            "Tokyo Jujutsu High - Meeting Room"
-        )
+        This method dynamically loads story content from separate arc modules,
+        making it easy to add new story arcs or modify existing ones.
+        """
+        # Load scenes from each story arc module
+        self.story_scenes.update(story1.get_story1_scenes())
+        self.story_scenes.update(story2.get_story2_scenes())
+        self.story_scenes.update(story3.get_story3_scenes())
+        self.story_scenes.update(story4.get_story4_scenes())
     
     def _initialize_locations(self):
         """Initialize exploration locations."""
