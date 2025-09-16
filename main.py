@@ -72,6 +72,10 @@ class JujutsuKaisenRPG:
             name = "Unnamed Sorcerer"
         
         self.player = Player(name)
+        
+        # Enhanced character creation
+        self._character_creation_process()
+        
         self.game_state.set_player(self.player)
         
         print(f"\nWelcome, {name}!")
@@ -80,6 +84,159 @@ class JujutsuKaisenRPG:
         # Start the story
         self.story_manager.start_story(self.game_state)
         self.game_loop()
+    
+    def _character_creation_process(self):
+        """Enhanced character creation process for traits and techniques."""
+        print("\n" + "=" * 60)
+        print("            CHARACTER CREATION")
+        print("=" * 60)
+        print("Before beginning your journey, let's shape your character's")
+        print("personality and innate abilities.")
+        
+        # Trait selection
+        self._select_initial_traits()
+        
+        # Cursed technique selection
+        self._select_initial_techniques()
+        
+        # Display final character summary
+        self._display_character_summary()
+    
+    def _select_initial_traits(self):
+        """Allow player to select initial dominant traits."""
+        print("\n🌟 TRAIT SELECTION")
+        print("-" * 30)
+        print("Choose 2 dominant traits that define your character's personality.")
+        print("These will affect your dialogue options, relationships, and available techniques.\n")
+        
+        from character import Trait
+        traits = list(Trait)
+        trait_descriptions = {
+            Trait.COMPASSIONATE: "Shows empathy and care for others, unlocks protective techniques",
+            Trait.FOCUSED: "Maintains concentration and precision, enhances accuracy and critical hits",
+            Trait.AGGRESSIVE: "Favors direct confrontation, increases offensive technique power",
+            Trait.PROTECTIVE: "Prioritizes defending others, unlocks barrier and support techniques",
+            Trait.ANALYTICAL: "Studies situations carefully, gains tactical advantages and utility techniques",
+            Trait.RECKLESS: "Acts without hesitation, increases risk/reward and explosive techniques",
+            Trait.DETERMINED: "Never gives up, improves endurance and recovery abilities",
+            Trait.CAUTIOUS: "Plans ahead carefully, improves defensive capabilities and evasion"
+        }
+        
+        # Display trait options
+        for i, trait in enumerate(traits, 1):
+            print(f"{i}. {trait.value}")
+            print(f"   {trait_descriptions[trait]}\n")
+        
+        selected_traits = []
+        while len(selected_traits) < 2:
+            try:
+                choice = int(input(f"Select trait {len(selected_traits) + 1} (1-{len(traits)}): ")) - 1
+                if 0 <= choice < len(traits):
+                    selected_trait = traits[choice]
+                    if selected_trait not in selected_traits:
+                        selected_traits.append(selected_trait)
+                        print(f"✓ Selected: {selected_trait.value}")
+                    else:
+                        print("You've already selected that trait. Choose a different one.")
+                else:
+                    print("Invalid choice. Please try again.")
+            except ValueError:
+                print("Please enter a valid number.")
+        
+        # Set selected traits to high values (60+)
+        for trait in selected_traits:
+            self.player.modify_trait(trait, 65)
+        
+        print(f"\n🎭 Your dominant traits: {', '.join(t.value for t in selected_traits)}")
+    
+    def _select_initial_techniques(self):
+        """Allow player to select initial cursed techniques."""
+        print("\n⚡ CURSED TECHNIQUE SELECTION")
+        print("-" * 35)
+        print("Choose your innate cursed technique. This will be your signature ability")
+        print("that grows stronger as you progress.\n")
+        
+        from cursed_techniques import TechniqueLibrary
+        technique_lib = TechniqueLibrary()
+        
+        # Offer a curated selection of starter techniques
+        starter_techniques = {
+            "shadow_manipulation": {
+                "name": "Shadow Manipulation",
+                "description": "Control shadows to create constructs and attacks. Grows into powerful shikigami.",
+                "techniques": ["shadow_clone", "divine_dogs"]
+            },
+            "energy_enhancement": {
+                "name": "Cursed Energy Enhancement", 
+                "description": "Enhance physical abilities with cursed energy. Masters critical timing.",
+                "techniques": ["cursed_energy_burst", "divergent_fist"]
+            },
+            "monkey_king_style": {
+                "name": "Monkey King Style",
+                "description": "Original technique inspired by Sun Wukong. Emphasizes agility and adaptability.",
+                "techniques": ["wukong_technique", "cloud_somersault"]
+            },
+            "barrier_arts": {
+                "name": "Barrier Arts",
+                "description": "Specialize in defensive and support techniques. Protects allies and controls space.",
+                "techniques": ["barrier_technique", "cursed_energy_guard"]
+            },
+            "tool_mastery": {
+                "name": "Cursed Tool Mastery",
+                "description": "Expert use of cursed tools and weapons. Combines skill with cursed energy.",
+                "techniques": ["weapon_mastery", "straw_doll"]
+            }
+        }
+        
+        # Display technique options
+        technique_choices = list(starter_techniques.keys())
+        for i, tech_key in enumerate(technique_choices, 1):
+            tech_info = starter_techniques[tech_key]
+            print(f"{i}. {tech_info['name']}")
+            print(f"   {tech_info['description']}")
+            print(f"   Starting techniques: {', '.join(tech_info['techniques'])}\n")
+        
+        while True:
+            try:
+                choice = int(input(f"Select your cursed technique specialization (1-{len(technique_choices)}): ")) - 1
+                if 0 <= choice < len(technique_choices):
+                    selected_key = technique_choices[choice]
+                    selected_tech = starter_techniques[selected_key]
+                    
+                    # Add the specialized techniques
+                    for tech_name in selected_tech["techniques"]:
+                        technique = technique_lib.get_technique(tech_name)
+                        if technique:
+                            self.player.add_technique(technique)
+                            self.game_state.unlock_technique(tech_name)
+                    
+                    print(f"\n⚡ Specialized in: {selected_tech['name']}")
+                    print(f"✓ Learned: {', '.join(selected_tech['techniques'])}")
+                    break
+                else:
+                    print("Invalid choice. Please try again.")
+            except ValueError:
+                print("Please enter a valid number.")
+    
+    def _display_character_summary(self):
+        """Display final character creation summary."""
+        print("\n" + "=" * 60)
+        print("            CHARACTER SUMMARY")
+        print("=" * 60)
+        print(f"Name: {self.player.name}")
+        print(f"Level: {self.player.level}")
+        print(f"HP: {self.player.hp}/{self.player.max_hp}")
+        print(f"Cursed Energy: {self.player.cursed_energy}/{self.player.max_cursed_energy}")
+        
+        dominant_traits = self.player.get_dominant_traits()
+        print(f"Dominant Traits: {', '.join(t.value for t in dominant_traits)}")
+        
+        techniques = [t.name for t in self.player.techniques]
+        print(f"Known Techniques: {', '.join(techniques)}")
+        
+        print("\nYour character is ready for the world of Jujutsu Sorcery!")
+        print("=" * 60)
+        input("\nPress Enter to continue...")
     
     def load_game(self):
         """Load a saved game."""
@@ -134,9 +291,24 @@ class JujutsuKaisenRPG:
     
     def display_actions(self, actions):
         """Display available actions to the player."""
-        print("\nWhat would you like to do?")
-        for i, action in enumerate(actions, 1):
-            print(f"{i}. {action['text']}")
+        if self.story_manager.in_downtime:
+            print("\n🎯 Available Activities:")
+            for i, action in enumerate(actions, 1):
+                if action.get("description"):
+                    print(f"{i}. {action['text']}")
+                    print(f"   {action['description']}")
+                else:
+                    print(f"{i}. {action['text']}")
+                print()
+        else:
+            print("\nWhat would you like to do?")
+            for i, action in enumerate(actions, 1):
+                if action.get("description"):
+                    print(f"{i}. {action['text']}")
+                    print(f"   {action['description']}")
+                else:
+                    print(f"{i}. {action['text']}")
+        
         print(f"{len(actions) + 1}. Save Game")
         print(f"{len(actions) + 2}. Return to Main Menu")
     
