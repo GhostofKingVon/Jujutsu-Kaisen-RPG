@@ -645,3 +645,97 @@ and faculty.""",
             # This would trigger technique learning in a full implementation
         
         return {}
+    
+    def explore_location(self, game_state, location_key: str, area_key: str = None):
+        """Handle location exploration with dynamic content generation."""
+        if location_key not in self.exploration_locations:
+            return {"error": "Location not found"}
+        
+        location = self.exploration_locations[location_key]
+        
+        # Update current location
+        game_state.current_location = location["name"]
+        if area_key and area_key in location["areas"]:
+            game_state.current_area = area_key
+        
+        # Create exploration checkpoint
+        checkpoint_desc = f"Exploring {location['name']}"
+        if area_key:
+            checkpoint_desc += f" - {area_key.replace('_', ' ').title()}"
+        game_state.create_exploration_checkpoint(location["name"], area_key or "main", checkpoint_desc)
+        
+        # Generate exploration content
+        exploration_result = {
+            "location": location["name"],
+            "description": location["description"],
+            "current_area": area_key,
+            "available_areas": list(location["areas"].keys()),
+            "area_descriptions": location["areas"],
+            "npcs": location.get("npcs", []),
+            "actions": []
+        }
+        
+        # Add area-specific content
+        if area_key and area_key in location["areas"]:
+            exploration_result["area_description"] = location["areas"][area_key]
+            
+            # Check for secrets in this area
+            for secret in location.get("secrets", []):
+                if not game_state.discovered_secrets or f"{location['name']}:{secret}" not in game_state.discovered_secrets:
+                    if self._should_reveal_secret(game_state, secret):
+                        exploration_result["actions"].append({
+                            "text": f"Investigate {secret.replace('_', ' ')}",
+                            "type": "discover_secret",
+                            "secret": secret
+                        })
+        
+        # Add movement actions
+        for area, desc in location["areas"].items():
+            if area != area_key:
+                exploration_result["actions"].append({
+                    "text": f"Go to {area.replace('_', ' ').title()}",
+                    "type": "move_area",
+                    "target_area": area
+                })
+        
+        # Add technique training opportunities based on location
+        training_techniques = self._get_location_techniques(location_key, game_state)
+        if training_techniques:
+            for technique in training_techniques:
+                exploration_result["actions"].append({
+                    "text": f"Train {technique} technique",
+                    "type": "train_technique",
+                    "technique": technique
+                })
+        
+        return exploration_result
+    
+    def _should_reveal_secret(self, game_state, secret_name: str) -> bool:
+        """Determine if a secret should be revealed based on player progress."""
+        import random
+        base_chance = 0.3
+        
+        # Increase chance based on player level
+        if game_state.player:
+            level_bonus = game_state.player.level * 0.02
+            return random.random() < (base_chance + level_bonus)
+        
+        return random.random() < base_chance
+    
+    def _get_location_techniques(self, location_key: str, game_state) -> list:
+        """Get techniques that can be learned at this location."""
+        location_techniques = {
+            "cursed_forest": ["thorn_guardians", "spirit_mirage", "harmonic_resonance"],
+            "underground_city": ["soul_pierce", "entropy_manipulation", "dimensional_rift"],
+            "sky_fortress": ["time_dilation", "astral_projection", "quantum_shift"],
+            "temporal_ruins": ["time_dilation", "entropy_manipulation", "eternal_nexus"],
+            "void_nexus": ["dimensional_rift", "void_grasp", "voidborne_cathedral"]
+        }
+        
+        available = location_techniques.get(location_key, [])
+        if not game_state.player:
+            return []
+        
+        # Filter by player level and existing techniques
+        player_techniques = [t.name.lower().replace(" ", "_").replace(":", "").replace("-", "_") for t in game_state.player.techniques]
+        return [tech for tech in available if tech not in player_techniques and game_state.player.level >= 10]
