@@ -10,6 +10,10 @@ __pycache__/
 *.dat
 *.save
 
+# Exploration checkpoint files  
+saves/
+*.checkpoint
+
 # IDE files
 .vscode/
 .idea/
