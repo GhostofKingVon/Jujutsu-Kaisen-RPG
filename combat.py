@@ -119,20 +119,51 @@ class CombatSystem:
         # Add available techniques
         available_techniques = player.get_available_techniques()
         for technique in available_techniques:
+            cost = int(technique.cost * player.get_cursed_energy_efficiency())
             action = CombatAction(
                 "technique",
                 technique.name,
-                f"{technique.description} (Cost: {technique.cost} CE)"
+                f"{technique.description} (Cost: {cost} CE)"
             )
             action.technique = technique
             actions.append(action)
         
-        # Add transformation if available
+        # Add Wukong transformations if available
         if player.level >= 10 and not player.transformation_active:
+            from character import WukongTransformation
+            
             actions.append(CombatAction(
                 "transform",
-                "Ultra Instinct Monkey",
-                "Activate transformation for enhanced abilities"
+                "Super Monkey",
+                "Golden aura transformation - major stat increase"
+            ))
+            
+            if player.level >= 15:
+                actions.append(CombatAction(
+                    "transform",
+                    "Scarlet Sage Monkey", 
+                    "Crimson aura transformation - enhanced critical hits"
+                ))
+            
+            if player.level >= 20:
+                actions.append(CombatAction(
+                    "transform",
+                    "Ultra Instinct Monkey",
+                    "Silver aura transformation - perfect dodges and counters"
+                ))
+                
+                actions.append(CombatAction(
+                    "transform",
+                    "Ultra Ego Monkey",
+                    "Purple aura transformation - power scaling with damage"
+                ))
+        
+        # Add deactivate transformation option if active
+        elif player.transformation_active:
+            actions.append(CombatAction(
+                "detransform",
+                "Return to Base Form",
+                "Deactivate current transformation"
             ))
         
         actions.append(CombatAction("flee", "Flee", "Escape from combat"))
@@ -175,7 +206,24 @@ class CombatSystem:
             print(f"{player.name} takes a defensive stance!")
         
         elif action.action_type == "transform":
-            player.activate_transformation("Ultra Instinct Monkey", 5)
+            from character import WukongTransformation
+            
+            # Map action names to transformations
+            transformation_map = {
+                "Super Monkey": WukongTransformation.SUPER_MONKEY,
+                "Scarlet Sage Monkey": WukongTransformation.SCARLET_SAGE_MONKEY,
+                "Ultra Instinct Monkey": WukongTransformation.ULTRA_INSTINCT_MONKEY,
+                "Ultra Ego Monkey": WukongTransformation.ULTRA_EGO_MONKEY
+            }
+            
+            transformation = transformation_map.get(action.name)
+            if transformation:
+                player.activate_wukong_transformation(transformation, 6)
+            else:
+                print(f"Unknown transformation: {action.name}")
+        
+        elif action.action_type == "detransform":
+            player.deactivate_transformation()
     
     def enemy_turn(self, enemy: Enemy, player: Player):
         """Handle enemy's turn with AI decision making."""
@@ -225,27 +273,48 @@ class CombatSystem:
     
     def use_technique(self, user, target, technique: CursedTechnique, is_enemy: bool = False):
         """Execute a cursed technique."""
-        if not technique.can_use(user.cursed_energy):
+        # Calculate actual cost with efficiency modifiers
+        actual_cost = technique.cost
+        if hasattr(user, 'get_cursed_energy_efficiency'):
+            actual_cost = int(technique.cost * user.get_cursed_energy_efficiency())
+        
+        if not technique.can_use(user.cursed_energy) or user.cursed_energy < actual_cost:
             print(f"{user.name} doesn't have enough cursed energy for {technique.name}!")
             return
         
         # Use cursed energy
-        user.use_cursed_energy(technique.cost)
+        user.use_cursed_energy(actual_cost)
         
-        # Check for dodge
+        # Check for dodge (Ultra Instinct auto-dodge)
         if technique.technique_type == "offensive" and self.check_dodge(user, target, is_enemy):
             technique.current_cooldown = technique.cooldown  # Still goes on cooldown
             return
         
         # Execute technique
         if technique.technique_type == "offensive":
-            damage = self.calculate_damage(technique.damage, user, target)
+            damage = technique.damage
+            
+            # Apply transformation damage multipliers
+            if hasattr(user, 'get_technique_damage_multiplier'):
+                damage = int(damage * user.get_technique_damage_multiplier())
+            
+            # Check for critical hits (Scarlet Sage Monkey)
+            if hasattr(user, 'get_critical_chance') and random.random() < user.get_critical_chance():
+                damage = int(damage * 1.5)
+                print(f"💥 CRITICAL HIT! Enhanced by transformation!")
+            
+            damage = self.calculate_damage(damage, user, target)
             actual_damage = target.take_damage(damage)
             print(f"{user.name} uses {technique.name} on {target.name} for {actual_damage} damage!")
         
         elif technique.technique_type == "defensive":
-            user.add_status_effect("enhanced_guard", 2)
-            print(f"{user.name} uses {technique.name} to enhance their defenses!")
+            if technique.damage < 0:  # Healing technique
+                heal_amount = abs(technique.damage)
+                actual_healing = user.heal(heal_amount)
+                print(f"{user.name} uses {technique.name} and heals {actual_healing} HP!")
+            else:
+                user.add_status_effect("enhanced_guard", 2)
+                print(f"{user.name} uses {technique.name} to enhance their defenses!")
         
         # Apply cooldown
         technique.current_cooldown = technique.cooldown
@@ -317,24 +386,68 @@ class CombatSystem:
         return max(1, damage)  # Minimum 1 damage
     
     def apply_technique_effects(self, user, target, technique: CursedTechnique):
-        """Apply special effects based on technique."""
-        if "Shadow" in technique.name:
-            # Shadow techniques have a chance to cause confusion
+        """Apply special effects based on technique using the TechniqueEffects class."""
+        from cursed_techniques import TechniqueEffects
+        
+        # Map technique names to effect methods
+        effect_map = {
+            "Black Flash": TechniqueEffects.apply_black_flash_effect,
+            "Limitless: Blue": TechniqueEffects.apply_limitless_blue_effect,
+            "Cursed Speech: Stop": TechniqueEffects.apply_cursed_speech_effect,
+            "Boogie Woogie": TechniqueEffects.apply_boogie_woogie_effect,
+            "Simple Domain": TechniqueEffects.apply_simple_domain_effect,
+            "Reverse Cursed Technique": TechniqueEffects.apply_reverse_cursed_technique_effect,
+            
+            # Wukong base techniques
+            "Monkey King Combo": TechniqueEffects.apply_monkey_king_combo_effect,
+            "Power Pole Extend": TechniqueEffects.apply_power_pole_extend_effect,
+            "Ki Blast": TechniqueEffects.apply_ki_blast_effect,
+            "Cloud Dash": TechniqueEffects.apply_cloud_dash_effect,
+            "Kame Wave": TechniqueEffects.apply_kame_wave_effect,
+            "Domain Expansion: Monkey King's Paradise": TechniqueEffects.apply_monkey_king_domain_effect,
+            
+            # Transformation-enhanced techniques
+            "Golden Combo": TechniqueEffects.apply_golden_combo_effect,
+            "Instinct Strike": TechniqueEffects.apply_instinct_strike_effect,
+            "Ego Smash": TechniqueEffects.apply_ego_smash_effect,
+            "Scarlet Barrage": TechniqueEffects.apply_scarlet_barrage_effect,
+        }
+        
+        # Apply specific technique effect if available
+        if technique.name in effect_map:
+            try:
+                result = effect_map[technique.name](user, target)
+                
+                # Handle special return values for damage modifications
+                if technique.name == "Monkey King Combo" and isinstance(result, int):
+                    # Add extra damage from multi-hit
+                    target.take_damage(result)
+                elif technique.name in ["Instinct Strike", "Ego Smash", "Scarlet Barrage"] and isinstance(result, float):
+                    # Apply damage multiplier
+                    extra_damage = int(technique.damage * (result - 1.0))
+                    if extra_damage > 0:
+                        target.take_damage(extra_damage)
+                        
+            except Exception as e:
+                print(f"Error applying technique effect for {technique.name}: {e}")
+        
+        # Handle Domain Expansions
+        elif "Domain Expansion" in technique.name:
+            TechniqueEffects.apply_domain_expansion_effect(user, target, technique.name)
+            
+        # Generic effects for technique types
+        elif "Shadow" in technique.name:
             if random.random() < 0.3:
                 target.add_status_effect("confused", 2)
                 print(f"{target.name} is confused by the shadow technique!")
         
-        elif "Wukong" in technique.name:
-            # Wukong technique restores some cursed energy
-            restored = user.restore_cursed_energy(10)
-            if restored > 0:
-                print(f"{user.name} gains {restored} cursed energy from Wukong's wisdom!")
-        
-        elif "Burst" in technique.name:
-            # Energy burst techniques have a chance to stun
-            if random.random() < 0.25:
-                target.add_status_effect("stunned", 1)
-                print(f"{target.name} is stunned by the energy burst!")
+        # Auto-counter for Ultra Instinct
+        if (hasattr(user, 'can_auto_counter') and user.can_auto_counter() and 
+            hasattr(target, 'transformation_active') and not target.transformation_active):
+            if random.random() < 0.4:  # 40% chance for auto-counter
+                counter_damage = technique.damage // 2
+                actual_counter = user.take_damage(counter_damage)
+                print(f"⚡ Ultra Instinct triggers an automatic counter for {actual_counter} damage!")
     
     def process_turn_effects(self, player: Player, enemy: Enemy):
         """Process status effects and cooldowns at turn end."""
