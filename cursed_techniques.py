@@ -36,101 +36,101 @@ class TechniqueLibrary:
             technique_type="defensive"
         )
         
-        # Canon JJK Techniques
+        # Elemental Mastery Techniques
         
-        # Yuji-inspired techniques
-        self.techniques["black_flash"] = CursedTechnique(
-            "Black Flash",
+        # Flame Element techniques
+        self.techniques["crimson_inferno"] = CursedTechnique(
+            "Crimson Inferno",
             damage=80,
             cost=30,
-            description="A critical hit with cursed energy applied within 0.000001 seconds of impact.",
+            description="Channel cursed energy through flames to create devastating fire attacks that burn enemies over time.",
             technique_type="offensive",
             cooldown=5
         )
         
-        self.techniques["divergent_fist"] = CursedTechnique(
-            "Divergent Fist",
+        self.techniques["ember_strike"] = CursedTechnique(
+            "Ember Strike",
             damage=35,
             cost=15,
-            description="A delayed cursed energy impact that follows the physical blow.",
+            description="A precise attack that ignites cursed energy on impact, causing delayed burning damage.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Gojo-inspired techniques
-        self.techniques["limitless_blue"] = CursedTechnique(
-            "Limitless: Blue",
+        # Void Element techniques
+        self.techniques["void_grasp"] = CursedTechnique(
+            "Void Grasp",
             damage=60,
             cost=40,
-            description="Creates an attractive force that pulls and damages enemies.",
+            description="Manipulate the void between spaces to pull enemies into damaging dimensional tears.",
             technique_type="offensive",
             cooldown=4
         )
         
-        self.techniques["limitless_red"] = CursedTechnique(
-            "Limitless: Red",
+        self.techniques["dimensional_rift"] = CursedTechnique(
+            "Dimensional Rift",
             damage=75,
             cost=50,
-            description="Creates a repulsive force that pushes and damages enemies.",
+            description="Tear open a rift in space that violently expels enemies with crushing void energy.",
             technique_type="offensive",
             cooldown=5
         )
         
-        # Megumi-inspired techniques
-        self.techniques["divine_dogs"] = CursedTechnique(
-            "Divine Dogs",
+        # Nature Bond techniques
+        self.techniques["thorn_guardians"] = CursedTechnique(
+            "Thorn Guardians",
             damage=40,
             cost=25,
-            description="Summon divine dogs to attack the enemy.",
+            description="Summon plant-like cursed spirits that protect you while attacking enemies with razor-sharp thorns.",
             technique_type="offensive",
             cooldown=3
         )
         
-        self.techniques["shadow_clone"] = CursedTechnique(
-            "Shadow Clone",
+        self.techniques["spirit_mirage"] = CursedTechnique(
+            "Spirit Mirage",
             damage=35,
             cost=25,
-            description="Create a shadow clone to attack the enemy.",
+            description="Create ethereal copies of yourself that confuse enemies and strike from unexpected angles.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Nobara-inspired techniques
-        self.techniques["straw_doll"] = CursedTechnique(
-            "Straw Doll Technique",
+        # Soul Resonance techniques
+        self.techniques["soul_pierce"] = CursedTechnique(
+            "Soul Pierce",
             damage=45,
             cost=30,
-            description="Use cursed energy to damage enemies through connection.",
+            description="Channel cursed energy to directly attack the enemy's soul, bypassing physical defenses.",
             technique_type="offensive",
             cooldown=3
         )
         
-        # Maki-inspired techniques
-        self.techniques["weapon_mastery"] = CursedTechnique(
-            "Weapon Mastery",
+        # Temporal Arts techniques
+        self.techniques["time_dilation"] = CursedTechnique(
+            "Time Dilation",
             damage=50,
             cost=20,
-            description="Enhanced weapon techniques with superior skill.",
+            description="Manipulate time around yourself to move faster and strike with temporal-enhanced precision.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Inumaki-inspired techniques
-        self.techniques["cursed_speech"] = CursedTechnique(
-            "Cursed Speech: Stop",
+        # Mind Arts techniques
+        self.techniques["psychic_command"] = CursedTechnique(
+            "Psychic Command",
             damage=0,
             cost=35,
-            description="Force the enemy to stop moving for one turn.",
+            description="Project your will to force enemies to hesitate and lose their next action.",
             technique_type="utility",
             cooldown=4
         )
         
-        # Todo-inspired techniques
-        self.techniques["boogie_woogie"] = CursedTechnique(
-            "Boogie Woogie",
+        # Quantum techniques
+        self.techniques["quantum_shift"] = CursedTechnique(
+            "Quantum Shift",
             damage=0,
             cost=25,
-            description="Switch positions to confuse the enemy and set up attacks.",
+            description="Phase between quantum states to confuse enemies and position for devastating attacks.",
             technique_type="utility",
             cooldown=3
         )
@@ -221,23 +221,51 @@ class TechniqueLibrary:
             cooldown=5
         )
         
-        # Domain Expansion techniques (Late game)
-        self.techniques["infinite_void"] = CursedTechnique(
-            "Domain Expansion: Infinite Void",
+        # Original Domain Expansion techniques (Late game)
+        self.techniques["eternal_nexus"] = CursedTechnique(
+            "Domain Expansion: Eternal Nexus",
             damage=100,
             cost=80,
-            description="Create a domain where enemies are overwhelmed with infinite information.",
+            description="Create a domain where time flows differently, allowing multiple attacks while enemies are slowed.",
             technique_type="offensive",
             cooldown=10
         )
         
-        self.techniques["malevolent_shrine"] = CursedTechnique(
-            "Domain Expansion: Malevolent Shrine",
+        self.techniques["voidborne_cathedral"] = CursedTechnique(
+            "Domain Expansion: Voidborne Cathedral",
             damage=120,
             cost=90,
-            description="Create a domain of slashing attacks that cannot be avoided.",
+            description="Manifest a domain of pure void energy where enemies are torn apart by dimensional forces.",
             technique_type="offensive",
             cooldown=12
+        )
+        
+        # Master-level Original Techniques
+        self.techniques["harmonic_resonance"] = CursedTechnique(
+            "Harmonic Resonance",
+            damage=95,
+            cost=55,
+            description="Synchronize cursed energy with reality's frequency to phase through defenses and strike directly.",
+            technique_type="offensive",
+            cooldown=7
+        )
+        
+        self.techniques["astral_projection"] = CursedTechnique(
+            "Astral Projection",
+            damage=85,
+            cost=60,
+            description="Project your consciousness to attack enemies from multiple dimensional angles simultaneously.",
+            technique_type="offensive",
+            cooldown=8
+        )
+        
+        self.techniques["entropy_manipulation"] = CursedTechnique(
+            "Entropy Manipulation",
+            damage=70,
+            cost=45,
+            description="Accelerate decay and chaos around enemies, weakening them while strengthening yourself.",
+            technique_type="offensive",
+            cooldown=6
         )
     
     def get_technique(self, technique_name: str) -> Optional[CursedTechnique]:
@@ -264,22 +292,22 @@ class TechniqueLibrary:
             available.extend(["cursed_energy_strike", "cursed_energy_guard"])
         
         if level >= 3:
-            available.extend(["shadow_clone", "divergent_fist"])
+            available.extend(["spirit_mirage", "ember_strike"])
         
         if level >= 5:
-            available.extend(["cursed_energy_burst", "divine_dogs"])
+            available.extend(["cursed_energy_burst", "thorn_guardians"])
         
         if level >= 7:
-            available.extend(["wukong_technique", "straw_doll"])
+            available.extend(["wukong_technique", "soul_pierce"])
         
         if level >= 10:
-            available.extend(["black_flash", "weapon_mastery", "monkey_king_staff"])
+            available.extend(["crimson_inferno", "time_dilation", "monkey_king_staff"])
         
         if level >= 12:
-            available.extend(["limitless_blue", "boogie_woogie", "cloud_somersault"])
+            available.extend(["void_grasp", "quantum_shift", "cloud_somersault"])
         
         if level >= 15:
-            available.extend(["limitless_red", "cursed_speech", "energy_drain"])
+            available.extend(["dimensional_rift", "psychic_command", "energy_drain"])
         
         if level >= 18:
             available.extend(["ultra_instinct_strike", "seventy_two_transformations"])
@@ -287,11 +315,17 @@ class TechniqueLibrary:
         if level >= 20:
             available.extend(["autonomous_counter", "barrier_technique"])
         
+        if level >= 22:
+            available.extend(["entropy_manipulation"])
+        
         if level >= 25:
-            available.extend(["infinite_void"])
+            available.extend(["eternal_nexus", "harmonic_resonance"])
+        
+        if level >= 28:
+            available.extend(["astral_projection"])
         
         if level >= 30:
-            available.extend(["malevolent_shrine"])
+            available.extend(["voidborne_cathedral"])
         
         return available
     
@@ -301,21 +335,21 @@ class TechniqueLibrary:
         
         for trait in dominant_traits:
             if trait.value == "Compassionate":
-                trait_techniques.extend(["barrier_technique", "cursed_energy_guard"])
+                trait_techniques.extend(["barrier_technique", "cursed_energy_guard", "thorn_guardians"])
             elif trait.value == "Focused":
-                trait_techniques.extend(["black_flash", "ultra_instinct_strike"])
+                trait_techniques.extend(["crimson_inferno", "ultra_instinct_strike", "harmonic_resonance"])
             elif trait.value == "Aggressive":
-                trait_techniques.extend(["cursed_energy_burst", "malevolent_shrine"])
+                trait_techniques.extend(["cursed_energy_burst", "voidborne_cathedral", "entropy_manipulation"])
             elif trait.value == "Protective":
-                trait_techniques.extend(["divine_dogs", "barrier_technique"])
+                trait_techniques.extend(["thorn_guardians", "barrier_technique", "astral_projection"])
             elif trait.value == "Analytical":
-                trait_techniques.extend(["boogie_woogie", "seventy_two_transformations"])
+                trait_techniques.extend(["quantum_shift", "seventy_two_transformations", "time_dilation"])
             elif trait.value == "Reckless":
-                trait_techniques.extend(["divergent_fist", "limitless_red"])
+                trait_techniques.extend(["ember_strike", "dimensional_rift", "entropy_manipulation"])
             elif trait.value == "Determined":
-                trait_techniques.extend(["wukong_technique", "autonomous_counter"])
+                trait_techniques.extend(["wukong_technique", "autonomous_counter", "harmonic_resonance"])
             elif trait.value == "Cautious":
-                trait_techniques.extend(["shadow_clone", "cursed_speech"])
+                trait_techniques.extend(["spirit_mirage", "psychic_command", "astral_projection"])
         
         return trait_techniques
 
@@ -324,48 +358,48 @@ class TechniqueEffects:
     """Handles special effects and interactions of cursed techniques."""
     
     @staticmethod
-    def apply_black_flash_effect(user, target):
-        """Apply Black Flash critical hit effect."""
-        # Black Flash has a chance to stun and restore cursed energy
-        if random.random() < 0.3:
-            target.add_status_effect("stunned", 1)
-            print(f"💫 Black Flash stuns {target.name}!")
+    def apply_crimson_inferno_effect(user, target):
+        """Apply Crimson Inferno burning effect."""
+        # Burning effect over time
+        target.add_status_effect("burning", 3)
+        print(f"🔥 {target.name} is set ablaze by the Crimson Inferno!")
         
-        # Restore cursed energy to user
-        restored = user.restore_cursed_energy(15)
+        # Restore some cursed energy to user from the flames
+        restored = user.restore_cursed_energy(12)
         if restored > 0:
-            print(f"⚡ {user.name} gains {restored} cursed energy from Black Flash!")
+            print(f"🔥 The flames restore {restored} cursed energy to {user.name}!")
     
     @staticmethod
-    def apply_limitless_blue_effect(user, target):
-        """Apply Limitless Blue attractive force effect."""
-        # Blue has a chance to pull enemy into a follow-up attack
+    def apply_void_grasp_effect(user, target):
+        """Apply Void Grasp dimensional tear effect."""
+        # Void tears have a chance to pull enemy into vulnerable state
         if random.random() < 0.4:
-            target.add_status_effect("pulled", 1)
-            print(f"🌀 {target.name} is pulled by the attractive force!")
+            target.add_status_effect("void_touched", 2)
+            print(f"🌌 {target.name} is marked by the void!")
     
     @staticmethod
-    def apply_limitless_red_effect(user, target):
-        """Apply Limitless Red repulsive force effect."""
-        # Red has a chance to push enemy away, reducing their next attack
-        if random.random() < 0.4:
-            target.add_status_effect("pushed", 2)
-            print(f"💥 {target.name} is pushed back by the repulsive force!")
+    def apply_dimensional_rift_effect(user, target):
+        """Apply Dimensional Rift crushing void effect."""
+        # Rift has a chance to disorient and weaken enemy
+        if random.random() < 0.5:
+            target.add_status_effect("disoriented", 3)
+            target.add_status_effect("weakened", 2)
+            print(f"🕳️ {target.name} is crushed by dimensional forces!")
     
     @staticmethod
-    def apply_cursed_speech_effect(user, target):
-        """Apply Cursed Speech utility effect."""
+    def apply_psychic_command_effect(user, target):
+        """Apply Psychic Command mind control effect."""
         # Force target to skip their next action
-        target.add_status_effect("commanded", 1)
-        print(f"🗣️ {target.name} is compelled by Cursed Speech!")
+        target.add_status_effect("mind_controlled", 1)
+        print(f"🧠 {target.name} is controlled by psychic force!")
     
     @staticmethod
-    def apply_boogie_woogie_effect(user, target):
-        """Apply Boogie Woogie position switch effect."""
+    def apply_quantum_shift_effect(user, target):
+        """Apply Quantum Shift phase effect."""
         # Confuse the enemy and set up for enhanced next attack
-        target.add_status_effect("confused", 2)
-        user.add_status_effect("positioned", 1)
-        print(f"🔄 Positions switched! {target.name} is confused!")
+        target.add_status_effect("phased", 2)
+        user.add_status_effect("quantum_advantage", 1)
+        print(f"⚛️ Quantum state shifted! {target.name} is phased!")
     
     @staticmethod
     def apply_wukong_effect(user, target):
@@ -399,20 +433,60 @@ class TechniqueEffects:
         print(f"🛡️ {user.name} creates a protective barrier!")
     
     @staticmethod
+    def apply_time_dilation_effect(user, target):
+        """Apply Time Dilation temporal effect."""
+        # Speed boost and chance for extra action
+        user.add_status_effect("time_dilated", 2)
+        if random.random() < 0.3:
+            user.add_status_effect("extra_action", 1)
+        print(f"⏰ {user.name} moves through dilated time!")
+    
+    @staticmethod
+    def apply_soul_pierce_effect(user, target):
+        """Apply Soul Pierce spiritual damage effect."""
+        # Bypasses physical defenses and causes spiritual trauma
+        target.add_status_effect("soul_damaged", 3)
+        print(f"👻 {target.name}'s soul is pierced and damaged!")
+    
+    @staticmethod
+    def apply_thorn_guardians_effect(user, target):
+        """Apply Thorn Guardians nature spirit effect."""
+        # Summon protective spirits that counter-attack
+        user.add_status_effect("thorn_protection", 4)
+        print(f"🌿 Thorn Guardians protect {user.name}!")
+    
+    @staticmethod
+    def apply_harmonic_resonance_effect(user, target):
+        """Apply Harmonic Resonance reality sync effect."""
+        # Phase through defenses and resonate with reality
+        target.add_status_effect("resonance_vulnerable", 2)
+        user.add_status_effect("reality_synced", 2)
+        print(f"🎵 {user.name} resonates with reality itself!")
+    
+    @staticmethod
+    def apply_entropy_manipulation_effect(user, target):
+        """Apply Entropy Manipulation chaos effect."""
+        # Accelerate decay in enemy while strengthening user
+        target.add_status_effect("decaying", 4)
+        user.add_status_effect("entropy_mastery", 2)
+        print(f"🌀 Entropy bends to {user.name}'s will!")
+    
+    @staticmethod
     def apply_domain_expansion_effect(user, target, domain_name: str):
         """Apply Domain Expansion overwhelming effect."""
         print(f"🌐 DOMAIN EXPANSION: {domain_name.upper()}!")
         
-        if "Infinite Void" in domain_name:
-            # Overwhelm with information, causing paralysis
-            target.add_status_effect("overwhelmed", 3)
-            target.add_status_effect("paralyzed", 2)
-            print(f"♾️ {target.name} is overwhelmed by infinite information!")
+        if "Eternal Nexus" in domain_name:
+            # Time manipulation domain
+            target.add_status_effect("time_locked", 3)
+            user.add_status_effect("temporal_mastery", 3)
+            print(f"⏳ {target.name} is locked in temporal stasis!")
         
-        elif "Malevolent Shrine" in domain_name:
-            # Guaranteed hit with slashing attacks
-            target.add_status_effect("marked", 3)
-            print(f"⛩️ {target.name} is marked by the malevolent shrine!")
+        elif "Voidborne Cathedral" in domain_name:
+            # Void energy domain
+            target.add_status_effect("void_consumed", 3)
+            target.add_status_effect("reality_torn", 2)
+            print(f"🌌 {target.name} is consumed by void forces!")
 
 
 def get_technique_library() -> TechniqueLibrary:

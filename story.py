@@ -281,40 +281,126 @@ and faculty.""",
                 "name": "Tokyo Jujutsu High",
                 "description": "The main campus where you train and study.",
                 "areas": {
-                    "courtyard": "The main courtyard with cherry blossom trees.",
-                    "training_grounds": "Where students practice combat techniques.",
-                    "library": "Contains ancient texts about cursed spirits and techniques.",
-                    "dormitories": "Student living quarters.",
-                    "teacher_offices": "Faculty offices and meeting rooms."
+                    "courtyard": "The main courtyard with cherry blossom trees and meditation stones.",
+                    "training_grounds": "Where students practice combat techniques and spar with cursed spirits.",
+                    "library": "Contains ancient texts about cursed spirits, forbidden techniques, and historical records.",
+                    "dormitories": "Student living quarters with communal areas and private study rooms.",
+                    "teacher_offices": "Faculty offices and meeting rooms where missions are planned.",
+                    "underground_vault": "Hidden basement containing dangerous cursed objects and sealed artifacts.",
+                    "rooftop_observatory": "High vantage point for observing cursed energy fluctuations across the city."
                 },
-                "npcs": ["gojo", "nanami", "yuji", "megumi", "nobara"],
-                "secrets": ["hidden_technique_scroll", "old_mission_records"]
+                "npcs": ["gojo", "nanami", "yuji", "megumi", "nobara", "shoko"],
+                "secrets": ["hidden_technique_scroll", "old_mission_records", "ancient_binding_contract", "master_key"]
             },
             
             "shibuya": {
                 "name": "Shibuya District",
-                "description": "A busy district now overrun with cursed spirits.",
+                "description": "A busy district transformed into a battleground against cursed spirits.",
                 "areas": {
-                    "shibuya_crossing": "The famous intersection, now a battleground.",
-                    "shopping_district": "Abandoned shops and cursed spirit nests.",
-                    "subway_station": "Underground tunnels with dangerous curses.",
-                    "high_rise_buildings": "Tall buildings offering strategic advantages."
+                    "shibuya_crossing": "The famous intersection, now a vortex of cursed energy.",
+                    "shopping_district": "Abandoned shops harboring powerful curse nests and lost artifacts.",
+                    "subway_station": "Underground tunnels with dangerous curses and hidden passages.",
+                    "high_rise_buildings": "Tall buildings offering strategic advantages and aerial combat opportunities.",
+                    "sewers": "Dark underground network crawling with evolved cursed spirits.",
+                    "radio_tower": "Communication hub surrounded by electromagnetic cursed energy."
                 },
-                "npcs": ["injured_civilians", "cursed_spirit_users"],
-                "secrets": ["hidden_passage", "powerful_curse_tools"]
+                "npcs": ["injured_civilians", "cursed_spirit_users", "resistance_fighters"],
+                "secrets": ["hidden_passage", "powerful_curse_tools", "emergency_cache", "dimensional_anchor"]
             },
             
             "kyoto_school": {
                 "name": "Kyoto Jujutsu High",
-                "description": "The traditional rival school with different philosophies.",
+                "description": "The traditional rival school with ancient philosophies and powerful techniques.",
                 "areas": {
-                    "main_hall": "Traditional Japanese architecture and ceremonies.",
-                    "zen_garden": "Peaceful area for meditation and reflection.",
-                    "sparring_dojo": "Where Kyoto students train rigorously.",
-                    "artifact_vault": "Ancient cursed tools and relics."
+                    "main_hall": "Traditional Japanese architecture and ceremonial chambers.",
+                    "zen_garden": "Peaceful area for meditation and cursed energy cultivation.",
+                    "sparring_dojo": "Where Kyoto students train in traditional combat forms.",
+                    "artifact_vault": "Ancient cursed tools and legendary relics from the Heian period.",
+                    "tea_house": "Meeting place for formal discussions and political negotiations.",
+                    "mountain_path": "Hiking trail leading to hermit caves and natural cursed energy springs."
                 },
-                "npcs": ["todo", "mai", "momo", "noritoshi"],
-                "secrets": ["ancient_technique_manual", "forbidden_cursed_tool"]
+                "npcs": ["todo", "mai", "momo", "noritoshi", "yaga_kyoto", "elder_council"],
+                "secrets": ["ancient_technique_manual", "forbidden_cursed_tool", "succession_scroll", "treaty_documents"]
+            },
+            
+            "cursed_forest": {
+                "name": "The Whispering Woods",
+                "description": "An ancient forest where cursed energy has accumulated for centuries, creating twisted ecosystems.",
+                "areas": {
+                    "entrance_grove": "Seemingly normal trees that test visitors' resolve and cursed energy sensitivity.",
+                    "thorn_maze": "Labyrinthine paths lined with cursed thorns that react to negative emotions.",
+                    "spirit_sanctuary": "Sacred grove where benevolent nature spirits dwell and teach ancient wisdom.",
+                    "cursed_lake": "Dark waters that reflect not your image, but your deepest fears and regrets.",
+                    "elder_tree": "Massive ancient tree serving as a nexus for all cursed energy in the forest.",
+                    "hunter_camps": "Abandoned camps of cursed spirit hunters with valuable equipment and journals.",
+                    "void_clearing": "Unnatural clearing where reality seems thin and other dimensions bleed through."
+                },
+                "npcs": ["forest_guardian", "lost_hunter", "hermit_sage", "dryad_spirits"],
+                "secrets": ["nature_technique_codex", "spirit_communication_ritual", "dimensional_compass", "life_essence_crystal"]
+            },
+            
+            "underground_city": {
+                "name": "The Forgotten Depths",
+                "description": "Ancient underground civilization buried beneath modern Tokyo, filled with pre-modern cursed techniques.",
+                "areas": {
+                    "entrance_catacombs": "Bone-lined tunnels marking the boundary between the modern and ancient worlds.",
+                    "crystal_caverns": "Glowing chambers where cursed energy crystallizes into physical form.",
+                    "ruined_temples": "Sacred spaces dedicated to forgotten deities of cursed energy.",
+                    "underground_market": "Hidden bazaar where rare cursed items and forbidden knowledge are traded.",
+                    "throne_chamber": "Seat of the ancient rulers who first codified cursed energy manipulation.",
+                    "training_amphitheater": "Circular arena where ancient sorcerers tested their most dangerous techniques.",
+                    "library_ruins": "Collapsed archive containing pre-historic cursed technique research."
+                },
+                "npcs": ["ancient_keeper", "cursed_merchant", "underground_exile", "stone_guardian"],
+                "secrets": ["primordial_technique_tablet", "ancient_crown", "binding_chains", "reality_anchor"]
+            },
+            
+            "sky_fortress": {
+                "name": "Celestial Observatory",
+                "description": "A floating structure created by master sorcerers to study cursed energy from above the earthly realm.",
+                "areas": {
+                    "landing_platform": "Where aerial vehicles dock and visitors first experience the fortress's unique energy.",
+                    "observation_deck": "Glass-enclosed area offering panoramic views and cursed energy monitoring equipment.",
+                    "research_laboratories": "Advanced facilities for studying the interaction between cosmic and cursed energies.",
+                    "meditation_spheres": "Floating chambers that amplify cursed energy and enable advanced training.",
+                    "star_map_chamber": "Room containing detailed maps of cursed energy flows across the planet.",
+                    "commander_quarters": "Living spaces for the elite sorcerers who maintain the fortress.",
+                    "energy_core": "The powerful heart of the fortress that keeps it airborne through pure cursed energy."
+                },
+                "npcs": ["sky_commander", "stellar_researcher", "cloud_navigator", "wind_spirit"],
+                "secrets": ["celestial_technique_manual", "star_compass", "gravity_defiance_core", "cosmic_resonator"]
+            },
+            
+            "temporal_ruins": {
+                "name": "Chronos Sanctum",
+                "description": "Mysterious ruins where time flows differently, containing powerful temporal cursed techniques.",
+                "areas": {
+                    "time_gate_entrance": "Portal-like structure where visitors experience temporal displacement effects.",
+                    "past_echoes_hall": "Chamber that shows glimpses of historical events and ancient battles.",
+                    "future_glimpse_tower": "Tall spire from which possible futures can be observed and studied.",
+                    "temporal_workshop": "Laboratory where time-based cursed tools and artifacts were created.",
+                    "paradox_chamber": "Dangerous room where multiple timelines intersect and reality becomes unstable.",
+                    "chrono_library": "Archive containing records of events across multiple timelines.",
+                    "eternal_garden": "Outdoor space where plants exist in permanent temporal loops."
+                },
+                "npcs": ["time_keeper", "temporal_scholar", "chronos_guardian", "timeline_refugee"],
+                "secrets": ["temporal_mastery_scroll", "paradox_stabilizer", "time_lock_mechanism", "causality_anchor"]
+            },
+            
+            "void_nexus": {
+                "name": "The Abyssal Gateway",
+                "description": "A dangerous interdimensional hub where the barriers between realities are thinnest.",
+                "areas": {
+                    "stability_platform": "The only safe zone, reinforced with powerful barrier techniques.",
+                    "dimensional_fissures": "Tears in reality leading to unknown realms and parallel dimensions.",
+                    "void_research_station": "Abandoned facility where scientists studied interdimensional phenomena.",
+                    "mirror_maze": "Labyrinth of reflective surfaces showing alternate versions of reality.",
+                    "gravity_wells": "Areas where space-time is warped, creating unusual gravitational effects.",
+                    "entity_containment": "Secure chambers once used to study beings from other dimensions.",
+                    "nexus_core": "The central point where all dimensional pathways converge."
+                },
+                "npcs": ["void_researcher", "dimension_exile", "reality_anchor", "chaos_entity"],
+                "secrets": ["dimensional_key", "reality_stabilizer", "void_protection_ward", "interdimensional_map"]
             }
         }
     
@@ -559,3 +645,97 @@ and faculty.""",
             # This would trigger technique learning in a full implementation
         
         return {}
+    
+    def explore_location(self, game_state, location_key: str, area_key: str = None):
+        """Handle location exploration with dynamic content generation."""
+        if location_key not in self.exploration_locations:
+            return {"error": "Location not found"}
+        
+        location = self.exploration_locations[location_key]
+        
+        # Update current location
+        game_state.current_location = location["name"]
+        if area_key and area_key in location["areas"]:
+            game_state.current_area = area_key
+        
+        # Create exploration checkpoint
+        checkpoint_desc = f"Exploring {location['name']}"
+        if area_key:
+            checkpoint_desc += f" - {area_key.replace('_', ' ').title()}"
+        game_state.create_exploration_checkpoint(location["name"], area_key or "main", checkpoint_desc)
+        
+        # Generate exploration content
+        exploration_result = {
+            "location": location["name"],
+            "description": location["description"],
+            "current_area": area_key,
+            "available_areas": list(location["areas"].keys()),
+            "area_descriptions": location["areas"],
+            "npcs": location.get("npcs", []),
+            "actions": []
+        }
+        
+        # Add area-specific content
+        if area_key and area_key in location["areas"]:
+            exploration_result["area_description"] = location["areas"][area_key]
+            
+            # Check for secrets in this area
+            for secret in location.get("secrets", []):
+                if not game_state.discovered_secrets or f"{location['name']}:{secret}" not in game_state.discovered_secrets:
+                    if self._should_reveal_secret(game_state, secret):
+                        exploration_result["actions"].append({
+                            "text": f"Investigate {secret.replace('_', ' ')}",
+                            "type": "discover_secret",
+                            "secret": secret
+                        })
+        
+        # Add movement actions
+        for area, desc in location["areas"].items():
+            if area != area_key:
+                exploration_result["actions"].append({
+                    "text": f"Go to {area.replace('_', ' ').title()}",
+                    "type": "move_area",
+                    "target_area": area
+                })
+        
+        # Add technique training opportunities based on location
+        training_techniques = self._get_location_techniques(location_key, game_state)
+        if training_techniques:
+            for technique in training_techniques:
+                exploration_result["actions"].append({
+                    "text": f"Train {technique} technique",
+                    "type": "train_technique",
+                    "technique": technique
+                })
+        
+        return exploration_result
+    
+    def _should_reveal_secret(self, game_state, secret_name: str) -> bool:
+        """Determine if a secret should be revealed based on player progress."""
+        import random
+        base_chance = 0.3
+        
+        # Increase chance based on player level
+        if game_state.player:
+            level_bonus = game_state.player.level * 0.02
+            return random.random() < (base_chance + level_bonus)
+        
+        return random.random() < base_chance
+    
+    def _get_location_techniques(self, location_key: str, game_state) -> list:
+        """Get techniques that can be learned at this location."""
+        location_techniques = {
+            "cursed_forest": ["thorn_guardians", "spirit_mirage", "harmonic_resonance"],
+            "underground_city": ["soul_pierce", "entropy_manipulation", "dimensional_rift"],
+            "sky_fortress": ["time_dilation", "astral_projection", "quantum_shift"],
+            "temporal_ruins": ["time_dilation", "entropy_manipulation", "eternal_nexus"],
+            "void_nexus": ["dimensional_rift", "void_grasp", "voidborne_cathedral"]
+        }
+        
+        available = location_techniques.get(location_key, [])
+        if not game_state.player:
+            return []
+        
+        # Filter by player level and existing techniques
+        player_techniques = [t.name.lower().replace(" ", "_").replace(":", "").replace("-", "_") for t in game_state.player.techniques]
+        return [tech for tech in available if tech not in player_techniques and game_state.player.level >= 10]
