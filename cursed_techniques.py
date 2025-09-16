@@ -36,9 +36,16 @@ class TechniqueLibrary:
             technique_type="defensive"
         )
         
-        # Canon JJK Techniques
+        # Canon JJK Techniques - Yuji Itadori Line
+        self.techniques["divergent_fist"] = CursedTechnique(
+            "Divergent Fist",
+            damage=35,
+            cost=15,
+            description="A delayed cursed energy impact that follows the physical blow.",
+            technique_type="offensive",
+            cooldown=2
+        )
         
-        # Yuji-inspired techniques
         self.techniques["black_flash"] = CursedTechnique(
             "Black Flash",
             damage=80,
@@ -46,6 +53,268 @@ class TechniqueLibrary:
             description="A critical hit with cursed energy applied within 0.000001 seconds of impact.",
             technique_type="offensive",
             cooldown=5
+        )
+        
+        # Megumi Fushiguro - Ten Shadows Technique Line
+        self.techniques["divine_dogs"] = CursedTechnique(
+            "Divine Dogs",
+            damage=40,
+            cost=25,
+            description="Summon divine dogs to attack the enemy.",
+            technique_type="offensive",
+            cooldown=3
+        )
+        
+        self.techniques["nue"] = CursedTechnique(
+            "Nue", 
+            damage=50,
+            cost=35,
+            description="Summon the flying shikigami Nue with electrical attacks.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["great_serpent"] = CursedTechnique(
+            "Great Serpent",
+            damage=60,
+            cost=40,
+            description="Summon a massive serpent shikigami.",
+            technique_type="offensive", 
+            cooldown=5
+        )
+        
+        self.techniques["max_elephant"] = CursedTechnique(
+            "Max Elephant",
+            damage=90,
+            cost=60,
+            description="Summon the massive elephant shikigami with tremendous force.",
+            technique_type="offensive",
+            cooldown=6
+        )
+        
+        # Nobara Kugisaki - Straw Doll Technique Line
+        self.techniques["straw_doll"] = CursedTechnique(
+            "Straw Doll Technique",
+            damage=45,
+            cost=30,
+            description="Use cursed energy to damage enemies through connection.",
+            technique_type="offensive",
+            cooldown=3
+        )
+        
+        self.techniques["resonance"] = CursedTechnique(
+            "Resonance",
+            damage=70,
+            cost=45,
+            description="Create sympathetic resonance for devastating damage.",
+            technique_type="offensive",
+            cooldown=5
+        )
+        
+        self.techniques["hairpin"] = CursedTechnique(
+            "Hairpin",
+            damage=55,
+            cost=35,
+            description="Enhanced nail attacks with explosive cursed energy.",
+            technique_type="offensive",
+            cooldown=3
+        )
+        
+        # Satoru Gojo - Limitless Technique Line
+        self.techniques["limitless_blue"] = CursedTechnique(
+            "Limitless: Blue",
+            damage=60,
+            cost=40,
+            description="Creates an attractive force that pulls and damages enemies.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["limitless_red"] = CursedTechnique(
+            "Limitless: Red",
+            damage=75,
+            cost=50,
+            description="Creates a repulsive force that pushes and damages enemies.",
+            technique_type="offensive",
+            cooldown=5
+        )
+        
+        self.techniques["hollow_purple"] = CursedTechnique(
+            "Hollow Purple",
+            damage=120,
+            cost=80,
+            description="The combination of Blue and Red creating imaginary mass.",
+            technique_type="offensive",
+            cooldown=8
+        )
+        
+        # Toge Inumaki - Cursed Speech Line
+        self.techniques["cursed_speech_stop"] = CursedTechnique(
+            "Cursed Speech: Stop",
+            damage=0,
+            cost=35,
+            description="Force the enemy to stop moving for one turn.",
+            technique_type="utility",
+            cooldown=4
+        )
+        
+        self.techniques["cursed_speech_sleep"] = CursedTechnique(
+            "Cursed Speech: Sleep",
+            damage=0,
+            cost=50,
+            description="Force weaker enemies to fall unconscious.",
+            technique_type="utility",
+            cooldown=6
+        )
+        
+        self.techniques["cursed_speech_explode"] = CursedTechnique(
+            "Cursed Speech: Explode",
+            damage=85,
+            cost=60,
+            description="Command objects to explode near the enemy.",
+            technique_type="offensive",
+            cooldown=7
+        )
+        
+        # Aoi Todo - Boogie Woogie Line
+        self.techniques["boogie_woogie"] = CursedTechnique(
+            "Boogie Woogie",
+            damage=0,
+            cost=25,
+            description="Switch positions to confuse the enemy and set up attacks.",
+            technique_type="utility",
+            cooldown=3
+        )
+        
+        self.techniques["simple_domain"] = CursedTechnique(
+            "Simple Domain",
+            damage=0,
+            cost=40,
+            description="Create a barrier that neutralizes domain effects.",
+            technique_type="defensive",
+            cooldown=5
+        )
+        
+        # Maki Zenin - Heavenly Restriction Line
+        self.techniques["weapon_mastery"] = CursedTechnique(
+            "Weapon Mastery",
+            damage=50,
+            cost=20,
+            description="Enhanced weapon techniques with superior skill.",
+            technique_type="offensive",
+            cooldown=2
+        )
+        
+        self.techniques["superhuman_strength"] = CursedTechnique(
+            "Superhuman Strength",
+            damage=65,
+            cost=25,
+            description="Physical prowess beyond normal human limits.",
+            technique_type="offensive",
+            cooldown=3
+        )
+        
+        self.techniques["precognition"] = CursedTechnique(
+            "Precognition",
+            damage=0,
+            cost=30,
+            description="Supernatural awareness allows perfect dodging.",
+            technique_type="defensive",
+            cooldown=4
+        )
+        
+        # Domain Expansion Techniques (High Level)
+        self.techniques["infinite_void"] = CursedTechnique(
+            "Domain Expansion: Infinite Void",
+            damage=150,
+            cost=100,
+            description="Gojo's domain that overwhelms with infinite information.",
+            technique_type="domain",
+            cooldown=10
+        )
+        
+        self.techniques["chimera_shadow_garden"] = CursedTechnique(
+            "Domain Expansion: Chimera Shadow Garden",
+            damage=130,
+            cost=90,
+            description="Megumi's shadow domain with unlimited shikigami.",
+            technique_type="domain",
+            cooldown=10
+        )
+        
+        # Original Techniques
+        self.techniques["wukong_technique"] = CursedTechnique(
+            "Wukong Technique",
+            damage=60,
+            cost=40,
+            description="Original technique inspired by the Monkey King's agility and strength.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["ultra_instinct_monkey"] = CursedTechnique(
+            "Ultra Instinct Monkey",
+            damage=0,
+            cost=50,
+            description="Transformation granting enhanced reflexes and combat instincts.",
+            technique_type="transformation",
+            cooldown=8
+        )
+        
+        self.techniques["monkey_king_staff"] = CursedTechnique(
+            "Monkey King Staff",
+            damage=70,
+            cost=45,
+            description="Summon an extendable staff with devastating power.",
+            technique_type="offensive",
+            cooldown=5
+        )
+        
+        # Reverse Cursed Technique Line
+        self.techniques["reverse_cursed_healing"] = CursedTechnique(
+            "Reverse Cursed Technique: Healing",
+            damage=-50,  # Negative damage = healing
+            cost=60,
+            description="Use reverse cursed energy to heal wounds.",
+            technique_type="healing",
+            cooldown=6
+        )
+        
+        self.techniques["rct_regeneration"] = CursedTechnique(
+            "RCT: High-Speed Regeneration", 
+            damage=-80,
+            cost=80,
+            description="Rapidly regenerate from severe injuries.",
+            technique_type="healing",
+            cooldown=8
+        )
+        
+        # Special Grades and Curse Techniques
+        self.techniques["idle_transfiguration"] = CursedTechnique(
+            "Idle Transfiguration",
+            damage=100,
+            cost=70,
+            description="Alter the enemy's soul structure for massive damage.",
+            technique_type="special",
+            cooldown=7
+        )
+        
+        self.techniques["disaster_flames"] = CursedTechnique(
+            "Disaster Flames",
+            damage=95,
+            cost=65,
+            description="Jogo's volcanic cursed technique.",
+            technique_type="offensive",
+            cooldown=6
+        )
+        
+        self.techniques["maximum_meteor"] = CursedTechnique(
+            "Maximum: Meteor",
+            damage=140,
+            cost=85,
+            description="Summon a massive meteor attack.",
+            technique_type="maximum",
+            cooldown=9
         )
         
         self.techniques["divergent_fist"] = CursedTechnique(

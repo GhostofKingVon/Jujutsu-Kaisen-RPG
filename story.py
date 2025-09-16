@@ -3,11 +3,14 @@ Story and Exploration System
 
 Manages story progression, character choices, exploration, and narrative branching
 following the Jujutsu Kaisen manga with player-driven deviations.
+Enhanced with manga-accurate story arcs and deeper character interactions.
 """
 
 from typing import Dict, List, Any, Optional
 import random
 from character import Player, Enemy, Trait
+from manga_story import MangaStoryManager, StoryArc
+from enhanced_npcs import EnhancedNPCManager
 
 
 class StoryChoice:
@@ -31,25 +34,178 @@ class StoryScene:
 
 
 class StoryManager:
-    """Manages the overall story progression and exploration."""
+    """Enhanced story manager combining original and manga-accurate content."""
     
     def __init__(self):
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.manga_story = MangaStoryManager()
+        self.npc_manager = EnhancedNPCManager()
         self._initialize_story()
         self._initialize_locations()
     
-    def _initialize_story(self):
-        """Initialize all story scenes."""
+    def start_story(self, game_state):
+        """Start the story with enhanced manga alignment."""
+        game_state.current_chapter = 1
+        game_state.current_location = "Tokyo Jujutsu High - Main Gate"
+        game_state.add_story_flag("story_started", True)
         
-        # Introduction Scene
+        print("🎌 Your journey as a Jujutsu Sorcerer begins...")
+        print("The world of curses awaits...")
+    
+    def display_current_scene(self, game_state):
+        """Display the current scene using manga story system."""
+        # Get scene from manga story manager
+        manga_scene = self.manga_story.get_current_scene(game_state)
+        
+        if manga_scene:
+            print(f"\n📖 {manga_scene['title']}")
+            print("=" * 50)
+            print(manga_scene['description'])
+        else:
+            # Fallback to original story system
+            scene = self.story_scenes.get(self.current_scene)
+            if scene:
+                print(f"\n📖 {scene.title}")
+                print("=" * 50)
+                print(scene.description)
+    
+    def get_available_actions(self, game_state) -> List[Dict[str, Any]]:
+        """Get available actions for current scene."""
+        # Try to get manga scene actions first
+        manga_scene = self.manga_story.get_current_scene(game_state)
+        
+        if manga_scene and 'choices' in manga_scene:
+            return [{"text": choice["text"], "consequences": choice["consequences"]} 
+                   for choice in manga_scene['choices']]
+        
+        # Fallback to original story actions
+        scene = self.story_scenes.get(self.current_scene)
+        if scene:
+            return [{"text": choice.text, "consequences": choice.consequences} 
+                   for choice in scene.choices]
+        
+        # Default exploration actions
+        return [
+            {"text": "Continue exploring", "consequences": {"experience": 25}},
+            {"text": "Train your techniques", "consequences": {"traits": {"focused": 5}}},
+            {"text": "Interact with NPCs", "consequences": {"npc_interaction": True}}
+        ]
+    
+    def process_action(self, choice_index: int, game_state) -> Dict[str, Any]:
+        """Process the selected action."""
+        actions = self.get_available_actions(game_state)
+        
+        if choice_index >= len(actions):
+            return {"error": "Invalid choice"}
+        
+        chosen_action = actions[choice_index]
+        consequences = chosen_action["consequences"]
+        
+        # Use manga story manager to process consequences
+        result = self.manga_story.process_choice_consequences(consequences, game_state)
+        
+        # Handle special consequence types
+        if "npc_interaction" in consequences:
+            result.update(self._handle_npc_interaction(game_state))
+        
+        if "combat" in consequences:
+            result["combat"] = True
+            result["enemy"] = self._create_enemy_from_type(consequences.get("enemy_type", "generic_curse"))
+        
+        if "next_scene" in consequences:
+            self.current_scene = consequences["next_scene"]
+        
+        # Check for chapter progression
+        if game_state.current_chapter < 20:  # Progress story
+            if random.random() < 0.3:  # 30% chance to advance chapter
+                game_state.current_chapter += 1
+                result["effects"].append(f"Advanced to Chapter {game_state.current_chapter}")
+        
+        return result
+    
+    def _handle_npc_interaction(self, game_state) -> Dict[str, Any]:
+        """Handle NPC interaction sequences."""
+        available_npcs = ["yuji", "megumi", "nobara", "gojo"]
+        
+        if game_state.current_chapter >= 5:
+            available_npcs.extend(["todo", "maki"])
+        
+        if game_state.current_chapter >= 10:
+            available_npcs.append("sukuna")
+        
+        # Select random NPC for interaction
+        npc_name = random.choice(available_npcs)
+        
+        # Determine interaction context
+        context = "casual"
+        if game_state.current_chapter >= 10:
+            context = random.choice(["casual", "training", "personal"])
+        
+        # Process interaction
+        interaction_result = self.npc_manager.interact_with_npc(npc_name, game_state.player, context)
+        
+        return {
+            "npc_interaction": True,
+            "npc_name": npc_name,
+            "dialogue": interaction_result.get("dialogue", "..."),
+            "relationship_change": interaction_result.get("relationship_change", 0),
+            "new_abilities": interaction_result.get("new_abilities", [])
+        }
+    
+    def _create_enemy_from_type(self, enemy_type: str) -> Enemy:
+        """Create an enemy based on type."""
+        enemy_configs = {
+            "generic_curse": {
+                "name": "Cursed Spirit",
+                "hp": 80,
+                "ce": 40,
+                "difficulty": "normal"
+            },
+            "detention_center_curse": {
+                "name": "Detention Center Curse",
+                "hp": 120,
+                "ce": 60,
+                "difficulty": "hard"
+            },
+            "special_grade": {
+                "name": "Special Grade Curse",
+                "hp": 200,
+                "ce": 100,
+                "difficulty": "extreme"
+            },
+            "curse_user": {
+                "name": "Curse User",
+                "hp": 100,
+                "ce": 80,
+                "difficulty": "hard"
+            }
+        }
+        
+        config = enemy_configs.get(enemy_type, enemy_configs["generic_curse"])
+        enemy = Enemy(config["name"], config["hp"], config["ce"], config["difficulty"])
+        
+        # Add appropriate techniques based on enemy type
+        if enemy_type == "special_grade":
+            enemy.max_phases = 3
+            enemy.phase_transition_messages = [
+                "The curse's true form begins to emerge!",
+                "Overwhelming cursed energy floods the area!",
+                "This is the curse's final, desperate form!"
+            ]
+        
+        return enemy
+    
+    def _initialize_story(self):
+        """Initialize backup story scenes for fallback."""
+        # Keep original scenes as fallback when manga scenes aren't available
         intro_choices = [
             StoryChoice(
                 "Help the injured student immediately",
                 {
-                    "traits": {Trait.COMPASSIONATE: 10, Trait.PROTECTIVE: 5},
-                    "next_scene": "first_mission_compassionate",
+                    "traits": {"compassionate": 10, "protective": 5},
+                    "next_scene": "first_mission_compassionate", 
                     "relationships": {"yuji": 10},
                     "story_flags": {"helped_student": True}
                 }
@@ -57,7 +213,7 @@ class StoryManager:
             StoryChoice(
                 "Assess the situation carefully first",
                 {
-                    "traits": {Trait.ANALYTICAL: 10, Trait.CAUTIOUS: 5},
+                    "traits": {"analytical": 10, "cautious": 5},
                     "next_scene": "first_mission_analytical",
                     "relationships": {"megumi": 10},
                     "story_flags": {"assessed_situation": True}
@@ -66,7 +222,7 @@ class StoryManager:
             StoryChoice(
                 "Charge in to fight the curse immediately",
                 {
-                    "traits": {Trait.AGGRESSIVE: 10, Trait.RECKLESS: 5},
+                    "traits": {"aggressive": 10, "reckless": 5},
                     "next_scene": "first_mission_aggressive",
                     "relationships": {"nobara": 10},
                     "story_flags": {"fought_immediately": True}
@@ -87,10 +243,6 @@ What do you do?""",
             intro_choices,
             "Tokyo Jujutsu High - Courtyard"
         )
-        
-        # Compassionate Path
-        self.story_scenes["first_mission_compassionate"] = StoryScene(
-            "The Rescuer's Path",
             """You rush to help the injured student without hesitation. Your quick action 
 surprises the cursed spirit, giving you the advantage. As you engage the curse, 
 Yuji Itadori appears, impressed by your immediate response to help others.
