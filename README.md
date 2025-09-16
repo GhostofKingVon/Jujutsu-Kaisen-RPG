@@ -1,8 +1,15 @@
 # Jujutsu Kaisen RPG
 
-A turn-based RPG built in Python following the Jujutsu Kaisen manga storyline with player choice-driven narrative, strategic combat, and character relationship dynamics.
+A comprehensive turn-based RPG built in Python following the Jujutsu Kaisen manga storyline with enhanced character creation, strategic combat, deep character relationships, and a dynamic morality system.
 
-## 🎮 Game Features
+## 🎮 Enhanced Game Features
+
+### Advanced Character Creation System
+- **Detailed Appearance Customization**: Hair color, eye color, height, build, and distinguishing features
+- **Background Selection**: Choose from 6 different origins that affect your story and relationships
+- **Personality Trait Selection**: Pick 3 dominant traits from 8 options that shape your character
+- **Starting Cursed Technique**: Select from multiple technique paths with unique progression routes
+- **Morality System**: Dynamic alignment based on choices affecting relationships and story outcomes
 
 ### Turn-Based Combat System
 - **Combat Actions**: Attack, use cursed techniques (CTs), dodge, guard, or flee
@@ -10,29 +17,39 @@ A turn-based RPG built in Python following the Jujutsu Kaisen manga storyline wi
 - **Ultra Instinct System**: Special transformation abilities that enhance dodge chance and counter damage
 - **Multi-Phase Boss Battles**: Bosses transition through phases with unique abilities and taunts
 - **Strategic Elements**: Status effects, cooldowns, and energy management
+- **Enhanced Combat**: Dynamic dialogue, emotional cutscenes, and environmental interactions
 
-### Story and Exploration
-- **Canon Storyline**: Follows the Jujutsu Kaisen manga with player choice deviations
+### Manga-Accurate Story System
+- **Canon Storyline**: Follows major Jujutsu Kaisen manga arcs with player choice deviations
+- **Story Arcs**: Introduction → Fearsome Womb → Kyoto Goodwill Event → Shibuya Incident → Culling Game
 - **Branching Narrative**: Decisions affect story progression and character relationships
-- **Exploration System**: Interact with environments, discover secrets, and find items
-- **Multiple Locations**: Tokyo Jujutsu High, Kyoto School, Shibuya District, and more
+- **Character Development Moments**: Key scenes from the manga with player involvement
+- **Major Battles**: Canonical fights with dramatic story impact
 
-### Character Traits and Evolution
-- **Dynamic Traits**: Compassionate, Focused, Aggressive, Protective, Analytical, Reckless, Determined, Cautious
-- **Trait Evolution**: Traits change based on player decisions and actions
-- **Personality Impact**: Dominant traits affect dialogue options, relationship compatibility, and available techniques
+### Enhanced Character Interactions
+- **6 Major NPCs**: Yuji, Megumi, Nobara, Gojo, Sukuna, and Todo with deep personality systems
+- **Dynamic Dialogue**: Conversation changes based on relationship level and player traits
+- **Relationship Consequences**: Strong bonds unlock special abilities and story branches
+- **Personality Compatibility**: Shared traits improve relationship growth rates
+- **Teaching System**: Learn techniques from NPCs based on relationship strength
 
-### Cursed Techniques and Abilities
-- **Canon Techniques**: Black Flash, Limitless series, Divine Dogs, Boogie Woogie, and more
-- **Original Techniques**: Wukong techniques, Ultra Instinct abilities, and unique combinations
-- **Technique Progression**: Unlock new abilities through leveling, relationships, and story progress
-- **Domain Expansions**: Ultimate techniques available at high levels
+### Expanded Cursed Techniques System (42+ Techniques)
+- **Canon Technique Lines**: 
+  - Yuji Line: Divergent Fist → Black Flash mastery
+  - Megumi Line: Ten Shadows with all shikigami
+  - Gojo Line: Limitless techniques including Hollow Purple
+  - Nobara Line: Straw Doll technique and Resonance
+  - Inumaki Line: Cursed Speech variations
+- **Domain Expansions**: Ultimate techniques for advanced players
+- **Original Techniques**: Wukong-inspired abilities and Ultra Instinct transformations
+- **Reverse Cursed Technique**: Healing abilities for advanced sorcerers
+- **Technique Progression**: Unlock advanced abilities through story progress and relationships
 
-### Relationship System
-- **Dynamic NPCs**: Yuji, Megumi, Nobara, Todo, Gojo, and other canon characters
-- **Relationship Levels**: From strangers to unbreakable bonds
-- **Team Combinations**: Unlock special combo attacks through strong friendships
-- **Personality Compatibility**: Shared traits improve relationship growth
+### Morality and Choice System
+- **Four Morality Aspects**: Altruism, Pragmatism, Justice, and Mercy
+- **Dynamic Alignment**: Character alignment evolves based on choices
+- **Choice Consequences**: Immediate and long-term effects on story and relationships
+- **Ending Variations**: Multiple story outcomes based on moral choices
 
 ## 🚀 Getting Started
 
@@ -48,119 +65,164 @@ A turn-based RPG built in Python following the Jujutsu Kaisen manga storyline wi
    python3 main.py
    ```
 
-### Quick Demo
-To see all systems in action without playing:
+### Enhanced Demo
+To see all enhanced systems in action without playing:
 ```bash
-python3 demo.py
+python3 enhanced_demo.py
 ```
 
-## 📁 File Structure
+## 📁 Enhanced File Structure
 
 ```
 Jujutsu-Kaisen-RPG/
-├── main.py              # Main game entry point and game loop
-├── game_state.py        # Game state management and save/load system
-├── character.py         # Character classes, traits, and progression
-├── combat.py            # Turn-based combat system with strategic elements
-├── cursed_techniques.py # Cursed technique library and effects
-├── story.py             # Story progression and exploration system
-├── npcs.py              # NPC interactions and relationship management
-├── demo.py              # Demonstration script for all systems
-└── README.md            # This file
+├── main.py                    # Main game entry point with enhanced features
+├── character_creation.py      # NEW: Advanced character creation system
+├── manga_story.py            # NEW: Manga-accurate story progression
+├── enhanced_npcs.py          # NEW: Deep NPC personality system
+├── story_enhanced.py         # Enhanced story management
+├── game_state.py             # Game state management and save/load system
+├── character.py              # Enhanced character classes with new attributes
+├── combat.py                 # Turn-based combat with enhanced mechanics
+├── cursed_techniques.py      # Expanded technique library (42+ techniques)
+├── story.py                  # Original story system (backup)
+├── npcs.py                   # Original NPC system (backup)
+├── enhanced_demo.py          # NEW: Comprehensive feature demonstration
+├── demo.py                   # Original system demonstration
+└── README.md                 # This enhanced documentation
 ```
 
-## 🎯 Core Systems
+## 🎯 Enhanced Core Systems
 
-### Character System (`character.py`)
-- **Player Class**: Level progression, trait evolution, technique learning
-- **Enemy Class**: AI behavior patterns, multi-phase capabilities
-- **Trait System**: 8 distinct personality traits affecting gameplay
-- **Technique Management**: Cursed energy costs, cooldowns, and effects
+### Character Creation System (`character_creation.py`)
+- **CharacterCreator**: Interactive character creation with all customization options
+- **MoralitySystem**: Dynamic morality tracking affecting story outcomes
+- **Background Origins**: Six different backstories affecting starting relationships
+- **Appearance System**: Detailed physical customization options
+- **Starting Technique Selection**: Multiple cursed technique paths with progression
 
-### Combat System (`combat.py`)
-- **Turn-Based**: Strategic action selection with consequences
-- **Dodge/Counter**: Timing-based defensive mechanics
-- **Status Effects**: Buffs, debuffs, and ongoing effects
-- **Transformation**: Special modes like "Ultra Instinct Monkey"
+### Enhanced Story System (`manga_story.py`, `story_enhanced.py`)
+- **MangaStoryManager**: Manga-accurate story progression with major arcs
+- **Choice Consequences**: Advanced consequence system affecting multiple game aspects
+- **Character Development**: Key manga moments integrated with player choices
+- **Story Branches**: Multiple paths based on player decisions and morality
 
-### Story System (`story.py`)
-- **Scene Management**: Structured narrative with branching paths
-- **Choice Consequences**: Immediate and long-term effects of decisions
-- **Exploration**: Location-based discovery and interaction
-- **Character Development**: Story choices shape personality traits
+### Enhanced NPC System (`enhanced_npcs.py`)
+- **MangaNPC**: Deep personality-based NPC interactions
+- **Relationship Effects**: Unlockable abilities and story content through bonds
+- **Teaching System**: Learn canonical techniques from appropriate characters
+- **Personality Compatibility**: Relationship growth based on shared traits
 
-### Relationship System (`npcs.py`)
-- **Dynamic Dialogue**: Conversation changes based on relationship level
-- **Ability Unlocking**: Special techniques through strong bonds
-- **Team Combinations**: Powerful combo attacks with trusted allies
-- **Personality Matching**: Compatibility affects relationship growth
+### Expanded Technique System (`cursed_techniques.py`)
+- **42+ Techniques**: Comprehensive library from basic to Domain Expansion level
+- **Canon Accuracy**: Techniques from major manga characters with proper mechanics
+- **Progression Paths**: Logical advancement through related technique families
+- **Special Mechanics**: Unique effects for different technique types
 
-### Technique System (`cursed_techniques.py`)
-- **Comprehensive Library**: 30+ techniques from canon and original content
-- **Progressive Unlocking**: Level and trait-based availability
-- **Special Effects**: Unique mechanics for different technique types
-- **Domain Expansions**: Ultimate abilities for advanced players
+## 🎲 Enhanced Gameplay Flow
 
-## 🎲 Gameplay Flow
-
-1. **Character Creation**: Name your sorcerer and begin at Tokyo Jujutsu High
-2. **Story Progression**: Make choices that shape your personality and relationships
-3. **Combat Encounters**: Strategic turn-based battles with cursed spirits
-4. **Character Growth**: Gain experience, level up, and unlock new abilities
-5. **Relationship Building**: Interact with NPCs to unlock special abilities
-6. **Story Branches**: Experience different outcomes based on your choices
+1. **Advanced Character Creation**: Customize appearance, select background, choose personality traits, and pick starting technique
+2. **Manga Story Progression**: Experience key events from the Jujutsu Kaisen manga with your personal influence
+3. **Deep Character Interactions**: Build relationships with canonical characters through personality-based interactions
+4. **Strategic Combat**: Enhanced turn-based battles with emotional story beats and dynamic dialogue
+5. **Moral Choices**: Make decisions that shape your character's alignment and affect story outcomes
+6. **Technique Mastery**: Progress through canonical technique lines by building relationships and making story choices
+7. **Multiple Endings**: Experience different story conclusions based on relationships, morality, and choices
 
 ## 🔧 Customization and Extension
 
-The modular design allows for easy expansion:
+The enhanced modular design allows for extensive expansion:
 
-- **New Techniques**: Add to `cursed_techniques.py` technique library
-- **Additional NPCs**: Extend the NPC system in `npcs.py`
-- **Story Content**: Add new scenes and choices in `story.py`
-- **Combat Mechanics**: Enhance the combat system in `combat.py`
+- **New Techniques**: Add to the comprehensive technique library with proper progression paths
+- **Additional NPCs**: Extend the personality-based NPC system with new characters
+- **Story Content**: Add new manga arcs or original story branches
+- **Combat Mechanics**: Enhance battle system with new special abilities
+- **Character Backgrounds**: Create new origin stories with unique effects
 
-## 💾 Save System
+## 💾 Enhanced Save System
 
-- **Automatic Saves**: Progress saved every 5 chapters
-- **Manual Saves**: Save anytime from the game menu
-- **Persistent Data**: Character stats, relationships, story progress, and inventory
-- **Cross-Session**: Resume your adventure exactly where you left off
+- **Comprehensive Data**: Saves appearance, background, morality, relationships, and technique progress
+- **Story Progress**: Maintains manga arc progression and choice consequences
+- **Character Development**: Preserves personality evolution and NPC relationship states
+- **Cross-Session Continuity**: Resume with all enhanced features intact
 
-## 🎨 Sample Gameplay
+## 🎨 Sample Enhanced Gameplay
 
 ```
-=== MAIN MENU ===
-1. New Game
-2. Load Game
-3. Exit
+=== ENHANCED CHARACTER CREATION ===
+Creating your unique Jujutsu Sorcerer...
 
-Enter your choice (1-3): 1
-
-=== NEW GAME ===
-Creating your sorcerer...
 Enter your character's name: Akira
 
-Welcome, Akira!
-Your journey as a Jujutsu Sorcerer begins...
+--- APPEARANCE CUSTOMIZATION ---
+Choose your hair color:
+1. Black  2. Brown  3. Blonde  4. White
+5. Red    6. Blue   7. Pink    8. Green
 
-📖 Arrival at Tokyo Jujutsu High
-==================================================
-You arrive at Tokyo Jujutsu High as a new first-year student...
+--- CHARACTER BACKGROUND ---
+Choose your origin story:
+1. Tokyo Native - Born and raised in Tokyo, familiar with urban curse activity
+2. Countryside Family - From a rural sorcerer family with traditional techniques
+3. Curse Victim Survivor - Survived a curse attack, awakening your abilities
+4. Sorcerer Family Legacy - Born into a prominent sorcerer family
+5. Ordinary Awakening - Regular person who suddenly developed cursed energy
+6. Tragic Incident - Lost loved ones to curses, driving your desire for power
 
-What would you like to do?
-1. Help the injured student immediately
-2. Assess the situation carefully first
-3. Charge in to fight the curse immediately
+--- PERSONALITY TRAITS ---
+Choose 3 dominant traits:
+1. Compassionate - Deeply caring for others, even enemies
+2. Focused - Maintains concentration and strategic thinking
+3. Aggressive - Direct confrontation and overwhelming force
+4. Protective - Shields others from harm at personal cost
+5. Analytical - Studies situations and enemies methodically
+6. Reckless - Acts on instinct without considering consequences
+7. Determined - Never gives up, pushes through adversity
+8. Cautious - Careful planning and risk assessment
+
+--- STARTING CURSED TECHNIQUE ---
+Choose your initial technique path:
+1. Divergent Fist Path - Master delayed cursed energy leading to Black Flash
+2. Ten Shadows Path - Control shadows and summon shikigami
+3. Cursed Speech Path - Develop reality-altering vocal techniques
+4. Construction Path - Master cursed tool creation and manipulation
+5. Pure Energy Path - Shape raw cursed energy into unique techniques
 ```
+
+## 🌟 New Features Highlights
+
+### Character Creation Enhancements
+- **Visual Customization**: Complete appearance control
+- **Meaningful Backgrounds**: 6 origins affecting gameplay
+- **Personality Selection**: Traits that actually impact story
+- **Technique Paths**: Starting choice affects entire progression
+- **Morality Foundation**: Alignment system from character creation
+
+### Story Integration
+- **Manga Accuracy**: Follows official storyline with player agency
+- **Character Moments**: Experience key development scenes
+- **Choice Impact**: Decisions have lasting consequences
+- **Relationship Depth**: Build meaningful bonds with canonical characters
+
+### Combat Evolution
+- **Enhanced Mechanics**: More strategic and story-integrated
+- **Emotional Beats**: Technique awakenings with dramatic impact
+- **Dynamic Dialogue**: Characters react based on relationships
+- **Environmental Integration**: Location affects combat options
+
+### Technique Mastery
+- **42+ Techniques**: Comprehensive canonical and original abilities
+- **Logical Progression**: Techniques build upon each other
+- **Relationship Unlocks**: Learn from appropriate mentors
+- **Domain Expansions**: Ultimate techniques for masters
 
 ## 🤝 Contributing
 
-This is a foundational implementation designed for expansion. Feel free to:
-- Add new cursed techniques and abilities
-- Expand the story with additional scenes and choices
-- Implement new NPCs and relationship dynamics
-- Enhance combat mechanics and status effects
+This enhanced implementation provides a solid foundation for further expansion. Feel free to:
+- Add new manga arcs and story content
+- Expand the technique library with additional canonical abilities
+- Implement new NPCs with the personality-based interaction system
+- Create additional character backgrounds and their unique effects
+- Enhance combat mechanics with new strategic elements
 
 ## 📜 License
 
-This project is for educational and entertainment purposes, inspired by the Jujutsu Kaisen manga and anime series.
+This project is for educational and entertainment purposes, inspired by the Jujutsu Kaisen manga and anime series by Gege Akutami.

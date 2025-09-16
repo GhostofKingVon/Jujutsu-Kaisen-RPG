@@ -12,7 +12,7 @@ from typing import Optional
 
 from game_state import GameState
 from character import Player
-from story import StoryManager
+from story_enhanced import StoryManager
 from combat import CombatSystem
 
 
@@ -62,19 +62,17 @@ class JujutsuKaisenRPG:
                 print("Invalid choice. Please enter 1, 2, or 3.")
     
     def new_game(self):
-        """Start a new game with character creation."""
+        """Start a new game with enhanced character creation."""
         print("\n=== NEW GAME ===")
-        print("Creating your sorcerer...")
         
-        # Character creation
-        name = input("Enter your character's name: ").strip()
-        if not name:
-            name = "Unnamed Sorcerer"
+        # Enhanced character creation
+        from character_creation import CharacterCreator
+        creator = CharacterCreator()
+        self.player = creator.create_character()
         
-        self.player = Player(name)
         self.game_state.set_player(self.player)
         
-        print(f"\nWelcome, {name}!")
+        print(f"\nWelcome, {self.player.name}!")
         print("Your journey as a Jujutsu Sorcerer begins...")
         
         # Start the story

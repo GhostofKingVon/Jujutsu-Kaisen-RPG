@@ -149,6 +149,12 @@ class Player(Character):
         self.transformation_name = ""
         self.transformation_turns = 0
         
+        # Enhanced character creation attributes
+        self.appearance = None  # Will be set during character creation
+        self.background = None  # Character's origin story
+        self.morality = None    # Morality system for choices and relationships
+        self.technique_progression_path = []  # Planned technique progression
+        
         # Start with basic techniques
         self._initialize_basic_techniques()
     
@@ -294,7 +300,7 @@ class Player(Character):
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert player to dictionary for saving."""
-        return {
+        save_data = {
             'name': self.name,
             'max_hp': self.max_hp,
             'hp': self.hp,
@@ -307,6 +313,7 @@ class Player(Character):
             'transformation_active': self.transformation_active,
             'transformation_name': self.transformation_name,
             'transformation_turns': self.transformation_turns,
+            'technique_progression_path': self.technique_progression_path,
             'techniques': [
                 {
                     'name': t.name,
@@ -320,6 +327,20 @@ class Player(Character):
                 for t in self.techniques
             ]
         }
+        
+        # Save appearance if exists
+        if self.appearance:
+            save_data['appearance'] = self.appearance.to_dict()
+        
+        # Save background if exists
+        if self.background:
+            save_data['background'] = self.background.value
+        
+        # Save morality if exists
+        if self.morality:
+            save_data['morality'] = self.morality.to_dict()
+        
+        return save_data
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Player':
@@ -346,6 +367,38 @@ class Player(Character):
         player.transformation_active = data['transformation_active']
         player.transformation_name = data['transformation_name']
         player.transformation_turns = data['transformation_turns']
+        player.technique_progression_path = data.get('technique_progression_path', [])
+        
+        # Restore appearance if exists
+        if 'appearance' in data:
+            from character_creation import Appearance
+            appearance = Appearance()
+            appearance_data = data['appearance']
+            appearance.hair_color = appearance_data.get('hair_color', '')
+            appearance.eye_color = appearance_data.get('eye_color', '')
+            appearance.height = appearance_data.get('height', '')
+            appearance.build = appearance_data.get('build', '')
+            appearance.distinguishing_features = appearance_data.get('distinguishing_features', '')
+            player.appearance = appearance
+        
+        # Restore background if exists
+        if 'background' in data:
+            from character_creation import Background
+            try:
+                player.background = Background(data['background'])
+            except ValueError:
+                player.background = None
+        
+        # Restore morality if exists
+        if 'morality' in data:
+            from character_creation import MoralitySystem
+            morality = MoralitySystem()
+            morality_data = data['morality']
+            morality.altruism = morality_data.get('altruism', 50)
+            morality.pragmatism = morality_data.get('pragmatism', 50)
+            morality.justice = morality_data.get('justice', 50)
+            morality.mercy = morality_data.get('mercy', 50)
+            player.morality = morality
         
         # Restore techniques
         player.techniques = []
