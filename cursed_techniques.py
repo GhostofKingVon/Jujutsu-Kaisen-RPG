@@ -36,14 +36,14 @@ class TechniqueLibrary:
             technique_type="defensive"
         )
         
-        # Canon JJK Techniques
+        # Canon JJK Techniques with enhanced descriptions
         
         # Yuji-inspired techniques
         self.techniques["black_flash"] = CursedTechnique(
             "Black Flash",
             damage=80,
             cost=30,
-            description="A critical hit with cursed energy applied within 0.000001 seconds of impact.",
+            description="⚡ A critical hit with cursed energy applied within 0.000001 seconds of impact. The perfect synchronization of body and soul, creating a flash of black lightning that transcends normal limits.",
             technique_type="offensive",
             cooldown=5
         )
@@ -52,17 +52,17 @@ class TechniqueLibrary:
             "Divergent Fist",
             damage=35,
             cost=15,
-            description="A delayed cursed energy impact that follows the physical blow.",
+            description="💥 A delayed cursed energy impact that follows the physical blow. The lag in cursed energy creates a devastating two-hit combo that catches enemies off guard.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Gojo-inspired techniques
+        # Gojo-inspired techniques with enhanced descriptions
         self.techniques["limitless_blue"] = CursedTechnique(
             "Limitless: Blue",
             damage=60,
             cost=40,
-            description="Creates an attractive force that pulls and damages enemies.",
+            description="🌀 Manipulates space to create an attractive force of infinite magnitude. Reality bends as negative space pulls everything into its inescapable embrace.",
             technique_type="offensive",
             cooldown=4
         )
@@ -71,17 +71,17 @@ class TechniqueLibrary:
             "Limitless: Red",
             damage=75,
             cost=50,
-            description="Creates a repulsive force that pushes and damages enemies.",
+            description="🔴 The reversal of Blue creates a repulsive force that obliterates anything in its path. Space itself rejects the target's existence.",
             technique_type="offensive",
             cooldown=5
         )
         
-        # Megumi-inspired techniques
+        # Megumi-inspired techniques with enhanced descriptions
         self.techniques["divine_dogs"] = CursedTechnique(
             "Divine Dogs",
             damage=40,
             cost=25,
-            description="Summon divine dogs to attack the enemy.",
+            description="🐺 Summon loyal shadow wolves that emerge from darkness itself. These divine beasts hunt as one, their howls echoing from the shadow realm.",
             technique_type="offensive",
             cooldown=3
         )
@@ -90,59 +90,29 @@ class TechniqueLibrary:
             "Shadow Clone",
             damage=35,
             cost=25,
-            description="Create a shadow clone to attack the enemy.",
+            description="👤 Manipulate shadows to create a perfect duplicate. Born from darkness, it mirrors your every movement while hiding your true location.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Nobara-inspired techniques
+        # Nobara-inspired techniques with enhanced descriptions
         self.techniques["straw_doll"] = CursedTechnique(
             "Straw Doll Technique",
             damage=45,
             cost=30,
-            description="Use cursed energy to damage enemies through connection.",
+            description="🎎 Channel cursed energy through sympathetic connection. The doll becomes a conduit for pain, striking at the very essence of the target's being.",
             technique_type="offensive",
             cooldown=3
         )
         
-        # Maki-inspired techniques
-        self.techniques["weapon_mastery"] = CursedTechnique(
-            "Weapon Mastery",
-            damage=50,
-            cost=20,
-            description="Enhanced weapon techniques with superior skill.",
-            technique_type="offensive",
-            cooldown=2
-        )
+        # Enhanced original techniques with awakening potential
         
-        # Inumaki-inspired techniques
-        self.techniques["cursed_speech"] = CursedTechnique(
-            "Cursed Speech: Stop",
-            damage=0,
-            cost=35,
-            description="Force the enemy to stop moving for one turn.",
-            technique_type="utility",
-            cooldown=4
-        )
-        
-        # Todo-inspired techniques
-        self.techniques["boogie_woogie"] = CursedTechnique(
-            "Boogie Woogie",
-            damage=0,
-            cost=25,
-            description="Switch positions to confuse the enemy and set up attacks.",
-            technique_type="utility",
-            cooldown=3
-        )
-        
-        # Original Techniques
-        
-        # Wukong-inspired techniques (Original)
+        # Wukong-inspired techniques (Original) with mythical descriptions
         self.techniques["wukong_technique"] = CursedTechnique(
             "Wukong Technique",
             damage=60,
             cost=40,
-            description="Original technique inspired by the Monkey King's agility and strength.",
+            description="🐒 Channel the legendary Monkey King's boundless spirit. Ancient wisdom flows through your movements as you embody the trickster god's divine martial arts.",
             technique_type="offensive",
             cooldown=4
         )
@@ -151,7 +121,7 @@ class TechniqueLibrary:
             "Monkey King's Staff",
             damage=55,
             cost=35,
-            description="Manifest a powerful staff with extending reach and devastating power.",
+            description="🥢 Manifest the legendary Ruyi Jingu Bang, a staff that can extend infinitely and weighs as much as a mountain. It responds only to one with a true monkey's heart.",
             technique_type="offensive",
             cooldown=3
         )
@@ -160,7 +130,7 @@ class TechniqueLibrary:
             "Seventy-Two Transformations",
             damage=0,
             cost=45,
-            description="Change form to adapt to different combat situations.",
+            description="✨ Master the art of infinite change. Your cursed energy becomes fluid like water, adapting to any situation with the wisdom of the immortal sage.",
             technique_type="utility",
             cooldown=6
         )
@@ -169,17 +139,17 @@ class TechniqueLibrary:
             "Cloud Somersault",
             damage=30,
             cost=20,
-            description="Swift movement technique that can evade and strike simultaneously.",
+            description="☁️ Move with the speed of wind and the grace of clouds. A single leap can carry you 108,000 li, striking like lightning from impossible angles.",
             technique_type="offensive",
             cooldown=2
         )
         
-        # Ultra Instinct Monkey techniques
+        # Ultra Instinct Monkey techniques with awakening descriptions
         self.techniques["ultra_instinct_strike"] = CursedTechnique(
             "Ultra Instinct Strike",
             damage=90,
             cost=50,
-            description="A perfectly timed strike that bypasses most defenses.",
+            description="💫 Transcend conscious thought as your body moves with perfect instinct. Mind becomes void, movement becomes absolute, and the strike becomes inevitable.",
             technique_type="offensive",
             cooldown=6
         )
@@ -188,17 +158,17 @@ class TechniqueLibrary:
             "Autonomous Counter",
             damage=70,
             cost=40,
-            description="Body moves automatically to counter any attack.",
+            description="⚡ Your body responds faster than thought itself. Like a mirror reflecting light, every attack is met with perfect counteraction.",
             technique_type="defensive",
             cooldown=5
         )
         
-        # Advanced original techniques
+        # Advanced techniques with awakening descriptions
         self.techniques["cursed_energy_burst"] = CursedTechnique(
             "Cursed Energy Burst",
             damage=50,
             cost=35,
-            description="A powerful burst of raw cursed energy.",
+            description="💥 Release all accumulated emotion as pure destructive force. Your very feelings become weapons that tear through reality.",
             technique_type="offensive",
             cooldown=3
         )
@@ -207,7 +177,7 @@ class TechniqueLibrary:
             "Energy Drain",
             damage=25,
             cost=20,
-            description="Drain the enemy's cursed energy while dealing damage.",
+            description="🧛 Siphon the enemy's life force through cursed resonance. Their strength becomes yours as you feed on their spiritual essence.",
             technique_type="offensive",
             cooldown=4
         )
@@ -216,17 +186,17 @@ class TechniqueLibrary:
             "Barrier Technique",
             damage=0,
             cost=30,
-            description="Create a protective barrier that reduces damage for several turns.",
+            description="🛡️ Weave cursed energy into an impenetrable shield of pure will. Your determination becomes a fortress that protects all you hold dear.",
             technique_type="defensive",
             cooldown=5
         )
         
-        # Domain Expansion techniques (Late game)
+        # Domain Expansion techniques with epic descriptions
         self.techniques["infinite_void"] = CursedTechnique(
             "Domain Expansion: Infinite Void",
             damage=100,
             cost=80,
-            description="Create a domain where enemies are overwhelmed with infinite information.",
+            description="♾️ Create a realm where all information becomes infinite. Enemies drown in endless knowledge while your mind remains perfectly clear in the void.",
             technique_type="offensive",
             cooldown=10
         )
@@ -235,9 +205,19 @@ class TechniqueLibrary:
             "Domain Expansion: Malevolent Shrine",
             damage=120,
             cost=90,
-            description="Create a domain of slashing attacks that cannot be avoided.",
+            description="⛩️ Manifest a shrine where cutting attacks are absolute. Within this sacred space, your slashes become divine judgment that cannot be avoided.",
             technique_type="offensive",
             cooldown=12
+        )
+        
+        # New awakened techniques
+        self.techniques["memories_of_resolve"] = CursedTechnique(
+            "Domain Expansion: Memories of Resolve",
+            damage=110,
+            cost=85,
+            description="🌌 Your personal journey becomes reality. Every struggle, every friendship, every moment of growth manifests as an unbreakable domain of shared resolve.",
+            technique_type="offensive",
+            cooldown=15
         )
     
     def get_technique(self, technique_name: str) -> Optional[CursedTechnique]:

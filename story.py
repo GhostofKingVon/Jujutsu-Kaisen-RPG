@@ -37,8 +37,16 @@ class StoryManager:
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.recent_events = []  # Track recent events for emotional triggers
         self._initialize_story()
         self._initialize_locations()
+    
+    def add_recent_event(self, event: str):
+        """Add a recent event for emotional moment tracking."""
+        self.recent_events.append(event)
+        # Keep only the last 10 events
+        if len(self.recent_events) > 10:
+            self.recent_events = self.recent_events[-10:]
     
     def _initialize_story(self):
         """Initialize all story scenes."""
@@ -272,6 +280,287 @@ and faculty.""",
             ],
             "Tokyo Jujutsu High - Meeting Room"
         )
+        
+        # New expanded story scenes
+        
+        # Post first battle scenes
+        self.story_scenes["post_first_battle"] = StoryScene(
+            "After the First Victory",
+            """The cursed spirit dissolves into nothingness, leaving only the fading echoes 
+of its malevolent energy. You and Yuji stand victorious, but the injured student lies 
+unconscious nearby. This was your first real taste of what it means to be a sorcerer.
+
+"That was incredible!" Yuji exclaims, his eyes bright with excitement. "The way we 
+worked together... it felt natural, like we've been partners for years!"
+
+But beneath the adrenaline, you feel the weight of responsibility settling on your 
+shoulders. Every victory comes with the knowledge that somewhere else, another curse 
+might be threatening innocent lives.""",
+            [
+                StoryChoice(
+                    "Focus on helping the injured student",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 15, Trait.PROTECTIVE: 10},
+                        "relationships": {"injured_student": 20, "yuji": 5},
+                        "next_scene": "medical_training",
+                        "story_flags": {"prioritized_healing": True}
+                    }
+                ),
+                StoryChoice(
+                    "Discuss the battle strategy with Yuji",
+                    {
+                        "traits": {Trait.ANALYTICAL: 10, Trait.FOCUSED: 5},
+                        "relationships": {"yuji": 15},
+                        "next_scene": "tactical_discussion",
+                        "story_flags": {"analytical_approach": True}
+                    }
+                ),
+                StoryChoice(
+                    "Reflect on the responsibility of being a sorcerer",
+                    {
+                        "traits": {Trait.DETERMINED: 15, Trait.CAUTIOUS: 5},
+                        "next_scene": "responsibility_reflection",
+                        "story_flags": {"deep_reflection": True}
+                    }
+                )
+            ],
+            "Tokyo Jujutsu High - Training Grounds"
+        )
+        
+        # Emotional breakthrough scene
+        self.story_scenes["first_loss_recovery"] = StoryScene(
+            "Rising from Defeat",
+            """Days have passed since your crushing defeat. Your physical wounds have healed, 
+but the emotional scars run deeper. You sit alone in the school's meditation garden, 
+questioning everything you thought you knew about strength and purpose.
+
+Megumi approaches quietly, his footsteps soft on the gravel path.
+
+"Defeat isn't the end," he says, settling beside you. "It's information. Every loss 
+teaches us something about ourselves, about our limits, and about how to grow beyond them."
+
+His words carry the weight of personal experience. You realize that every sorcerer 
+here has faced their own moments of crushing defeat.""",
+            [
+                StoryChoice(
+                    "Ask Megumi about his own failures",
+                    {
+                        "traits": {Trait.ANALYTICAL: 10, Trait.COMPASSIONATE: 5},
+                        "relationships": {"megumi": 20},
+                        "next_scene": "megumi_backstory",
+                        "story_flags": {"learned_from_megumi": True}
+                    }
+                ),
+                StoryChoice(
+                    "Share your fears about not being strong enough",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 15, Trait.DETERMINED: 10},
+                        "relationships": {"megumi": 15},
+                        "next_scene": "vulnerability_moment",
+                        "story_flags": {"opened_up_to_megumi": True}
+                    }
+                ),
+                StoryChoice(
+                    "Vow to become stronger no matter what it takes",
+                    {
+                        "traits": {Trait.DETERMINED: 20, Trait.RECKLESS: 5},
+                        "next_scene": "determination_training",
+                        "story_flags": {"intense_training_vow": True}
+                    }
+                )
+            ],
+            "Tokyo Jujutsu High - Meditation Garden"
+        )
+        
+        # Special training arc
+        self.story_scenes["special_training_offer"] = StoryScene(
+            "An Unusual Opportunity",
+            """Gojo-sensei appears with his characteristic casual smile, but there's something 
+different in his expression - a seriousness that makes you pay attention.
+
+"I've been watching your progress," he says, hands in his pockets. "You have potential 
+that goes beyond the ordinary. I'm offering you special training, but I need to warn you - 
+this isn't going to be easy. We'll be pushing your limits in ways that might fundamentally 
+change who you are as a sorcerer."
+
+He removes his blindfold, and his Six Eyes seem to peer directly into your soul.
+
+"The question is: are you ready to discover what you're truly capable of?"
+
+The weight of this opportunity settles on your shoulders. Special training with the 
+strongest sorcerer alive - but at what cost?""",
+            [
+                StoryChoice(
+                    "Accept immediately - you need to become stronger",
+                    {
+                        "traits": {Trait.DETERMINED: 15, Trait.RECKLESS: 10},
+                        "relationships": {"gojo": 15},
+                        "next_scene": "intensive_training_arc",
+                        "story_flags": {"gojo_special_training": True}
+                    }
+                ),
+                StoryChoice(
+                    "Ask about the risks before deciding",
+                    {
+                        "traits": {Trait.CAUTIOUS: 15, Trait.ANALYTICAL: 10},
+                        "relationships": {"gojo": 10},
+                        "next_scene": "training_explanation",
+                        "story_flags": {"cautious_about_training": True}
+                    }
+                ),
+                StoryChoice(
+                    "Request time to think about it",
+                    {
+                        "traits": {Trait.CAUTIOUS: 10, Trait.FOCUSED: 5},
+                        "next_scene": "contemplation_period",
+                        "story_flags": {"delayed_training_decision": True}
+                    }
+                )
+            ],
+            "Tokyo Jujutsu High - Gojo's Office"
+        )
+        
+        # Shibuya incident scenes
+        self.story_scenes["shibuya_frontline"] = StoryScene(
+            "Into the Heart of Darkness",
+            """Shibuya burns. Not with ordinary fire, but with the malevolent energy of 
+countless cursed spirits. The famous crossing that once pulsed with human life now 
+writhes with supernatural malice.
+
+You stand with the assault team at the perimeter, knowing that once you cross this line, 
+nothing will ever be the same. The mission briefing was clear: locate and neutralize 
+the Special Grade curse orchestrating this chaos.
+
+Yuji grips your shoulder. "Whatever happens in there," he says quietly, "we watch each 
+other's backs. Some of us might not make it out, but we make sure our sacrifice means 
+something."
+
+The weight of those words settles over the team like a shroud.""",
+            [
+                StoryChoice(
+                    "Lead the charge into the district",
+                    {
+                        "traits": {Trait.DETERMINED: 20, Trait.PROTECTIVE: 10},
+                        "combat": True,
+                        "enemy": "shibuya_curse_horde",
+                        "next_scene": "shibuya_first_battle"
+                    }
+                ),
+                StoryChoice(
+                    "Suggest a coordinated strategic advance",
+                    {
+                        "traits": {Trait.ANALYTICAL: 15, Trait.CAUTIOUS: 10},
+                        "next_scene": "shibuya_tactical_approach",
+                        "story_flags": {"strategic_shibuya_entry": True}
+                    }
+                ),
+                StoryChoice(
+                    "Focus on protecting civilians first",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 20, Trait.PROTECTIVE: 15},
+                        "next_scene": "shibuya_rescue_priority",
+                        "story_flags": {"civilian_priority": True}
+                    }
+                )
+            ],
+            "Shibuya District - Perimeter"
+        )
+        
+        # CT Awakening scene
+        self.story_scenes["first_ct_awakening"] = StoryScene(
+            "Awakening of Power",
+            """In the depths of despair, as your friends lie wounded and the enemy prepares 
+their final attack, something deep within you stirs. Memories flash before your eyes - 
+every moment of training, every person you've sworn to protect, every dream of becoming 
+stronger.
+
+"I won't let this end here," you whisper, and suddenly your cursed energy feels different. 
+It flows with a purpose and clarity you've never experienced before.
+
+The very air around you begins to shimmer with power as something awakens within your soul. 
+This isn't just a new technique - it's the manifestation of everything you've learned, 
+everything you've felt, everything you are.
+
+Your enemies step back, sensing that something fundamental has changed.""",
+            [
+                StoryChoice(
+                    "Channel the awakening into a devastating attack",
+                    {
+                        "traits": {Trait.AGGRESSIVE: 15, Trait.DETERMINED: 20},
+                        "combat": True,
+                        "enemy": "awakening_test_enemy",
+                        "special_effect": "ct_awakening_power",
+                        "next_scene": "post_awakening_reflection"
+                    }
+                ),
+                StoryChoice(
+                    "Use the new power to protect your friends",
+                    {
+                        "traits": {Trait.PROTECTIVE: 25, Trait.COMPASSIONATE: 15},
+                        "next_scene": "protective_awakening",
+                        "story_flags": {"protective_awakening": True}
+                    }
+                ),
+                StoryChoice(
+                    "Try to understand this new power before using it",
+                    {
+                        "traits": {Trait.ANALYTICAL: 20, Trait.CAUTIOUS: 10},
+                        "next_scene": "awakening_analysis",
+                        "story_flags": {"studied_awakening": True}
+                    }
+                )
+            ],
+            "Unknown Location - Moment of Crisis"
+        )
+        
+        # Final arc preparation
+        self.story_scenes["final_arc_preparation"] = StoryScene(
+            "The Gathering Storm",
+            """The pieces are finally coming together. Everything you've learned, everyone 
+you've grown close to, all the trials you've endured - they've all led to this moment.
+
+Intelligence reports indicate that the source of the cursed spirit crisis has been 
+identified. It's not just a powerful curse - it's something that threatens the very 
+balance between the human and cursed spirit worlds.
+
+Gojo-sensei stands before the assembled students and faculty, his usual playful demeanor 
+replaced by grim determination.
+
+"This is it," he says simply. "Everything we've trained for comes down to this final 
+confrontation. Some of us might not return, but we go forward anyway. Because that's 
+what it means to be a Jujutsu Sorcerer."
+
+Your friends look to you. In their eyes, you see the same determination that burns in 
+your own heart.""",
+            [
+                StoryChoice(
+                    "Give an inspiring speech to rally everyone",
+                    {
+                        "traits": {Trait.DETERMINED: 25, Trait.PROTECTIVE: 15},
+                        "relationships": {"yuji": 10, "megumi": 10, "nobara": 10},
+                        "next_scene": "inspirational_leader_path",
+                        "story_flags": {"became_inspirational_leader": True}
+                    }
+                ),
+                StoryChoice(
+                    "Focus on the tactical aspects of the mission",
+                    {
+                        "traits": {Trait.ANALYTICAL: 20, Trait.FOCUSED: 15},
+                        "next_scene": "tactical_leader_path",
+                        "story_flags": {"became_tactical_leader": True}
+                    }
+                ),
+                StoryChoice(
+                    "Quietly prepare yourself and support others",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 20, Trait.CAUTIOUS: 10},
+                        "next_scene": "supportive_role_path",
+                        "story_flags": {"became_supportive_leader": True}
+                    }
+                )
+            ],
+            "Tokyo Jujutsu High - Assembly Hall"
+        )
     
     def _initialize_locations(self):
         """Initialize exploration locations."""
@@ -345,6 +634,35 @@ and faculty.""",
             return
         
         scene = self.story_scenes[self.current_scene]
+        
+        # Check for emotional moments and CT awakenings
+        try:
+            from emotional_moments import get_emotional_moment_manager
+            from cutscenes import get_cutscene_manager
+            
+            emotion_manager = get_emotional_moment_manager()
+            cutscene_manager = get_cutscene_manager()
+            
+            # Check for emotional moments
+            emotional_moment = emotion_manager.check_emotional_triggers(game_state, self.recent_events)
+            if emotional_moment:
+                emotion_manager.apply_emotional_moment(emotional_moment, game_state.player, game_state)
+            
+            # Check for CT awakenings
+            emotional_state = emotion_manager.get_emotional_state(game_state.player, self.recent_events)
+            ct_awakening = emotion_manager.check_ct_awakening_triggers(game_state.player, game_state, emotional_state)
+            if ct_awakening:
+                emotion_manager.apply_ct_awakening(ct_awakening, game_state.player, game_state)
+            
+            # Play relevant cutscenes
+            if scene.title == "Arrival at Tokyo Jujutsu High" and not game_state.get_story_flag("intro_cutscene_played", False):
+                cutscene_manager.play_cutscene("opening")
+                game_state.add_story_flag("intro_cutscene_played", True)
+            
+        except ImportError:
+            # Fallback if emotional moments system isn't available
+            pass
+        
         print(f"\n📖 {scene.title}")
         print("=" * 50)
         print(scene.description)
@@ -355,6 +673,12 @@ and faculty.""",
             if dominant_traits:
                 trait_names = [trait.value for trait in dominant_traits]
                 print(f"\n🌟 Your dominant traits: {', '.join(trait_names)}")
+        
+        # Show emotional flags if any major ones are set
+        emotional_flags = [flag for flag in game_state.story_flags.keys() 
+                          if any(keyword in flag for keyword in ["emotional", "awakening", "brotherhood"])]
+        if emotional_flags:
+            print(f"\n💫 Emotional milestones: {len(emotional_flags)} achieved")
     
     def get_available_actions(self, game_state) -> List[Dict[str, Any]]:
         """Get available actions for the current scene."""

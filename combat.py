@@ -34,6 +34,18 @@ class CombatSystem:
         print(f"{player.name} vs {enemy.name}")
         print("=" * 50)
         
+        # Play combat intro cutscene for special enemies
+        try:
+            from cutscenes import get_cutscene_manager
+            cutscene_manager = get_cutscene_manager()
+            
+            if "Special Grade" in enemy.name or "Boss" in enemy.name:
+                cutscene_manager.show_dramatic_transition("boss_encounter", 
+                    f"💀 {enemy.name} emerges from the shadows, radiating malevolent power!")
+            
+        except ImportError:
+            pass
+        
         self.turn_count = 0
         self.combat_log = []
         self.player_dodge_ready = False
@@ -62,6 +74,9 @@ class CombatSystem:
             
             # Process status effects and cooldowns
             self.process_turn_effects(player, enemy)
+            
+            # Check for dramatic moments mid-combat
+            self._check_combat_drama(player, enemy)
         
         # Combat resolution
         return self.resolve_combat(player, enemy)
@@ -135,6 +150,30 @@ class CombatSystem:
                 "Activate transformation for enhanced abilities"
             ))
         
+        # Add team combos if allies are available (simulated)
+        try:
+            from team_combos import get_team_combo_manager
+            combo_manager = get_team_combo_manager()
+            
+            # For demo purposes, assume some allies might be available
+            # In full implementation, this would check actual ally availability
+            available_allies = ["yuji", "megumi", "nobara"]  # Simplified
+            relationships = getattr(player, '_temp_relationships', {"yuji": 80, "megumi": 70, "nobara": 85})
+            
+            available_combos = combo_manager.get_available_combos(relationships, available_allies)
+            
+            for combo in available_combos[:2]:  # Limit to 2 combos for menu size
+                action = CombatAction(
+                    "team_combo",
+                    combo.name,
+                    f"Team technique with {', '.join([p for p in combo.participants if p != 'player'])}"
+                )
+                action.combo = combo
+                actions.append(action)
+                
+        except ImportError:
+            pass
+        
         actions.append(CombatAction("flee", "Flee", "Escape from combat"))
         
         return actions
@@ -176,6 +215,31 @@ class CombatSystem:
         
         elif action.action_type == "transform":
             player.activate_transformation("Ultra Instinct Monkey", 5)
+        
+        elif action.action_type == "team_combo":
+            try:
+                from team_combos import get_team_combo_manager
+                combo_manager = get_team_combo_manager()
+                
+                base_damage = 40 + (player.level * 5)
+                participants = ["player"] + [p for p in action.combo.participants if p != "player"]
+                
+                result = combo_manager.execute_combo(action.combo, base_damage, participants)
+                
+                # Apply combo damage to enemy
+                enemy.take_damage(result["damage"])
+                
+                # Apply special effects
+                for effect in result["special_effects"]:
+                    if effect == "stun_chance" and random.random() < 0.5:
+                        enemy.add_status_effect("stunned", 2)
+                    elif effect == "energy_restoration":
+                        player.restore_cursed_energy(20)
+                    elif effect == "healing":
+                        player.heal(15)
+                
+            except ImportError:
+                print("Team combo system not available")
     
     def enemy_turn(self, enemy: Enemy, player: Player):
         """Handle enemy's turn with AI decision making."""
@@ -183,6 +247,12 @@ class CombatSystem:
         
         # Check for phase transition
         if enemy.should_transition_phase():
+            try:
+                from cutscenes import get_cutscene_manager
+                cutscene_manager = get_cutscene_manager()
+                cutscene_manager.create_boss_phase_transition(enemy.name, enemy.phase + 1)
+            except ImportError:
+                pass
             enemy.transition_phase()
             return
         
@@ -231,6 +301,24 @@ class CombatSystem:
         
         # Use cursed energy
         user.use_cursed_energy(technique.cost)
+        
+        # Create technique animation
+        try:
+            from cutscenes import get_cutscene_manager
+            cutscene_manager = get_cutscene_manager()
+            
+            # Special techniques get full animations
+            if any(special in technique.name.lower() for special in ["black flash", "domain expansion", "wukong"]):
+                cutscene_manager.create_technique_animation(
+                    technique.name, user.name, target.name, True
+                )
+            else:
+                # Regular techniques get brief dramatic moment
+                cutscene_manager.show_dramatic_transition("technique_success", 
+                    f"⚡ {user.name} channels their cursed energy into {technique.name}!")
+                
+        except ImportError:
+            pass
         
         # Check for dodge
         if technique.technique_type == "offensive" and self.check_dodge(user, target, is_enemy):
@@ -353,6 +441,31 @@ class CombatSystem:
         # Natural cursed energy regeneration (small amount)
         player.restore_cursed_energy(5)
         enemy.restore_cursed_energy(3)
+    
+    def _check_combat_drama(self, player: Player, enemy: Enemy):
+        """Check for dramatic moments during combat."""
+        try:
+            from cutscenes import get_cutscene_manager
+            cutscene_manager = get_cutscene_manager()
+            
+            # Low HP dramatic moments
+            if player.hp <= player.max_hp * 0.2 and random.random() < 0.3:
+                taunts = cutscene_manager.get_combat_taunts(player.name, "losing")
+                print(f"\n💪 {player.name}: '{random.choice(taunts)}'")
+            
+            elif enemy.hp <= enemy.max_hp * 0.2 and random.random() < 0.3:
+                taunts = cutscene_manager.get_combat_taunts(enemy.name, "losing")
+                print(f"\n👹 {enemy.name}: '{random.choice(taunts)}'")
+            
+            # Transformation moments
+            if (player.transformation_active and 
+                not hasattr(self, '_transformation_announced')):
+                cutscene_manager.show_dramatic_transition("transformation", 
+                    f"✨ {player.name}'s {player.transformation_name} power surges!")
+                self._transformation_announced = True
+                
+        except ImportError:
+            pass
     
     def resolve_combat(self, player: Player, enemy: Enemy) -> bool:
         """Resolve combat and handle rewards/consequences."""
