@@ -4,29 +4,44 @@ A turn-based RPG built in Python following the Jujutsu Kaisen manga storyline wi
 
 ## 🎮 Game Features
 
-### Turn-Based Combat System
+### Enhanced Combat System
 - **Combat Actions**: Attack, use cursed techniques (CTs), dodge, guard, or flee
-- **Dodge Mechanics**: Prepare to dodge incoming attacks and trigger counters
+- **Combo System**: Chain successful attacks for increasing damage multipliers (up to 3x)
+- **Ultimate Techniques**: Powerful moves based on character traits, charged through combat
+- **Environmental Combat**: 5 terrain types with tactical interactions and bonus effects
+- **Dodge & Counter**: Prepare to dodge incoming attacks and trigger devastating counters
 - **Ultra Instinct System**: Special transformation abilities that enhance dodge chance and counter damage
 - **Multi-Phase Boss Battles**: Bosses transition through phases with unique abilities and taunts
 - **Strategic Elements**: Status effects, cooldowns, and energy management
 
+### Advanced Technique System
+- **Technique Mastery**: 5-level progression system improving damage and reducing costs
+- **Skill Trees**: Trait-based technique unlocks with prerequisites and upgrade paths
+- **Canon Techniques**: Black Flash, Limitless series, Divine Dogs, Boogie Woogie, and more
+- **Original Techniques**: Wukong techniques, Ultra Instinct abilities, and unique combinations
+- **Technique Fusion**: Advanced combinations unlocked through mastery and relationships
+- **Domain Fragments**: Partial domain abilities available at high levels
+
+### Character Development & Progression
+- **Dynamic Traits**: Compassionate, Focused, Aggressive, Protective, Analytical, Reckless, Determined, Cautious
+- **Trait Evolution**: Traits change based on player decisions and actions throughout the story
+- **Personal Missions**: Character-specific questlines that explore backstories and motivations
+- **Skill Point System**: Earned through leveling, spent on technique upgrades and new abilities
+- **Character Backstory Events**: Interactive narrative events that shape character development
+- **Personality Impact**: Dominant traits affect dialogue options, relationship compatibility, and available techniques
+
+### Enhanced Exploration & Discovery
+- **Interactive Environments**: Hidden areas, secret training grounds, and spiritual encounters
+- **Character Backstory Discovery**: Uncover family history, past trauma, and hidden talents
+- **Technique Knowledge**: Find ancient scrolls and training notes that provide gameplay benefits
+- **Spiritual Encounters**: Meet benevolent spirits that offer wisdom and character growth
+- **Memorial Sites**: Discover locations that honor fallen sorcerers and provide permanent bonuses
+
 ### Story and Exploration
 - **Canon Storyline**: Follows the Jujutsu Kaisen manga with player choice deviations
 - **Branching Narrative**: Decisions affect story progression and character relationships
-- **Exploration System**: Interact with environments, discover secrets, and find items
-- **Multiple Locations**: Tokyo Jujutsu High, Kyoto School, Shibuya District, and more
-
-### Character Traits and Evolution
-- **Dynamic Traits**: Compassionate, Focused, Aggressive, Protective, Analytical, Reckless, Determined, Cautious
-- **Trait Evolution**: Traits change based on player decisions and actions
-- **Personality Impact**: Dominant traits affect dialogue options, relationship compatibility, and available techniques
-
-### Cursed Techniques and Abilities
-- **Canon Techniques**: Black Flash, Limitless series, Divine Dogs, Boogie Woogie, and more
-- **Original Techniques**: Wukong techniques, Ultra Instinct abilities, and unique combinations
-- **Technique Progression**: Unlock new abilities through leveling, relationships, and story progress
-- **Domain Expansions**: Ultimate techniques available at high levels
+- **Enhanced Exploration**: Discover hidden paths, collectibles, puzzles, and character development events
+- **Multiple Locations**: Tokyo Jujutsu High, Kyoto School, Shibuya District, and secret areas
 
 ### Relationship System
 - **Dynamic NPCs**: Yuji, Megumi, Nobara, Todo, Gojo, and other canon characters
@@ -101,23 +116,69 @@ Jujutsu-Kaisen-RPG/
 - **Special Effects**: Unique mechanics for different technique types
 - **Domain Expansions**: Ultimate abilities for advanced players
 
-## 🎲 Gameplay Flow
+## 🎲 Enhanced Gameplay Flow
 
 1. **Character Creation**: Name your sorcerer and begin at Tokyo Jujutsu High
 2. **Story Progression**: Make choices that shape your personality and relationships
-3. **Combat Encounters**: Strategic turn-based battles with cursed spirits
-4. **Character Growth**: Gain experience, level up, and unlock new abilities
-5. **Relationship Building**: Interact with NPCs to unlock special abilities
-6. **Story Branches**: Experience different outcomes based on your choices
+3. **Combat Encounters**: Strategic turn-based battles with enhanced mechanics
+   - Build combos for increasing damage
+   - Charge ultimate techniques through successful actions
+   - Use environmental interactions tactically
+4. **Character Development**: Multi-layered progression system
+   - Gain experience and skill points through various activities
+   - Master techniques through repeated use
+   - Unlock new abilities based on traits and relationships
+5. **Personal Missions**: Complete character-specific questlines
+   - Explore your character's backstory and motivations
+   - Unlock unique abilities and story content
+6. **Relationship Building**: Interact with NPCs to unlock special abilities and team techniques
+7. **Enhanced Exploration**: Discover hidden areas and character development opportunities
+8. **Story Branches**: Experience different outcomes based on your choices and character development
+
+## 🌟 New Features Highlight
+
+### Enhanced Combat Mechanics
+- **Combo System**: Chain up to 3 successful actions for 44% damage bonus
+- **Ultimate Techniques**: 8 trait-based ultimate moves with unique effects
+- **Environmental Combat**: 5 terrain types (Forest, Urban, Shrine, Underground, Rooftop)
+- **Tactical Positioning**: Use destructible objects, natural energy, and elevation
+
+### Advanced Character Progression
+- **Technique Mastery**: 5-level progression improving damage (+100%) and efficiency (-40% cost)
+- **Skill Trees**: 10+ new techniques unlocked through traits and relationships
+- **Personal Missions**: 6+ character-specific questlines with meaningful rewards
+- **Character Development Events**: Interactive backstory exploration affecting growth
+
+### Quality of Life Improvements
+- **Character Development Menu**: Accessible in-game interface for managing progression
+- **Enhanced Save System**: Preserves all new progression data
+- **Comprehensive Demo**: `enhanced_demo.py` showcases all new features
+- **Integrated Systems**: All enhancements work seamlessly with existing gameplay
 
 ## 🔧 Customization and Extension
 
 The modular design allows for easy expansion:
 
-- **New Techniques**: Add to `cursed_techniques.py` technique library
-- **Additional NPCs**: Extend the NPC system in `npcs.py`
-- **Story Content**: Add new scenes and choices in `story.py`
-- **Combat Mechanics**: Enhance the combat system in `combat.py`
+- **New Techniques**: Add to `cursed_techniques.py` technique library or character skill trees
+- **Additional NPCs**: Extend the NPC system in `npcs.py` with new relationship mechanics
+- **Story Content**: Add new scenes, choices, and personal missions in `story.py`
+- **Combat Mechanics**: Enhance the combat system in `combat.py` with new environmental effects
+- **Character Development**: Extend trait-based progression and backstory events
+
+## 🎮 Running the Enhanced Demo
+
+Experience all the new features:
+
+```bash
+python3 enhanced_demo.py
+```
+
+This comprehensive demo showcases:
+- Enhanced combat with combos and ultimates
+- Technique mastery and skill tree systems
+- Character development and personal missions
+- Enhanced exploration features
+- Integrated system demonstration
 
 ## 💾 Save System
 
