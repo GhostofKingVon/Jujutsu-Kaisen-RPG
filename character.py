@@ -25,14 +25,48 @@ class CursedTechnique:
     """Represents a cursed technique with its properties."""
     
     def __init__(self, name: str, damage: int, cost: int, description: str, 
-                 technique_type: str = "offensive", cooldown: int = 0):
+                 technique_type: str = "offensive", cooldown: int = 0,
+                 mastery_level: int = 1, max_mastery: int = 5):
         self.name = name
-        self.damage = damage
-        self.cost = cost  # Cursed energy cost
+        self.base_damage = damage  # Base damage at mastery level 1
+        self.damage = damage  # Current damage based on mastery
+        self.base_cost = cost  # Base cost at mastery level 1
+        self.cost = cost  # Current cost based on mastery
         self.description = description
         self.technique_type = technique_type  # offensive, defensive, utility
         self.cooldown = cooldown
         self.current_cooldown = 0
+        # Mastery system
+        self.mastery_level = mastery_level
+        self.max_mastery = max_mastery
+        self.usage_count = 0
+        self.mastery_exp = 0
+        self.prerequisite_techniques = []  # Required techniques to learn this one
+        self.unlocks_techniques = []  # Techniques this one unlocks when mastered
+        self._update_stats_from_mastery()
+    
+    def _update_stats_from_mastery(self):
+        """Update damage and cost based on mastery level."""
+        mastery_multiplier = 1.0 + (self.mastery_level - 1) * 0.2  # 20% per level
+        efficiency_multiplier = 1.0 - (self.mastery_level - 1) * 0.1  # 10% cost reduction per level
+        
+        self.damage = int(self.base_damage * mastery_multiplier)
+        self.cost = max(1, int(self.base_cost * efficiency_multiplier))
+    
+    def gain_mastery_exp(self, amount: int = 1):
+        """Gain mastery experience from using the technique."""
+        if self.mastery_level >= self.max_mastery:
+            return False
+            
+        self.mastery_exp += amount
+        exp_needed = self.mastery_level * 10  # More exp needed for higher levels
+        
+        if self.mastery_exp >= exp_needed:
+            self.mastery_level += 1
+            self.mastery_exp = 0
+            self._update_stats_from_mastery()
+            return True  # Leveled up
+        return False
     
     def can_use(self, cursed_energy: int) -> bool:
         """Check if the technique can be used."""
@@ -44,12 +78,26 @@ class CursedTechnique:
             return 0
         
         self.current_cooldown = self.cooldown
+        self.usage_count += 1
+        
+        # Gain mastery exp when used
+        if self.gain_mastery_exp():
+            print(f"🌟 {self.name} mastery increased to level {self.mastery_level}!")
+        
         return self.damage
     
     def reduce_cooldown(self):
         """Reduce cooldown by 1 turn."""
         if self.current_cooldown > 0:
             self.current_cooldown -= 1
+    
+    def get_mastery_description(self) -> str:
+        """Get description of current mastery level and effects."""
+        mastery_names = ["Novice", "Apprentice", "Adept", "Expert", "Master"]
+        mastery_name = mastery_names[min(self.mastery_level - 1, len(mastery_names) - 1)]
+        
+        return f"{mastery_name} ({self.mastery_level}/{self.max_mastery}) - " \
+               f"Damage: {self.damage}, Cost: {self.cost} CE"
 
 
 class Character:
@@ -148,6 +196,10 @@ class Player(Character):
         self.transformation_active = False
         self.transformation_name = ""
         self.transformation_turns = 0
+        # Skill tree and technique progression
+        self.skill_points = 0
+        self.learned_technique_names = set()
+        self.available_technique_upgrades = set()
         
         # Start with basic techniques
         self._initialize_basic_techniques()
@@ -210,6 +262,10 @@ class Player(Character):
         
         print(f"HP increased by {hp_increase}! (Now: {self.max_hp})")
         print(f"Cursed Energy increased by {ce_increase}! (Now: {self.max_cursed_energy})")
+        
+        # Award skill points
+        skill_points_gained = new_level - old_level
+        self.gain_skill_point(skill_points_gained)
         
         # Learn new techniques at certain levels
         self._check_new_techniques()
@@ -362,6 +418,216 @@ class Player(Character):
             player.techniques.append(technique)
         
         return player
+    
+    def gain_skill_point(self, amount: int = 1):
+        """Gain skill points for technique upgrades."""
+        self.skill_points += amount
+        print(f"🌟 Gained {amount} skill point(s)! Total: {self.skill_points}")
+    
+    def get_available_technique_upgrades(self) -> List[Dict[str, Any]]:
+        """Get list of available technique upgrades."""
+        upgrades = []
+        
+        # Mastery upgrades for existing techniques
+        for technique in self.techniques:
+            if technique.mastery_level < technique.max_mastery:
+                cost = technique.mastery_level  # Cost increases with level
+                upgrades.append({
+                    "type": "mastery",
+                    "technique_name": technique.name,
+                    "current_level": technique.mastery_level,
+                    "max_level": technique.max_mastery,
+                    "cost": cost,
+                    "description": f"Increase {technique.name} mastery to level {technique.mastery_level + 1}"
+                })
+        
+        # New technique unlocks based on level and traits
+        available_new = self._get_learnable_techniques()
+        for tech_name, tech_info in available_new.items():
+            if tech_name not in self.learned_technique_names:
+                upgrades.append({
+                    "type": "new_technique",
+                    "technique_name": tech_name,
+                    "cost": tech_info["cost"],
+                    "description": f"Learn {tech_name}: {tech_info['description']}",
+                    "requirements": tech_info.get("requirements", [])
+                })
+        
+        return upgrades
+    
+    def _get_learnable_techniques(self) -> Dict[str, Dict[str, Any]]:
+        """Get techniques that can be learned based on current progress."""
+        learnable = {}
+        
+        # Trait-based techniques
+        dominant_traits = self.get_dominant_traits()
+        
+        if any(trait.value == "Compassionate" for trait in dominant_traits):
+            learnable["Healing Aura"] = {
+                "cost": 2,
+                "description": "Restore HP to self and allies over time",
+                "requirements": ["Level 6+"]
+            }
+            learnable["Protective Barrier"] = {
+                "cost": 3,
+                "description": "Create a barrier that absorbs damage",
+                "requirements": ["Level 10+", "Healing Aura"]
+            }
+        
+        if any(trait.value == "Aggressive" for trait in dominant_traits):
+            learnable["Berserker Strike"] = {
+                "cost": 2,
+                "description": "High damage attack that costs HP",
+                "requirements": ["Level 5+"]
+            }
+            learnable["Overwhelming Force"] = {
+                "cost": 4,
+                "description": "Massive damage with temporary weakness",
+                "requirements": ["Level 12+", "Berserker Strike"]
+            }
+        
+        if any(trait.value == "Focused" for trait in dominant_traits):
+            learnable["Precision Strike"] = {
+                "cost": 2,
+                "description": "High accuracy attack with critical hit chance",
+                "requirements": ["Level 4+"]
+            }
+            learnable["Perfect Technique"] = {
+                "cost": 5,
+                "description": "Guaranteed critical hit with bonus effects",
+                "requirements": ["Level 15+", "Precision Strike"]
+            }
+        
+        if any(trait.value == "Analytical" for trait in dominant_traits):
+            learnable["Weakness Detection"] = {
+                "cost": 1,
+                "description": "Reveal enemy weaknesses and resistances",
+                "requirements": ["Level 3+"]
+            }
+            learnable["Tactical Advantage"] = {
+                "cost": 3,
+                "description": "Gain turn priority and attack bonuses",
+                "requirements": ["Level 8+", "Weakness Detection"]
+            }
+        
+        # Level-based techniques
+        if self.level >= 7:
+            learnable["Cursed Energy Mastery"] = {
+                "cost": 3,
+                "description": "Reduce all technique costs by 20%",
+                "requirements": ["Level 7+"]
+            }
+        
+        if self.level >= 10:
+            learnable["Domain Fragment"] = {
+                "cost": 5,
+                "description": "Partial domain that enhances all abilities",
+                "requirements": ["Level 10+", "High mastery in 3 techniques"]
+            }
+        
+        return learnable
+    
+    def spend_skill_points(self, upgrade_type: str, technique_name: str) -> bool:
+        """Spend skill points on technique upgrades."""
+        upgrades = self.get_available_technique_upgrades()
+        target_upgrade = None
+        
+        for upgrade in upgrades:
+            if (upgrade["type"] == upgrade_type and 
+                upgrade["technique_name"] == technique_name):
+                target_upgrade = upgrade
+                break
+        
+        if not target_upgrade:
+            print(f"❌ Upgrade not available: {technique_name}")
+            return False
+        
+        if self.skill_points < target_upgrade["cost"]:
+            print(f"❌ Not enough skill points! Need {target_upgrade['cost']}, have {self.skill_points}")
+            return False
+        
+        # Apply the upgrade
+        self.skill_points -= target_upgrade["cost"]
+        
+        if upgrade_type == "mastery":
+            # Upgrade existing technique mastery
+            for technique in self.techniques:
+                if technique.name == technique_name:
+                    technique.mastery_level += 1
+                    technique._update_stats_from_mastery()
+                    print(f"🌟 {technique_name} mastery increased to level {technique.mastery_level}!")
+                    print(f"   New stats: Damage {technique.damage}, Cost {technique.cost} CE")
+                    return True
+        
+        elif upgrade_type == "new_technique":
+            # Learn new technique
+            new_tech = self._create_technique_from_name(technique_name)
+            if new_tech:
+                self.add_technique(new_tech)
+                self.learned_technique_names.add(technique_name)
+                print(f"🌟 Learned new technique: {technique_name}!")
+                print(f"   {new_tech.description}")
+                return True
+        
+        return False
+    
+    def _create_technique_from_name(self, name: str) -> Optional[CursedTechnique]:
+        """Create a technique object from its name."""
+        technique_data = {
+            "Healing Aura": {
+                "damage": 0, "cost": 20, "description": "Restore 15 HP over 3 turns",
+                "type": "utility", "cooldown": 4
+            },
+            "Protective Barrier": {
+                "damage": 0, "cost": 35, "description": "Absorb 50 damage over 5 turns",
+                "type": "defensive", "cooldown": 6
+            },
+            "Berserker Strike": {
+                "damage": 70, "cost": 25, "description": "High damage attack, lose 10 HP",
+                "type": "offensive", "cooldown": 3
+            },
+            "Overwhelming Force": {
+                "damage": 120, "cost": 50, "description": "Massive damage, -20% damage next turn",
+                "type": "offensive", "cooldown": 7
+            },
+            "Precision Strike": {
+                "damage": 45, "cost": 20, "description": "High accuracy with 30% crit chance",
+                "type": "offensive", "cooldown": 2
+            },
+            "Perfect Technique": {
+                "damage": 80, "cost": 40, "description": "Guaranteed critical hit with special effects",
+                "type": "offensive", "cooldown": 5
+            },
+            "Weakness Detection": {
+                "damage": 0, "cost": 15, "description": "Reveal enemy info and gain attack bonus",
+                "type": "utility", "cooldown": 1
+            },
+            "Tactical Advantage": {
+                "damage": 0, "cost": 30, "description": "Gain turn priority and 50% damage bonus",
+                "type": "utility", "cooldown": 5
+            },
+            "Cursed Energy Mastery": {
+                "damage": 0, "cost": 0, "description": "Passive: All techniques cost 20% less CE",
+                "type": "utility", "cooldown": 0
+            },
+            "Domain Fragment": {
+                "damage": 0, "cost": 60, "description": "Enhance all abilities for 4 turns",
+                "type": "utility", "cooldown": 10
+            }
+        }
+        
+        if name in technique_data:
+            data = technique_data[name]
+            return CursedTechnique(
+                name,
+                data["damage"],
+                data["cost"],
+                data["description"],
+                data["type"],
+                data["cooldown"]
+            )
+        
+        return None
 
 
 class Enemy(Character):
