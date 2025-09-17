@@ -363,15 +363,23 @@ class Player(Character):
             'transformation_active': self.transformation_active,
             'transformation_name': self.transformation_name,
             'transformation_turns': self.transformation_turns,
+            'skill_points': self.skill_points,
+            'learned_technique_names': list(self.learned_technique_names),
             'techniques': [
                 {
                     'name': t.name,
+                    'base_damage': t.base_damage,
                     'damage': t.damage,
+                    'base_cost': t.base_cost,
                     'cost': t.cost,
                     'description': t.description,
                     'technique_type': t.technique_type,
                     'cooldown': t.cooldown,
-                    'current_cooldown': t.current_cooldown
+                    'current_cooldown': t.current_cooldown,
+                    'mastery_level': t.mastery_level,
+                    'max_mastery': t.max_mastery,
+                    'usage_count': t.usage_count,
+                    'mastery_exp': t.mastery_exp
                 }
                 for t in self.techniques
             ]
@@ -402,19 +410,27 @@ class Player(Character):
         player.transformation_active = data['transformation_active']
         player.transformation_name = data['transformation_name']
         player.transformation_turns = data['transformation_turns']
+        player.skill_points = data.get('skill_points', 0)
+        player.learned_technique_names = set(data.get('learned_technique_names', []))
         
         # Restore techniques
         player.techniques = []
         for tech_data in data['techniques']:
             technique = CursedTechnique(
                 tech_data['name'],
-                tech_data['damage'],
-                tech_data['cost'],
+                tech_data.get('base_damage', tech_data['damage']),
+                tech_data.get('base_cost', tech_data['cost']),
                 tech_data['description'],
                 tech_data['technique_type'],
                 tech_data['cooldown']
             )
+            # Restore enhanced technique data
             technique.current_cooldown = tech_data['current_cooldown']
+            technique.mastery_level = tech_data.get('mastery_level', 1)
+            technique.max_mastery = tech_data.get('max_mastery', 5)
+            technique.usage_count = tech_data.get('usage_count', 0)
+            technique.mastery_exp = tech_data.get('mastery_exp', 0)
+            technique._update_stats_from_mastery()
             player.techniques.append(technique)
         
         return player
