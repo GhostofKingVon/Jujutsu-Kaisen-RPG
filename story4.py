@@ -8,7 +8,7 @@ Minimum 800 lines of detailed story content focusing on loss, growth, and conseq
 
 from typing import Dict, List, Any, Optional
 from character import Trait
-from story import StoryChoice, StoryScene
+from story_base import StoryChoice, StoryScene
 
 
 class ShibuyaIncidentArc:
