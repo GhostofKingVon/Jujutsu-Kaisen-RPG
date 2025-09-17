@@ -3,31 +3,32 @@ Story and Exploration System
 
 Manages story progression, character choices, exploration, and narrative branching
 following the Jujutsu Kaisen manga with player-driven deviations.
+
+Expanded story implementation with detailed arcs:
+- story1.py: Introduction Arc (800+ lines)
+- story2.py: Vs. Mahito/Junpei Arc (750+ lines) 
+- story3.py: Kyoto Exchange Event Arc (840+ lines)
+- story4.py: Shibuya Incident Arc (777+ lines)
 """
 
 from typing import Dict, List, Any, Optional
 import random
 from character import Player, Enemy, Trait
+from story_base import StoryChoice, StoryScene
 
+# Import expanded story arc modules
+try:
+    from story1 import IntroductionArc
+    from story2 import MahitoJunpeiArc
+    from story3 import KyotoExchangeEventArc
+    from story4 import ShibuyaIncidentArc
+    EXPANDED_ARCS_AVAILABLE = True
+    print("📚 Expanded story arcs imported successfully!")
+except ImportError as e:
+    # Fallback if arc modules aren't available
+    print(f"⚠️  Expanded arcs import failed: {e}")
+    EXPANDED_ARCS_AVAILABLE = False
 
-class StoryChoice:
-    """Represents a story choice with its consequences."""
-    
-    def __init__(self, text: str, consequences: Dict[str, Any]):
-        self.text = text
-        self.consequences = consequences  # Effects on traits, relationships, story flags
-
-
-class StoryScene:
-    """Represents a story scene with description and choices."""
-    
-    def __init__(self, title: str, description: str, choices: List[StoryChoice], 
-                 location: str = None, requirements: Dict = None):
-        self.title = title
-        self.description = description
-        self.choices = choices
-        self.location = location or "Unknown Location"
-        self.requirements = requirements or {}  # Requirements to access this scene
 
 
 class StoryManager:
@@ -37,8 +38,11 @@ class StoryManager:
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.expanded_arcs = {}
+        self.current_arc = "introduction"
         self._initialize_story()
         self._initialize_locations()
+        self._initialize_expanded_arcs()
     
     def _initialize_story(self):
         """Initialize all story scenes."""
@@ -272,6 +276,85 @@ and faculty.""",
             ],
             "Tokyo Jujutsu High - Meeting Room"
         )
+    
+    def _initialize_expanded_arcs(self):
+        """Initialize expanded story arc modules if available."""
+        if EXPANDED_ARCS_AVAILABLE:
+            try:
+                self.expanded_arcs = {
+                    "introduction": IntroductionArc(),
+                    "mahito_junpei": MahitoJunpeiArc(),
+                    "kyoto_exchange": KyotoExchangeEventArc(),
+                    "shibuya_incident": ShibuyaIncidentArc()
+                }
+                
+                # Integrate expanded arc scenes into main story scenes
+                for arc_name, arc_instance in self.expanded_arcs.items():
+                    arc_scenes = arc_instance.get_all_scenes()
+                    for scene_key, scene in arc_scenes.items():
+                        # Prefix scene keys with arc name to avoid conflicts
+                        prefixed_key = f"{arc_name}_{scene_key}"
+                        self.story_scenes[prefixed_key] = scene
+                        
+                print(f"✅ Expanded story arcs loaded successfully!")
+                print(f"   - Introduction Arc: {self.expanded_arcs['introduction'].get_scene_count()} scenes")
+                print(f"   - Mahito/Junpei Arc: {self.expanded_arcs['mahito_junpei'].get_scene_count()} scenes")
+                print(f"   - Kyoto Exchange Arc: {self.expanded_arcs['kyoto_exchange'].get_scene_count()} scenes")
+                print(f"   - Shibuya Incident Arc: {self.expanded_arcs['shibuya_incident'].get_scene_count()} scenes")
+                print(f"   - Total: {sum(arc.get_scene_count() for arc in self.expanded_arcs.values())} expanded scenes")
+                
+            except Exception as e:
+                print(f"⚠️  Error loading expanded arcs: {e}")
+                self.expanded_arcs = {}
+        else:
+            print("📖 Using basic story content (expanded arcs not available)")
+            self.expanded_arcs = {}
+    
+    def get_expanded_scene(self, scene_key: str):
+        """Get scene from expanded arcs, with fallback to basic scenes."""
+        # Try expanded scenes first
+        if scene_key in self.story_scenes:
+            return self.story_scenes[scene_key]
+            
+        # Try with arc prefixes
+        for arc_name in self.expanded_arcs.keys():
+            prefixed_key = f"{arc_name}_{scene_key}"
+            if prefixed_key in self.story_scenes:
+                return self.story_scenes[prefixed_key]
+        
+        # Fallback to None if not found
+        return None
+    
+    def transition_to_arc(self, arc_name: str, scene_key: str = None):
+        """Transition to a specific story arc."""
+        if arc_name in self.expanded_arcs:
+            self.current_arc = arc_name
+            if scene_key:
+                self.current_scene = f"{arc_name}_{scene_key}"
+            else:
+                # Default to first scene of the arc
+                arc_scenes = list(self.expanded_arcs[arc_name].get_all_scenes().keys())
+                if arc_scenes:
+                    self.current_scene = f"{arc_name}_{arc_scenes[0]}"
+        else:
+            print(f"⚠️  Arc '{arc_name}' not available, staying in current arc")
+    
+    def get_story_statistics(self):
+        """Return statistics about the story content."""
+        stats = {
+            "basic_scenes": len([k for k in self.story_scenes.keys() if "_" not in k]),
+            "expanded_scenes": len([k for k in self.story_scenes.keys() if "_" in k]),
+            "total_scenes": len(self.story_scenes),
+            "available_arcs": list(self.expanded_arcs.keys()) if self.expanded_arcs else ["basic"],
+            "current_arc": self.current_arc
+        }
+        
+        if self.expanded_arcs:
+            stats["estimated_total_lines"] = sum(
+                arc.get_total_content_lines() for arc in self.expanded_arcs.values()
+            )
+        
+        return stats
     
     def _initialize_locations(self):
         """Initialize exploration locations."""
