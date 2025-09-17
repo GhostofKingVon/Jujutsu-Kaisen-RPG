@@ -292,6 +292,120 @@ class NPCManager:
                 100: "Special Grade Potential - Unlock hidden power within yourself"
             }
         )
+        
+        # Culling Games Characters
+        
+        # Hajime Kashimo
+        self.npcs["kashimo"] = NPC(
+            "Hajime Kashimo",
+            ["aggressive", "honorable", "ancient", "battle_hungry"],
+            {
+                "neutral": [
+                    "Four centuries I have waited for a worthy opponent.",
+                    "Your cursed energy is... interesting, but unrefined.",
+                    "The modern era has produced weak sorcerers."
+                ],
+                "acquaintance": [
+                    "You fight better than most of your generation.",
+                    "Perhaps there is hope for modern jujutsu after all.",
+                    "Your lightning technique needs work, but shows promise."
+                ],
+                "respect": [
+                    "You remind me of the warriors from my era.",
+                    "I acknowledge your strength, young sorcerer.",
+                    "Would you care to learn from ancient wisdom?"
+                ]
+            },
+            {
+                25: "Lightning Affinity - Resistance to electric attacks",
+                60: "Ancient Wisdom - Kashimo shares technique knowledge",
+                90: "Thunder God's Blessing - Unlock mythical lightning techniques"
+            }
+        )
+        
+        # Yorozu
+        self.npcs["yorozu"] = NPC(
+            "Yorozu",
+            ["obsessive", "creative", "ancient", "dangerous"],
+            {
+                "neutral": [
+                    "You interest me, modern sorcerer.",
+                    "Perhaps you could serve as inspiration for my next creation.",
+                    "All my works are gifts for my beloved Sukuna."
+                ],
+                "wary": [
+                    "You're more capable than you appear.",
+                    "My constructs will adapt to counter your techniques.",
+                    "Love drives all true creation, you know."
+                ],
+                "obsessed": [
+                    "You could help me understand what Sukuna desires!",
+                    "Together we could create the perfect weapon!",
+                    "You've seen him recently, haven't you?"
+                ]
+            },
+            {
+                30: "Construct Knowledge - Understanding of cursed tool creation",
+                70: "Adaptation Mastery - Yorozu teaches adaptive techniques",
+                95: "Perfect Creation - Access to ultimate construction techniques"
+            }
+        )
+        
+        # Uro Takako
+        self.npcs["uro"] = NPC(
+            "Uro Takako",
+            ["proud", "strategic", "ancient", "territorial"],
+            {
+                "neutral": [
+                    "The sky is my domain, remember that.",
+                    "You modern sorcerers lack proper respect.",
+                    "I commanded armies when your ancestors were not yet born."
+                ],
+                "respect": [
+                    "You show promise for someone so young.",
+                    "Your spatial awareness is better than most.",
+                    "Perhaps modern techniques have some merit."
+                ],
+                "alliance": [
+                    "You fight with the honor of ancient warriors.",
+                    "I will teach you the true way of spatial manipulation.",
+                    "Together we could reshape this battlefield."
+                ]
+            },
+            {
+                35: "Spatial Awareness - Enhanced dodge chance against area attacks",
+                75: "Sky Mastery - Uro teaches advanced spatial techniques",
+                95: "Captain's Authority - Unlock command-type abilities"
+            }
+        )
+        
+        # Yuta (Post-Overseas)
+        self.npcs["yuta_returned"] = NPC(
+            "Yuta Okkotsu (Returned)",
+            ["determined", "protective", "evolved", "burdened"],
+            {
+                "neutral": [
+                    "I've learned things overseas that changed my perspective.",
+                    "Rika and I are stronger now, but at what cost?",
+                    "I need to protect everyone, no matter what it takes."
+                ],
+                "concerned_friend": [
+                    "You've grown stronger too. I can see it in your cursed energy.",
+                    "We need to work together if we're going to survive this.",
+                    "I hope I haven't changed too much to still be your friend."
+                ],
+                "trusted_ally": [
+                    "I'll show you what I learned, but promise me you'll use it wisely.",
+                    "Rika trusts you, and that means everything to me.",
+                    "Let's end this nightmare together."
+                ]
+            },
+            {
+                40: "Overseas Knowledge - Yuta shares foreign techniques",
+                80: "Rika's Bond - Enhanced cursed energy manipulation",
+                99: "Perfect Synchronization - Ultimate Yuta combination techniques"
+            }
+        )
     
     def get_npc(self, name: str) -> Optional[NPC]:
         """Get an NPC by name."""
