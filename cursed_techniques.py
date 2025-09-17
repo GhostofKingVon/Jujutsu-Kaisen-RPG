@@ -239,6 +239,131 @@ class TechniqueLibrary:
             technique_type="offensive",
             cooldown=12
         )
+        
+        # Culling Games Specific Techniques
+        
+        # Kashimo's Lightning Techniques
+        self.techniques["lightning_discharge"] = CursedTechnique(
+            "Lightning Discharge",
+            damage=75,
+            cost=50,
+            description="Hajime Kashimo's signature lightning attack with paralyzing effect.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["mythical_beast_amber"] = CursedTechnique(
+            "Mythical Beast Amber",
+            damage=100,
+            cost=70,
+            description="Kashimo's ultimate technique channeling ancient lightning power.",
+            technique_type="offensive",
+            cooldown=6
+        )
+        
+        # Yorozu's Construction Techniques
+        self.techniques["insect_armor"] = CursedTechnique(
+            "Insect Armor",
+            damage=0,
+            cost=40,
+            description="Create adaptive armor from cursed constructs.",
+            technique_type="defensive",
+            cooldown=5
+        )
+        
+        self.techniques["perfect_sphere"] = CursedTechnique(
+            "Perfect Sphere",
+            damage=90,
+            cost=80,
+            description="Yorozu's ultimate creation - a sphere of liquid metal.",
+            technique_type="offensive",
+            cooldown=8
+        )
+        
+        # Uro's Sky Manipulation
+        self.techniques["sky_manipulation"] = CursedTechnique(
+            "Sky Manipulation",
+            damage=65,
+            cost=45,
+            description="Treat the sky as a tangible surface for attack and defense.",
+            technique_type="utility",
+            cooldown=3
+        )
+        
+        self.techniques["thin_ice_breaker"] = CursedTechnique(
+            "Thin Ice Breaker",
+            damage=85,
+            cost=60,
+            description="Uro's signature spatial distortion attack.",
+            technique_type="offensive",
+            cooldown=5
+        )
+        
+        # Sukuna's Advanced Techniques
+        self.techniques["dismantle"] = CursedTechnique(
+            "Dismantle",
+            damage=95,
+            cost=55,
+            description="Sukuna's slashing technique that adapts to target's cursed energy.",
+            technique_type="offensive",
+            cooldown=3
+        )
+        
+        self.techniques["cleave"] = CursedTechnique(
+            "Cleave",
+            damage=110,
+            cost=65,
+            description="Sukuna's ultimate slashing attack for tough opponents.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["flame_arrow"] = CursedTechnique(
+            "Flame Arrow",
+            damage=140,
+            cost=85,
+            description="Sukuna's devastating fire technique that incinerates everything.",
+            technique_type="offensive",
+            cooldown=7
+        )
+        
+        # Ancient Era Techniques
+        self.techniques["heian_era_mastery"] = CursedTechnique(
+            "Heian Era Mastery",
+            damage=80,
+            cost=50,
+            description="Refined technique from the golden age of jujutsu.",
+            technique_type="offensive",
+            cooldown=4
+        )
+        
+        self.techniques["ancient_binding"] = CursedTechnique(
+            "Ancient Binding",
+            damage=0,
+            cost=60,
+            description="Powerful binding technique from ancient sorcerers.",
+            technique_type="utility",
+            cooldown=6
+        )
+        
+        # Evolved Modern Techniques
+        self.techniques["colony_adaptation"] = CursedTechnique(
+            "Colony Adaptation",
+            damage=70,
+            cost=40,
+            description="Technique evolved through Culling Games survival.",
+            technique_type="utility",
+            cooldown=3
+        )
+        
+        self.techniques["point_system_mastery"] = CursedTechnique(
+            "Point System Mastery",
+            damage=60,
+            cost=35,
+            description="Efficient technique optimized for the games' point system.",
+            technique_type="offensive",
+            cooldown=2
+        )
     
     def get_technique(self, technique_name: str) -> Optional[CursedTechnique]:
         """Get a technique by name."""
@@ -292,6 +417,22 @@ class TechniqueLibrary:
         
         if level >= 30:
             available.extend(["malevolent_shrine"])
+        
+        # Culling Games Techniques - High Level
+        if level >= 22:
+            available.extend(["lightning_discharge", "sky_manipulation", "colony_adaptation"])
+        
+        if level >= 25:
+            available.extend(["insect_armor", "heian_era_mastery", "point_system_mastery"])
+        
+        if level >= 28:
+            available.extend(["perfect_sphere", "thin_ice_breaker", "ancient_binding"])
+        
+        if level >= 32:
+            available.extend(["mythical_beast_amber", "dismantle"])
+        
+        if level >= 35:
+            available.extend(["cleave", "flame_arrow"])
         
         return available
     
