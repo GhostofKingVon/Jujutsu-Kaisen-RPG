@@ -682,4 +682,246 @@ How do you process this tragic outcome?""",
     # - Side quests involving other victims of bullying
     # - Exploration of the philosophical themes
     
+    # ============================================================================
+    # SHARED VULNERABILITY SEQUENCE - Deep Connection Building
+    # ============================================================================
+    
+    scenes["shared_vulnerability"] = StoryScene(
+        "When Masks Fall Away",
+        """Junpei looks at you with surprise when you begin sharing your own experiences with isolation 
+and pain. For a moment, his carefully constructed emotional barriers waver, and you see a glimmer 
+of the person he might have been in a kinder world.
+
+"You... you really understand," he says quietly, his voice carrying a note of wonder. "Most people, 
+when they try to relate, they just make it about themselves. But you're not doing that."
+
+As you continue talking, the rain provides a natural soundtrack to your conversation. You share 
+stories of times when you felt powerless, when the world seemed designed to crush anything good 
+or gentle. But you also share how you found ways to hold onto hope, to find strength in unexpected 
+places.
+
+"I used to think that kindness was weakness," Junpei admits, watching a particularly brave pigeon 
+approach despite the weather. "The world taught me that being gentle just makes you a target, 
+that caring about things gives bullies ammunition to hurt you with."
+
+He pauses, seeming to struggle with words that have been buried deep for too long.
+
+"But when I watch these pigeons, when I see how they trust me enough to eat from my hands... 
+there's something powerful in that trust, isn't there? Something that can't be broken by cruelty?"
+
+This is the deepest conversation you've had since arriving in this world, and you sense that 
+Junpei is on the verge of a crucial decision about who he wants to be. Your own vulnerability 
+has created a space where he feels safe to explore possibilities beyond revenge and despair.
+
+"Maybe," he continues hesitantly, "maybe the problem isn't that humans are naturally cruel. 
+Maybe the problem is that the cruel ones make so much noise that they drown out everyone else."
+
+The connection building between you feels fragile but genuine. This is the foundation that could 
+either save Junpei or make his eventual choices even more tragic.
+
+How do you nurture this growing trust?""",
+        [
+            StoryChoice(
+                "Share your hopes for what you want to accomplish as a sorcerer",
+                {
+                    "traits": {Trait.COMPASSIONATE: 20, Trait.DETERMINED: 15, Trait.FOCUSED: 10},
+                    "relationships": {"junpei": 30},
+                    "next_scene": "hope_sharing",
+                    "story_flags": {"shared_hopes": True, "positive_influence": True, "future_oriented": True}
+                }
+            ),
+            StoryChoice(
+                "Ask him what he would want to do if he felt truly safe and accepted",
+                {
+                    "traits": {Trait.COMPASSIONATE: 25, Trait.ANALYTICAL: 10, Trait.FOCUSED: 10},
+                    "relationships": {"junpei": 35},
+                    "next_scene": "dream_exploration",
+                    "story_flags": {"explored_dreams": True, "safety_discussion": True, "potential_revealed": True}
+                }
+            ),
+            StoryChoice(
+                "Suggest that you could be the kind of friends who protect each other",
+                {
+                    "traits": {Trait.PROTECTIVE: 25, Trait.COMPASSIONATE: 15, Trait.DETERMINED: 10},
+                    "relationships": {"junpei": 40},
+                    "next_scene": "friendship_pact",
+                    "story_flags": {"friendship_offered": True, "protection_promised": True, "mutual_support": True}
+                }
+            ),
+            StoryChoice(
+                "Acknowledge that healing from deep wounds takes time and patience",
+                {
+                    "traits": {Trait.COMPASSIONATE: 20, Trait.CAUTIOUS: 15, Trait.ANALYTICAL: 10},
+                    "relationships": {"junpei": 25},
+                    "next_scene": "healing_discussion",
+                    "story_flags": {"healing_focused": True, "patient_approach": True, "understanding_shown": True}
+                }
+            )
+        ],
+        "Kasumigaoka Park - Deepening Rain"
+    )
+    
+    # ============================================================================
+    # SCHOOL CONFRONTATION SEQUENCE - Taking Action
+    # ============================================================================
+    
+    scenes["bully_confrontation"] = StoryScene(
+        "Standing Against Cruelty",
+        """Your decision to confront the bullies directly transforms the atmosphere in the school 
+hallway. The casual cruelty that seemed so normal moments before suddenly becomes visible to 
+everyone present, highlighted by your willingness to challenge it.
+
+"Hey," you say firmly, stepping between the bullies and their latest victim. "That's enough."
+
+The leader of the group - the bleached-hair boy you observed earlier - turns to you with a mixture 
+of surprise and amusement. "Oh, look, we have a hero. What exactly do you think you're going to 
+do about it, transfer student?"
+
+Around you, other students stop to watch. Some look hopeful, as if they've been waiting for someone 
+to speak up. Others seem nervous, clearly worried about drawing attention to themselves. The victim 
+you're defending looks up at you with a mixture of gratitude and terror.
+
+"I'm going to give you a choice," you reply calmly. "You can walk away now and find something 
+better to do with your time, or you can explain to the faculty why you think intimidating smaller 
+students is an appropriate use of school hours."
+
+The bully's friends shift uncomfortably. It's clear that official attention is the last thing they 
+want, but backing down publicly would damage their carefully constructed reputation for being 
+untouchable.
+
+"You don't understand how things work here," the leader snarls, stepping closer. "Some people are 
+strong, and some people are weak. We're just helping the weak ones understand their place."
+
+"That's where you're wrong," you respond. "Strength isn't about making others feel small. Real 
+strength is about protecting people who can't protect themselves."
+
+The confrontation has drawn the attention of a teacher, who begins moving toward your group. You 
+realize this moment could go several different directions, and your next choice will determine not 
+just the immediate outcome, but potentially the entire social dynamic of this environment.
+
+How do you handle this crucial moment?""",
+        [
+            StoryChoice(
+                "Use your cursed energy to subtly intimidate without revealing what you are",
+                {
+                    "traits": {Trait.AGGRESSIVE: 15, Trait.PROTECTIVE: 20, Trait.CAUTIOUS: 5},
+                    "next_scene": "subtle_intimidation",
+                    "story_flags": {"intimidation_used": True, "power_hinted": True, "bullies_deterred": True}
+                }
+            ),
+            StoryChoice(
+                "Focus on rallying other students to stand together against bullying",
+                {
+                    "traits": {Trait.COMPASSIONATE: 20, Trait.FOCUSED: 15, Trait.PROTECTIVE: 10},
+                    "next_scene": "student_rally",
+                    "story_flags": {"students_united": True, "movement_started": True, "collective_action": True}
+                }
+            ),
+            StoryChoice(
+                "Calmly document everything and report it through official channels",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.CAUTIOUS: 15, Trait.FOCUSED: 10},
+                    "next_scene": "official_channels",
+                    "story_flags": {"documented_abuse": True, "official_action": True, "systematic_approach": True}
+                }
+            ),
+            StoryChoice(
+                "Challenge the lead bully to prove his strength one-on-one",
+                {
+                    "traits": {Trait.AGGRESSIVE: 25, Trait.PROTECTIVE: 15, Trait.RECKLESS: 10},
+                    "next_scene": "direct_challenge",
+                    "story_flags": {"challenged_bully": True, "personal_combat": True, "dramatic_confrontation": True}
+                }
+            )
+        ],
+        "Satozakura High School - Hallway Confrontation"
+    )
+    
+    # ============================================================================
+    # MAHITO PSYCHOLOGICAL WARFARE SEQUENCE
+    # ============================================================================
+    
+    scenes["mahito_confrontation"] = StoryScene(
+        "The Devil's Philosophy",
+        """Your decision to challenge Mahito directly seems to delight the cursed spirit beyond measure. 
+His grin widens impossibly, revealing rows of teeth that shift and change shape as you watch, and 
+his eyes gleam with the anticipation of intellectual violence.
+
+"Oh, how wonderful!" he exclaims, clapping his hands together with mock enthusiasm. "A little 
+sorcerer who thinks they can match wits with their betters. Please, enlighten me - what exactly 
+do you think you understand about manipulation?"
+
+Junpei watches the exchange with growing confusion and distress. The boy who had been building 
+trust with you is now seeing you as part of the jujutsu world that he's been taught to hate, 
+while the creature who has shown him kindness is being attacked by someone he thought might be 
+a friend.
+
+"Junpei isn't your friend," you say firmly, keeping your eyes on Mahito while speaking to the boy. 
+"He's your experiment. You're using his pain as entertainment, feeding on his despair while 
+pretending to offer him power."
+
+Mahito's expression shifts to one of theatrical hurt. "How cruel! Junpei, did you hear that? 
+Your new friend thinks you're nothing more than a victim, someone too weak to make his own choices. 
+How very... human of them."
+
+The cursed spirit begins to circle you both, his form subtly shifting as he moves. "Let me ask you 
+something, little sorcerer. When Junpei was being beaten and humiliated every day at school, where 
+were you? When his classmates destroyed his belongings and the teachers looked away, where was 
+your precious protection?"
+
+Each word is carefully chosen to drive wedges between you and Junpei, to highlight the failures 
+of the systems you represent. But you can also see the manipulation for what it is - a desperate 
+attempt to maintain control over someone who is beginning to question his influence.
+
+"I showed Junpei the truth about humanity," Mahito continues, his voice taking on a hypnotic 
+quality. "I gave him the power to fight back against a world that wanted to crush him. All I 
+asked in return was that he embrace his authentic self - his anger, his pain, his desire for 
+justice."
+
+This is the crux of Mahito's manipulation - taking legitimate grievances and twisting them into 
+justification for monstrous actions. How you respond here could determine whether Junpei sees 
+through the deception or falls deeper under the cursed spirit's influence.
+
+How do you counter Mahito's psychological warfare?""",
+        [
+            StoryChoice(
+                "Point out that Mahito offers only destruction, not genuine connection",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.COMPASSIONATE: 15, Trait.PROTECTIVE: 15},
+                    "relationships": {"junpei": 15, "mahito": -20},
+                    "next_scene": "connection_argument",
+                    "story_flags": {"exposed_isolation": True, "highlighted_emptiness": True, "connection_emphasized": True}
+                }
+            ),
+            StoryChoice(
+                "Challenge Mahito's definition of strength and authentic self",
+                {
+                    "traits": {Trait.AGGRESSIVE: 15, Trait.ANALYTICAL: 20, Trait.DETERMINED: 15},
+                    "relationships": {"junpei": 10, "mahito": -25},
+                    "next_scene": "strength_redefinition",
+                    "story_flags": {"redefined_strength": True, "challenged_philosophy": True, "authentic_self_discussed": True}
+                }
+            ),
+            StoryChoice(
+                "Focus on Junpei's capacity for growth beyond his current pain",
+                {
+                    "traits": {Trait.COMPASSIONATE: 25, Trait.FOCUSED: 15, Trait.DETERMINED: 10},
+                    "relationships": {"junpei": 25, "mahito": -15},
+                    "next_scene": "growth_potential",
+                    "story_flags": {"emphasized_growth": True, "future_focused": True, "potential_recognized": True}
+                }
+            ),
+            StoryChoice(
+                "Reveal your own struggles to show that pain doesn't require revenge",
+                {
+                    "traits": {Trait.COMPASSIONATE: 20, Trait.FOCUSED: 15, Trait.ANALYTICAL: 10},
+                    "relationships": {"junpei": 30, "mahito": -10},
+                    "next_scene": "personal_revelation",
+                    "story_flags": {"personal_vulnerability": True, "pain_without_revenge": True, "empathy_demonstrated": True}
+                }
+            )
+        ],
+        "Kasumigaoka Park - The Battle for a Soul"
+    )
+    
     return scenes

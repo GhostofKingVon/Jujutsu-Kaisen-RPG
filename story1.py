@@ -517,4 +517,259 @@ What's your next priority?""",
     # The complete implementation would include dozens more scenes
     # covering all the branching paths and character development
     
+    # ============================================================================
+    # SCHOOL TOUR SEQUENCE - Social Integration Path
+    # ============================================================================
+    
+    scenes["school_tour_yuji"] = StoryScene(
+        "Discovering Tokyo Jujutsu High",
+        """Yuji's enthusiasm is infectious as he leads you through the school grounds, pointing out 
+important locations with the excitement of someone who genuinely loves this place. Despite the 
+recent danger, he seems completely at ease, his natural optimism shining through.
+
+"This is the best part about this school," he says, gesturing broadly at the training facilities, 
+"everyone here understands what it's like to carry this kind of responsibility. You don't have 
+to pretend to be normal when everyone around you is just as weird as you are."
+
+Your first stop is the dormitories, where Yuji shows you the common areas and explains the 
+surprisingly relaxed living arrangements. "Gojo-sensei believes that sorcerers need to maintain 
+their humanity," he explains. "So we're not locked away like monks or anything. We can go into 
+the city, have normal relationships, live actual lives."
+
+As you walk through the dining hall, several upperclassmen nod acknowledgingly. Word of your 
+performance during the curse incident has already spread, and you can sense a mixture of respect 
+and curiosity from the other students.
+
+"That's Maki Zenin," Yuji points to a girl with glasses and a serious expression, practicing 
+with a wooden sword. "She's incredibly strong, probably stronger than most special grade 
+sorcerers, but her family..." He trails off, clearly aware that some topics are sensitive.
+
+"Family politics are complicated here," he continues more carefully. "A lot of the older clans 
+have very specific ideas about how jujutsu should work, who's worthy of power, that kind of 
+thing. But Gojo-sensei is working to change all that."
+
+In the library, you meet Toge Inumaki, who communicates only in rice ball ingredients due to 
+his cursed speech technique. Yuji translates his greeting with practiced ease, clearly used to 
+this unique form of communication.
+
+"The second-years are really cool," Yuji says as you continue the tour. "They've been through 
+a lot, but they look out for us first-years. There's this sense of... I don't know, chosen 
+family here. Like we're all in this together."
+
+As the tour continues, you realize this isn't just about seeing the facilities - it's about 
+understanding the culture, the relationships, and the philosophy that makes Tokyo Jujutsu High 
+different from other sorcerer institutions.
+
+How do you want to engage with this community?""",
+        [
+            StoryChoice(
+                "Focus on building relationships with the upperclassmen",
+                {
+                    "traits": {Trait.COMPASSIONATE: 15, Trait.FOCUSED: 10},
+                    "relationships": {"maki": 10, "inumaki": 10, "upperclassmen": 15},
+                    "next_scene": "upperclassmen_bonds",
+                    "story_flags": {"social_focus": "upperclassmen", "mentorship_seeking": True}
+                }
+            ),
+            StoryChoice(
+                "Ask Yuji about the family politics and clan dynamics",
+                {
+                    "traits": {Trait.ANALYTICAL: 15, Trait.CAUTIOUS: 10},
+                    "relationships": {"yuji": 15},
+                    "next_scene": "clan_politics_discussion",
+                    "story_flags": {"political_awareness": True, "clan_interest": True}
+                }
+            ),
+            StoryChoice(
+                "Express interest in the school's philosophy and Gojo's reforms",
+                {
+                    "traits": {Trait.ANALYTICAL: 15, Trait.FOCUSED: 10},
+                    "relationships": {"gojo": 15, "faculty": 10},
+                    "next_scene": "philosophy_discussion",
+                    "story_flags": {"philosophy_interest": True, "reform_supporter": True}
+                }
+            ),
+            StoryChoice(
+                "Suggest finding Megumi and Nobara to continue as a group",
+                {
+                    "traits": {Trait.PROTECTIVE: 15, Trait.FOCUSED: 10},
+                    "relationships": {"yuji": 10, "megumi": 5, "nobara": 5},
+                    "next_scene": "first_year_bonding",
+                    "story_flags": {"group_focus": True, "teammate_priority": True}
+                }
+            )
+        ],
+        "Tokyo Jujutsu High - School Tour"
+    )
+    
+    # ============================================================================
+    # INTENSIVE TRAINING SEQUENCE - Skill Development Path
+    # ============================================================================
+    
+    scenes["immediate_training"] = StoryScene(
+        "Forging Strength Through Fire",
+        """Your request for immediate training catches Gojo's attention in a way that suggests this 
+isn't entirely unexpected. His expression behind the blindfold seems to shift to something more 
+serious, more evaluative.
+
+"Ambitious," he says with approval. "Most students want to rest after their first real combat 
+encounter. You want to push harder. That's either wisdom or recklessness, and I'm curious to 
+see which one it turns out to be."
+
+Within an hour, you find yourself in an advanced training facility that looks more like a 
+battlefield than a classroom. The walls are scarred with the evidence of countless powerful 
+techniques, and the air itself seems to thrum with residual cursed energy.
+
+"Traditional training builds technique through repetition and gradual improvement," Gojo explains, 
+walking around the perimeter of the space. "But real growth - the kind that separates good 
+sorcerers from great ones - comes from pushing past your limits under pressure."
+
+He gestures, and suddenly the training room transforms. Barriers spring up, creating a maze-like 
+environment with multiple levels and hidden passages. The lighting dims to an ominous twilight, 
+and you can hear the distant sounds of cursed spirits materializing throughout the space.
+
+"These are Grade 4 curses - weak enough that they shouldn't be able to seriously injure you, 
+but strong enough to force you to take them seriously," Gojo continues. "Your goal is simple: 
+clear the entire facility of cursed spirits using only your current abilities."
+
+As the first curse rounds a corner - a writhing mass of tentacles and teeth about the size of a 
+large dog - you realize this isn't going to be the gradual, methodical training you might have 
+expected. This is trial by fire.
+
+"One more thing," Gojo calls out cheerfully as you prepare to engage. "You have thirty minutes. 
+Take longer than that, and I'll add some Grade 3 curses to keep things interesting."
+
+The curse lunges at you with surprising speed, and you're forced to react on pure instinct. This 
+is exactly what you asked for - the chance to grow stronger as quickly as possible.
+
+How do you approach this intensive training challenge?""",
+        [
+            StoryChoice(
+                "Focus on perfecting your basic cursed energy manipulation",
+                {
+                    "traits": {Trait.FOCUSED: 20, Trait.DETERMINED: 15},
+                    "next_scene": "energy_mastery_training",
+                    "story_flags": {"training_focus": "energy_control", "foundation_building": True},
+                    "experience": 30
+                }
+            ),
+            StoryChoice(
+                "Experiment with combining techniques in creative ways",
+                {
+                    "traits": {Trait.ANALYTICAL: 15, Trait.RECKLESS: 10, Trait.DETERMINED: 10},
+                    "next_scene": "creative_combat_training",
+                    "story_flags": {"training_focus": "innovation", "experimental_approach": True},
+                    "experience": 25
+                }
+            ),
+            StoryChoice(
+                "Push your physical limits to improve speed and endurance",
+                {
+                    "traits": {Trait.AGGRESSIVE: 15, Trait.DETERMINED: 20},
+                    "next_scene": "physical_training",
+                    "story_flags": {"training_focus": "physical", "endurance_building": True},
+                    "experience": 35
+                }
+            ),
+            StoryChoice(
+                "Try to complete the challenge as efficiently as possible",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.FOCUSED: 15},
+                    "next_scene": "efficiency_training",
+                    "story_flags": {"training_focus": "efficiency", "tactical_improvement": True},
+                    "experience": 40
+                }
+            )
+        ],
+        "Tokyo Jujutsu High - Advanced Training Facility"
+    )
+    
+    # ============================================================================
+    # MEDICAL LEARNING SEQUENCE - Compassionate Path
+    # ============================================================================
+    
+    scenes["medical_learning"] = StoryScene(
+        "The Healer's Path",
+        """Your decision to check on the injured student leads you to the school's medical facility, 
+a surprisingly modern wing that seems to blend traditional healing techniques with cutting-edge 
+medical technology. The injured student - you learn his name is Takeshi - is conscious and 
+grateful, though clearly shaken by the experience.
+
+"I've been a student here for six months," he explains, his voice still trembling slightly, "and 
+I thought I understood what we were training for. But when that curse appeared... all my 
+preparation just vanished. I froze."
+
+The medical staff, led by a calm woman named Dr. Hayashi, explains that curse-related injuries 
+are often more complex than they appear. "Cursed spirits don't just cause physical damage," she 
+says, checking Takeshi's bandages. "They can leave spiritual wounds that affect a person's 
+ability to use cursed energy, their mental state, even their basic life force."
+
+As you listen to the medical team work, you begin to understand that being a jujutsu sorcerer 
+involves more than just combat. There's a whole support structure of people dedicated to healing, 
+prevention, and recovery - aspects of the profession that are rarely discussed but absolutely 
+essential.
+
+"Most students focus entirely on offense," Dr. Hayashi continues, noting your obvious interest. 
+"They want to learn the most powerful attacks, the most impressive techniques. But some of the 
+most valuable sorcerers are those who can protect, heal, and support others."
+
+Takeshi nods emphatically. "If you hadn't acted when you did... I don't know what would have 
+happened to me. That kind of quick thinking, that willingness to put yourself at risk for someone 
+else - that's what real strength looks like."
+
+Dr. Hayashi offers you an opportunity to learn basic field medicine and curse injury treatment. 
+"It's not glamorous work," she warns, "but sorcerers who understand healing often live longer 
+and save more lives than those who only know how to fight."
+
+As you consider this path, you realize that your first day at Tokyo Jujutsu High is presenting 
+you with a fundamental choice about what kind of sorcerer you want to become.
+
+How do you respond to this opportunity?""",
+        [
+            StoryChoice(
+                "Accept Dr. Hayashi's offer to learn medical techniques",
+                {
+                    "traits": {Trait.COMPASSIONATE: 20, Trait.FOCUSED: 15},
+                    "relationships": {"medical_staff": 20, "takeshi": 15},
+                    "next_scene": "medical_training_path",
+                    "story_flags": {"medical_training": True, "healer_path": True},
+                    "unlocked_techniques": ["Basic Healing Technique"]
+                }
+            ),
+            StoryChoice(
+                "Ask about combining medical knowledge with combat abilities",
+                {
+                    "traits": {Trait.ANALYTICAL: 15, Trait.PROTECTIVE: 15, Trait.FOCUSED: 10},
+                    "relationships": {"medical_staff": 15},
+                    "next_scene": "combat_medic_path",
+                    "story_flags": {"combat_medic_interest": True, "hybrid_approach": True}
+                }
+            ),
+            StoryChoice(
+                "Focus on prevention - understanding how to avoid such incidents",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.CAUTIOUS: 15},
+                    "relationships": {"faculty": 15, "security_staff": 10},
+                    "next_scene": "prevention_specialist_path",
+                    "story_flags": {"prevention_focus": True, "security_interest": True}
+                }
+            ),
+            StoryChoice(
+                "Offer to help Takeshi rebuild his confidence through training",
+                {
+                    "traits": {Trait.COMPASSIONATE: 15, Trait.PROTECTIVE: 15, Trait.DETERMINED: 10},
+                    "relationships": {"takeshi": 25},
+                    "next_scene": "mentoring_path",
+                    "story_flags": {"mentoring_interest": True, "peer_support": True}
+                }
+            )
+        ],
+        "Tokyo Jujutsu High - Medical Wing"
+    )
+    
+    # Add many more scenes to reach the 1200+ line target
+    # Including: relationship development scenes, technique learning sequences,
+    # exploration missions, character backstory reveals, moral dilemmas,
+    # training montages, social interactions, and more branching storylines
+    
     return scenes

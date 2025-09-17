@@ -646,4 +646,239 @@ How do you want to build on this victory going forward?""",
     # - Side quests involving inter-school relationships
     # - Exploration of different jujutsu philosophies
     
+    # ============================================================================
+    # DETAILED INDIVIDUAL MATCHES - Mai Zenin Encounter
+    # ============================================================================
+    
+    scenes["mai_zenin_match"] = StoryScene(
+        "The Sharpshooter's Pride",
+        """Your second tournament match pits you against Mai Zenin, whose reputation precedes her 
+both as a skilled marksman and as someone carrying the complex burden of the Zenin family legacy. 
+As you enter the arena, you can feel the weight of expectation from both schools - this isn't 
+just about individual skill, but about the philosophies that drive different approaches to power.
+
+Mai stands across from you with perfect posture, her cursed energy carefully controlled and 
+focused. Her technique involves creating and manipulating bullets through cursed energy, making 
+her dangerous at any range. But what strikes you most is the carefully controlled anger in her 
+eyes - not directed at you personally, but at the world that has put her in this position.
+
+"Another Tokyo student thinking they can change the world through friendship and determination," 
+she says coolly, checking the ornate pistol that serves as her focus. "Let me guess - Gojo filled 
+your head with ideas about breaking traditions and forging your own path?"
+
+There's more pain than malice in her words, and you realize this match is about more than 
+competition. For Mai, this is a chance to prove that the harsh realities of the jujutsu world 
+require equally harsh responses.
+
+"My sister chose your school," she continues, her voice taking on a bitter edge. "She threw away 
+everything our family offered, abandoned her responsibilities, and for what? To prove that she 
+doesn't need cursed energy to be strong? To show that determination matters more than birthright?"
+
+The referee signals the start of the match, but Mai doesn't immediately attack. Instead, she 
+continues talking while keeping her weapon trained on you with casual precision.
+
+"The Zenin clan has produced powerful sorcerers for generations. We understand that strength 
+requires sacrifice, that tradition exists because it works. But your school teaches students 
+to question everything, to believe they can rewrite the rules through pure willpower."
+
+This is clearly as much a philosophical debate as it is a combat encounter. Mai is using this 
+platform to express frustrations that go far deeper than school rivalry.
+
+How do you respond to both her arguments and her undeniable skill?""",
+        [
+            StoryChoice(
+                "Acknowledge the value of tradition while defending the right to choose your own path",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.COMPASSIONATE: 15, Trait.FOCUSED: 10},
+                    "relationships": {"mai": 15, "zenin_clan": 5},
+                    "next_scene": "philosophical_duel",
+                    "story_flags": {"tradition_respected": True, "choice_defended": True, "balanced_approach": True}
+                }
+            ),
+            StoryChoice(
+                "Focus on the match itself and let your actions speak for your philosophy",
+                {
+                    "combat": True,
+                    "enemy": "mai_zenin_focused",
+                    "traits": {Trait.FOCUSED: 25, Trait.DETERMINED: 15, Trait.AGGRESSIVE: 10},
+                    "next_scene": "action_over_words",
+                    "story_flags": {"actions_over_words": True, "combat_focused": True, "philosophy_through_action": True}
+                }
+            ),
+            StoryChoice(
+                "Ask her what she really wants, beyond family expectations",
+                {
+                    "traits": {Trait.COMPASSIONATE: 25, Trait.ANALYTICAL: 15, Trait.FOCUSED: 5},
+                    "relationships": {"mai": 25},
+                    "next_scene": "personal_connection",
+                    "story_flags": {"personal_approach": True, "looked_beyond_surface": True, "empathy_shown": True}
+                }
+            ),
+            StoryChoice(
+                "Challenge her to prove that traditional methods are superior through combat",
+                {
+                    "combat": True,
+                    "enemy": "mai_zenin_challenged",
+                    "traits": {Trait.AGGRESSIVE: 20, Trait.DETERMINED: 20, Trait.FOCUSED: 10},
+                    "next_scene": "traditional_vs_modern",
+                    "story_flags": {"direct_challenge": True, "philosophy_clash": True, "traditional_test": True}
+                }
+            )
+        ],
+        "Exchange Event Arena - Individual Tournament Round 2"
+    )
+    
+    # ============================================================================
+    # TEAM BATTLE COMPLEX SCENARIO - Cursed Spirit Elimination
+    # ============================================================================
+    
+    scenes["team_elimination_challenge"] = StoryScene(
+        "United Against Darkness",
+        """The team battle arena has been transformed into a multi-level urban environment, complete 
+with buildings, alleyways, and rooftops. Hidden throughout this artificial cityscape are dozens 
+of cursed spirits of varying grades, and both teams must work together to eliminate all threats 
+while competing for the fastest clear time.
+
+"This is where teamwork really matters," Megumi observes, studying the layout from your starting 
+position. "Individual skill won't be enough - we need coordination, communication, and the ability 
+to adapt when plans go wrong."
+
+Nobara grins while checking her equipment. "Good thing we've been practicing. Kyoto might have 
+traditional formations, but we've got something better - we actually trust each other."
+
+Yuji bounces on his feet, ready for action. "Plus, we've learned to fight together naturally. 
+No predetermined roles, no rigid hierarchy - just four people who know how to support each other 
+when it matters."
+
+From across the arena, you can see the Kyoto team in their own preparation area. Todo is gesturing 
+enthusiastically while explaining something to his teammates. Noritoshi maintains his usual composed 
+demeanor while double-checking everyone's equipment. Mai seems focused on sight lines and positioning.
+
+The judge explains the rules: both teams will enter the arena simultaneously from opposite ends. 
+The goal is to eliminate all cursed spirits as quickly and efficiently as possible. Points are 
+awarded for speed, technique demonstration, teamwork, and civilian protection (there are automated 
+mannequins throughout the arena representing people who need to be kept safe).
+
+"Additional challenge," the judge continues. "There are several special-grade curses hidden in 
+the arena that will require coordinated attacks to defeat. Individual attempts will likely fail 
+and could result in serious injury."
+
+As you prepare to enter the arena, you realize this challenge will test everything you've learned 
+about working as part of a team while competing against opponents who are equally skilled and 
+equally motivated.
+
+What's your strategic approach to this complex challenge?""",
+        [
+            StoryChoice(
+                "Suggest dividing into pairs to cover more ground efficiently",
+                {
+                    "traits": {Trait.ANALYTICAL: 20, Trait.FOCUSED: 15, Trait.PROTECTIVE: 10},
+                    "next_scene": "paired_strategy",
+                    "story_flags": {"team_strategy": "pairs", "efficiency_focused": True, "coverage_maximized": True}
+                }
+            ),
+            StoryChoice(
+                "Propose staying together as a unit for maximum coordination",
+                {
+                    "traits": {Trait.PROTECTIVE: 20, Trait.FOCUSED: 15, Trait.CAUTIOUS: 10},
+                    "next_scene": "unit_strategy",
+                    "story_flags": {"team_strategy": "unit", "coordination_prioritized": True, "safety_focused": True}
+                }
+            ),
+            StoryChoice(
+                "Focus on locating and prioritizing the special-grade threats first",
+                {
+                    "traits": {Trait.AGGRESSIVE: 15, Trait.ANALYTICAL: 20, Trait.DETERMINED: 10},
+                    "next_scene": "priority_targeting",
+                    "story_flags": {"team_strategy": "priority", "threat_assessment": True, "aggressive_approach": True}
+                }
+            ),
+            StoryChoice(
+                "Emphasize civilian protection while clearing curses systematically",
+                {
+                    "traits": {Trait.PROTECTIVE: 25, Trait.FOCUSED: 15, Trait.COMPASSIONATE: 10},
+                    "next_scene": "protection_priority",
+                    "story_flags": {"team_strategy": "protection", "civilian_focus": True, "systematic_approach": True}
+                }
+            )
+        ],
+        "Exchange Event Arena - Team Battle Preparation"
+    )
+    
+    # ============================================================================
+    # POLITICAL INTRIGUE - Faculty Discussions
+    # ============================================================================
+    
+    scenes["faculty_politics"] = StoryScene(
+        "Behind Closed Doors",
+        """During a break between competitions, you accidentally overhear a heated discussion between 
+faculty members from both schools. What starts as curiosity about the political undercurrents 
+Gojo mentioned becomes a deeper understanding of the forces shaping the jujutsu world.
+
+"The results so far are... concerning," Principal Gakuganji's voice carries through the partially 
+open door. "Tokyo's students show remarkable individual growth, but their methods lack proper 
+discipline. This could set dangerous precedents."
+
+"Dangerous to whom?" Gojo's response is characteristically light, but you can hear steel underneath 
+the casual tone. "To cursed spirits? To the status quo that keeps producing sorcerers who burn 
+out before they turn twenty-five?"
+
+A third voice - someone you don't recognize - joins the conversation. "The higher-ups are watching 
+this event very carefully. The next generation of sorcerers will determine the direction of our 
+entire society. Traditional methods have preserved order for centuries."
+
+"And how's that working out?" Gojo asks pointedly. "Rising curse activity, declining sorcerer 
+numbers, increasing casualties among young people who are supposed to be our future. Maybe it's 
+time to consider that preservation isn't the same thing as progress."
+
+Through the crack in the door, you can see the tension in the room. This isn't just about 
+educational philosophy - it's about the fundamental question of whether the jujutsu world should 
+evolve or maintain its traditional structure.
+
+"Your students show promise," Gakuganji concedes reluctantly, "but promise without proper guidance 
+leads to chaos. Look at the Shibuya incident, the increasing number of special-grade threats. 
+Perhaps these events are connected to the relaxation of traditional constraints."
+
+The conversation reveals layers of complexity you hadn't previously understood. Your performance 
+in this exchange event isn't just about school pride - it's evidence in a larger debate about 
+the future of jujutsu society.
+
+How do you process this new understanding of the stakes involved?""",
+        [
+            StoryChoice(
+                "Feel motivated to prove that Tokyo's approach produces better results",
+                {
+                    "traits": {Trait.DETERMINED: 20, Trait.FOCUSED: 15, Trait.AGGRESSIVE: 10},
+                    "next_scene": "motivated_performance",
+                    "story_flags": {"political_awareness": True, "tokyo_advocate": True, "pressure_embraced": True}
+                }
+            ),
+            StoryChoice(
+                "Worry about the pressure and expectations being placed on your generation",
+                {
+                    "traits": {Trait.CAUTIOUS: 20, Trait.ANALYTICAL: 15, Trait.FOCUSED: 10},
+                    "next_scene": "pressure_anxiety",
+                    "story_flags": {"political_pressure": True, "generational_burden": True, "anxiety_about_stakes": True}
+                }
+            ),
+            StoryChoice(
+                "Recognize the need to find balance between tradition and innovation",
+                {
+                    "traits": {Trait.ANALYTICAL: 25, Trait.COMPASSIONATE: 15, Trait.FOCUSED: 10},
+                    "next_scene": "balanced_perspective",
+                    "story_flags": {"balanced_view": True, "integration_minded": True, "diplomatic_approach": True}
+                }
+            ),
+            StoryChoice(
+                "Feel angry about adults using students as pawns in political games",
+                {
+                    "traits": {Trait.AGGRESSIVE: 20, Trait.PROTECTIVE: 20, Trait.DETERMINED: 10},
+                    "next_scene": "political_anger",
+                    "story_flags": {"political_resentment": True, "student_advocacy": True, "adult_distrust": True}
+                }
+            )
+        ],
+        "Exchange Event Facility - Faculty Meeting Room"
+    )
+    
     return scenes
