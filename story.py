@@ -3,10 +3,13 @@ Story and Exploration System
 
 Manages story progression, character choices, exploration, and narrative branching
 following the Jujutsu Kaisen manga with player-driven deviations.
+
+Now supports dynamic loading of expanded story arcs for richer storytelling.
 """
 
 from typing import Dict, List, Any, Optional
 import random
+import importlib
 from character import Player, Enemy, Trait
 
 
@@ -35,13 +38,53 @@ class StoryManager:
     
     def __init__(self):
         self.current_scene = "intro"
+        self.current_arc = 1
         self.story_scenes = {}
         self.exploration_locations = {}
-        self._initialize_story()
+        self.loaded_arcs = {}
+        self._load_story_arcs()
         self._initialize_locations()
     
-    def _initialize_story(self):
-        """Initialize all story scenes."""
+    def _load_story_arcs(self):
+        """Load all available story arc modules."""
+        arc_modules = {
+            1: "story1",  # Introduction Arc
+            2: "story2",  # Vs. Mahito/Junpei Arc  
+            3: "story3",  # Kyoto Exchange Event Arc
+        }
+        
+        for arc_num, module_name in arc_modules.items():
+            try:
+                # Import the arc module
+                arc_module = importlib.import_module(module_name)
+                
+                # Get the scenes from the arc
+                if hasattr(arc_module, f'get_arc{arc_num}_scenes'):
+                    arc_scenes = getattr(arc_module, f'get_arc{arc_num}_scenes')()
+                    self.loaded_arcs[arc_num] = arc_scenes
+                    
+                    # Add scenes to main story scenes dict with arc prefix
+                    for scene_key, scene in arc_scenes.items():
+                        prefixed_key = f"arc{arc_num}_{scene_key}" if not scene_key.startswith("arc") else scene_key
+                        self.story_scenes[prefixed_key] = scene
+                        
+                    print(f"✅ Loaded Arc {arc_num}: {len(arc_scenes)} scenes")
+                else:
+                    print(f"⚠️  Arc {arc_num} module missing get_arc{arc_num}_scenes function")
+                    
+            except ImportError as e:
+                print(f"⚠️  Could not load Arc {arc_num} ({module_name}): {e}")
+                # Fall back to basic story for missing arcs
+                if arc_num == 1:
+                    self._initialize_basic_story()
+        
+        # If no arcs loaded successfully, ensure we have basic content
+        if not self.story_scenes:
+            print("🔄 No story arcs loaded, falling back to basic story")
+            self._initialize_basic_story()
+    
+    def _initialize_basic_story(self):
+        """Initialize basic story scenes as fallback."""
         
         # Introduction Scene
         intro_choices = [
@@ -273,6 +316,46 @@ and faculty.""",
             "Tokyo Jujutsu High - Meeting Room"
         )
     
+    def advance_to_arc(self, arc_number: int, starting_scene: str = None):
+        """Advance to a specific story arc."""
+        if arc_number in self.loaded_arcs:
+            self.current_arc = arc_number
+            if starting_scene:
+                self.current_scene = starting_scene
+            else:
+                # Default to arc intro scene
+                self.current_scene = f"arc{arc_number}_intro"
+            return True
+        return False
+    
+    def get_current_arc_info(self) -> Dict[str, Any]:
+        """Get information about the current arc."""
+        arc_info = {
+            1: {"name": "Introduction Arc", "description": "Arrival at Tokyo Jujutsu High"},
+            2: {"name": "Vs. Mahito/Junpei Arc", "description": "The Nature of Humanity"},
+            3: {"name": "Kyoto Exchange Event Arc", "description": "Rivalry and Growth"}
+        }
+        return arc_info.get(self.current_arc, {"name": "Unknown Arc", "description": "Continuing the story..."})
+    
+    def get_available_arcs(self) -> List[Dict[str, Any]]:
+        """Get list of available story arcs."""
+        available = []
+        arc_names = {
+            1: {"name": "Introduction Arc", "description": "Arrival at Tokyo Jujutsu High"},
+            2: {"name": "Vs. Mahito/Junpei Arc", "description": "The Nature of Humanity"}, 
+            3: {"name": "Kyoto Exchange Event Arc", "description": "Rivalry and Growth"}
+        }
+        
+        for arc_num in self.loaded_arcs.keys():
+            arc_info = arc_names.get(arc_num, {"name": f"Arc {arc_num}", "description": "Story content"})
+            available.append({
+                "arc": arc_num,
+                "name": arc_info["name"],
+                "description": arc_info["description"],
+                "current": arc_num == self.current_arc
+            })
+        return sorted(available, key=lambda x: x["arc"])
+    
     def _initialize_locations(self):
         """Initialize exploration locations."""
         
@@ -450,7 +533,18 @@ and faculty.""",
         
         # Advance to next scene
         if "next_scene" in consequences:
-            self.current_scene = consequences["next_scene"]
+            next_scene = consequences["next_scene"]
+            
+            # Check if this is an arc transition
+            if "next_arc" in consequences:
+                next_arc = consequences["next_arc"]
+                if self.advance_to_arc(next_arc, next_scene):
+                    print(f"🌟 Advancing to {self.get_current_arc_info()['name']}!")
+                else:
+                    print(f"⚠️  Could not advance to Arc {next_arc}")
+            else:
+                self.current_scene = next_scene
+            
             game_state.advance_chapter()
         
         # Grant experience

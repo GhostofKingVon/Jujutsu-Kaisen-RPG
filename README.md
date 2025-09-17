@@ -63,9 +63,13 @@ Jujutsu-Kaisen-RPG/
 ├── character.py         # Character classes, traits, and progression
 ├── combat.py            # Turn-based combat system with strategic elements
 ├── cursed_techniques.py # Cursed technique library and effects
-├── story.py             # Story progression and exploration system
+├── story.py             # Story progression and exploration system (dynamic arc loader)
+├── story1.py            # Arc 1: Introduction Arc - Tokyo Jujutsu High Beginnings
+├── story2.py            # Arc 2: Vs. Mahito/Junpei Arc - The Nature of Humanity
+├── story3.py            # Arc 3: Kyoto Exchange Event Arc - Rivalry and Growth
 ├── npcs.py              # NPC interactions and relationship management
 ├── demo.py              # Demonstration script for all systems
+├── story_demo.py        # Expanded story system demonstration
 └── README.md            # This file
 ```
 
@@ -83,11 +87,24 @@ Jujutsu-Kaisen-RPG/
 - **Status Effects**: Buffs, debuffs, and ongoing effects
 - **Transformation**: Special modes like "Ultra Instinct Monkey"
 
-### Story System (`story.py`)
-- **Scene Management**: Structured narrative with branching paths
-- **Choice Consequences**: Immediate and long-term effects of decisions
-- **Exploration**: Location-based discovery and interaction
-- **Character Development**: Story choices shape personality traits
+### Story System (`story.py` + Arc Files)
+- **Dynamic Arc Loading**: Modular story system with separate files for each major arc
+- **Rich Branching Narratives**: 30+ detailed scenes with multiple paths and outcomes
+- **Character Development**: Deep relationship building and trait-based story progression
+- **Multiple Endings**: Different outcomes based on player choices and character growth
+- **Replayability**: Extensive branching paths encourage multiple playthroughs
+
+**Available Story Arcs:**
+- **Arc 1**: Introduction Arc - Arrival at Tokyo Jujutsu High (9 scenes)
+- **Arc 2**: Vs. Mahito/Junpei Arc - The Nature of Humanity (11 scenes)  
+- **Arc 3**: Kyoto Exchange Event Arc - Rivalry and Growth (10 scenes)
+
+Each arc contains 700-900+ lines of detailed storytelling with:
+- Multiple investigation and interaction approaches
+- Complex moral choices with meaningful consequences
+- Character specialization paths (combat, support, healing)
+- Relationship dynamics that influence story progression
+- Optional side content and exploration sequences
 
 ### Relationship System (`npcs.py`)
 - **Dynamic Dialogue**: Conversation changes based on relationship level
@@ -116,8 +133,14 @@ The modular design allows for easy expansion:
 
 - **New Techniques**: Add to `cursed_techniques.py` technique library
 - **Additional NPCs**: Extend the NPC system in `npcs.py`
-- **Story Content**: Add new scenes and choices in `story.py`
+- **Story Content**: Add new scenes and arcs by creating new story files (story4.py, story5.py, etc.)
 - **Combat Mechanics**: Enhance the combat system in `combat.py`
+- **Character Development**: Expand trait systems and progression mechanics
+
+**Story Arc Development**: The new modular story system makes it easy to add new arcs:
+1. Create a new story file (e.g., `story4.py`)
+2. Implement the `get_arc4_scenes()` function returning a scene dictionary
+3. The system will automatically load and integrate the new content
 
 ## 💾 Save System
 
