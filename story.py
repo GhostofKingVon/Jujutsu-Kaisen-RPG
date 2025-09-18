@@ -8,6 +8,7 @@ following the Jujutsu Kaisen manga with player-driven deviations.
 from typing import Dict, List, Any, Optional
 import random
 from character import Player, Enemy, Trait
+from side_quests import SideQuestManager
 
 
 class StoryChoice:
@@ -37,6 +38,7 @@ class StoryManager:
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.side_quest_manager = SideQuestManager()
         self._initialize_story()
         self._initialize_locations()
     
@@ -573,11 +575,32 @@ This is a pivotal moment that could determine the course of your entire story.""
         """Get available actions for the current scene."""
         if self.current_scene not in self.story_scenes:
             # Default exploration actions
-            return [
+            actions = [
                 {"text": "Explore the area", "type": "explore"},
                 {"text": "Talk to NPCs", "type": "social"},
                 {"text": "Train your abilities", "type": "training"}
             ]
+            
+            # Add side quest options
+            available_quests = self.side_quest_manager.get_available_quests(game_state)
+            for quest in available_quests[:3]:  # Limit to 3 quests for UI clarity
+                actions.append({
+                    "text": f"🎯 Start Quest: {quest.title}",
+                    "type": "start_quest",
+                    "quest": quest
+                })
+            
+            # Add active quest progression options
+            active_quests = self.side_quest_manager.get_active_quests()
+            for quest in active_quests[:2]:  # Limit to 2 active quests
+                if quest.status.value == "active":
+                    actions.append({
+                        "text": f"📋 Continue Quest: {quest.title}",
+                        "type": "progress_quest",
+                        "quest": quest
+                    })
+            
+            return actions
         
         scene = self.story_scenes[self.current_scene]
         actions = []
@@ -628,6 +651,10 @@ This is a pivotal moment that could determine the course of your entire story.""
             return self._handle_social_interaction(game_state)
         elif action.get("type") == "training":
             return self._handle_training(game_state)
+        elif action.get("type") == "start_quest":
+            return self._handle_start_quest(action["quest"], game_state)
+        elif action.get("type") == "progress_quest":
+            return self._handle_progress_quest(action["quest"], game_state)
         
         # Handle story choice
         choice = action["choice"]
@@ -785,3 +812,68 @@ This is a pivotal moment that could determine the course of your entire story.""
             # This would trigger technique learning in a full implementation
         
         return {}
+    
+    def _handle_start_quest(self, quest, game_state) -> Dict[str, Any]:
+        """Handle starting a side quest."""
+        print(f"\n🎯 QUEST STARTED: {quest.title}")
+        print(f"📝 {quest.description}")
+        print(f"Given by: {quest.npc_giver.title()}")
+        print("\nObjectives:")
+        for i, objective in enumerate(quest.objectives, 1):
+            print(f"  {i}. {objective}")
+        
+        # Start the quest
+        success = self.side_quest_manager.start_quest(quest.quest_id, game_state)
+        
+        if success:
+            print(f"\n✅ Quest '{quest.title}' has been added to your active quests!")
+            # Improve relationship with quest giver
+            game_state.update_relationship(quest.npc_giver, 10)
+            print(f"💭 Relationship with {quest.npc_giver.title()} improved by 10!")
+        else:
+            print(f"\n❌ Failed to start quest '{quest.title}'")
+        
+        return {"quest_started": success}
+    
+    def _handle_progress_quest(self, quest, game_state) -> Dict[str, Any]:
+        """Handle progressing an active quest."""
+        print(f"\n📋 CONTINUING QUEST: {quest.title}")
+        print(f"Progress: {quest.get_progress()}")
+        print("\nChoose an objective to work on:")
+        
+        incomplete_objectives = []
+        for i, objective in enumerate(quest.objectives):
+            if objective not in quest.completed_objectives:
+                incomplete_objectives.append((i, objective))
+                print(f"  {len(incomplete_objectives)}. {objective}")
+        
+        if not incomplete_objectives:
+            print("All objectives completed!")
+            return {}
+        
+        # For demo purposes, auto-complete first incomplete objective
+        # In a full implementation, this would involve specific quest mechanics
+        obj_index, objective = incomplete_objectives[0]
+        
+        print(f"\n🎬 Working on: {objective}")
+        print("...")
+        
+        # Simulate quest progression
+        import time
+        time.sleep(1)
+        
+        # Progress the quest
+        result = self.side_quest_manager.progress_quest(quest.quest_id, obj_index, game_state)
+        
+        if result.get("quest_progressed"):
+            print(f"✅ Objective completed: {objective}")
+            
+            # Check if quest is fully completed
+            if quest.status.value == "completed":
+                print(f"\n🎉 QUEST COMPLETED: {quest.title}!")
+                if "rewards" in result:
+                    print("Rewards received:")
+                    for reward in result["rewards"]:
+                        print(f"  🎁 {reward}")
+        
+        return result
