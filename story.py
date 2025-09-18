@@ -8,6 +8,7 @@ following the Jujutsu Kaisen manga with player-driven deviations.
 from typing import Dict, List, Any, Optional
 import random
 from character import Player, Enemy, Trait
+from side_quests import SideQuestManager
 
 
 class StoryChoice:
@@ -37,6 +38,7 @@ class StoryManager:
         self.current_scene = "intro"
         self.story_scenes = {}
         self.exploration_locations = {}
+        self.side_quest_manager = SideQuestManager()
         self._initialize_story()
         self._initialize_locations()
     
@@ -272,6 +274,218 @@ and faculty.""",
             ],
             "Tokyo Jujutsu High - Meeting Room"
         )
+        
+        # Sukuna Encounter - First Meeting
+        self.story_scenes["sukuna_first_encounter"] = StoryScene(
+            "Encounter with the King of Curses",
+            """During a training exercise in Shibuya, you stumble upon Megumi Fushiguro standing 
+alone in an eerily quiet alley. But something is wrong. His posture, his presence... 
+everything feels different. When he turns to face you, his eyes hold an ancient malevolence 
+that makes your cursed energy recoil.
+
+"Interesting..." The voice that comes from Megumi's mouth is not his own. It's deeper, 
+more commanding, radiating power. "Another sorcerer wanders into my domain. How... 
+fortuitous."
+
+The realization hits you like a physical blow - this isn't Megumi. This is Ryomen Sukuna, 
+the King of Curses, having possessed Megumi's body. The cursed energy emanating from him 
+is overwhelming, ancient, and absolutely terrifying.""",
+            [
+                StoryChoice(
+                    "Stand your ground and try to communicate",
+                    {
+                        "traits": {Trait.DETERMINED: 15, Trait.CAUTIOUS: 10},
+                        "relationships": {"sukuna": 5},
+                        "story_flags": {"met_sukuna": True, "communicated_sukuna": True},
+                        "next_scene": "sukuna_dialogue"
+                    }
+                ),
+                StoryChoice(
+                    "Attack immediately to try to save Megumi",
+                    {
+                        "traits": {Trait.PROTECTIVE: 20, Trait.RECKLESS: 15},
+                        "relationships": {"megumi": 10, "sukuna": -10},
+                        "combat": True,
+                        "enemy": "sukuna_possessed",
+                        "story_flags": {"met_sukuna": True, "attacked_sukuna": True},
+                        "next_scene": "sukuna_combat_aftermath"
+                    }
+                ),
+                StoryChoice(
+                    "Try to retreat and get help",
+                    {
+                        "traits": {Trait.CAUTIOUS: 20, Trait.ANALYTICAL: 10},
+                        "story_flags": {"met_sukuna": True, "retreated_from_sukuna": True},
+                        "next_scene": "sukuna_retreat"
+                    }
+                )
+            ],
+            "Shibuya District - Dark Alley"
+        )
+        
+        # Sukuna Dialogue Path
+        self.story_scenes["sukuna_dialogue"] = StoryScene(
+            "Discourse with the King of Curses",
+            """You steel yourself and address the ancient curse inhabiting your friend's body.
+            
+"I know who you are, Sukuna. What do you want with Megumi?"
+
+A slow, predatory smile spreads across Megumi's face. "Bold. I appreciate that in 
+mortals, rare as it is. This vessel..." He flexes Megumi's hands, examining them with 
+detached interest. "Has proven surprisingly... compatible. His shadow techniques resonate 
+with my cursed energy in fascinating ways."
+
+He steps closer, and you can feel the weight of centuries of malevolence. "But you 
+interest me more. Your cursed energy signature is... unique. Tell me, young sorcerer, 
+what drives you to face beings far beyond your comprehension?"
+
+This is your chance to understand Sukuna's motivations and perhaps find a way to save Megumi.""",
+            [
+                StoryChoice(
+                    "Ask about his plans for Megumi and the jujutsu world",
+                    {
+                        "traits": {Trait.ANALYTICAL: 15, Trait.FOCUSED: 10},
+                        "relationships": {"sukuna": 10},
+                        "story_flags": {"learned_sukuna_plans": True},
+                        "next_scene": "sukuna_reveals_plans"
+                    }
+                ),
+                StoryChoice(
+                    "Challenge his philosophy and defend humanity",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 20, Trait.DETERMINED: 15},
+                        "relationships": {"sukuna": 5},
+                        "story_flags": {"challenged_sukuna": True},
+                        "next_scene": "sukuna_philosophical_debate"
+                    }
+                ),
+                StoryChoice(
+                    "Show interest in learning from him",
+                    {
+                        "traits": {Trait.FOCUSED: 20, Trait.ANALYTICAL: 15},
+                        "relationships": {"sukuna": 15},
+                        "story_flags": {"impressed_sukuna": True},
+                        "next_scene": "sukuna_teaching_moment"
+                    }
+                )
+            ],
+            "Shibuya District - Dark Alley"
+        )
+        
+        # Sukuna Teaching Moment
+        self.story_scenes["sukuna_teaching_moment"] = StoryScene(
+            "Lessons from the King of Curses",
+            """Sukuna's expression shifts to one of genuine interest, perhaps even approval.
+
+"Wisdom beyond your years. Few modern sorcerers understand that power requires 
+understanding, not just strength." He raises Megumi's hand, and dark cursed energy 
+begins to swirl around it, far more complex and potent than anything you've seen.
+
+"Observe. True cursed energy manipulation transcends simple technique application. 
+It requires perfect harmony between will, emotion, and spiritual energy. Watch how 
+I weave the shadows..."
+
+The shadows around you begin to move in impossible ways, responding not just to 
+Sukuna's technique but to his sheer presence. You realize this is a once-in-a-lifetime 
+opportunity to learn from someone who mastered jujutsu sorcery a thousand years ago.
+
+"Your cursed energy shows potential. With proper guidance, you might become 
+something... noteworthy. But remember - power demands sacrifice. Are you prepared 
+for what true strength requires?"
+
+The lesson is both enlightening and deeply unsettling.""",
+            [
+                StoryChoice(
+                    "Accept his teachings but maintain your moral code",
+                    {
+                        "traits": {Trait.DETERMINED: 20, Trait.FOCUSED: 15},
+                        "relationships": {"sukuna": 20},
+                        "story_flags": {"received_sukuna_training": True, "maintained_morality": True},
+                        "cursed_energy_bonus": 20,
+                        "learn_technique": "Sukuna's Insight",
+                        "technique_context": "Learned from the King of Curses while maintaining your moral compass",
+                        "next_scene": "sukuna_respect_earned"
+                    }
+                ),
+                StoryChoice(
+                    "Question what sacrifices he means",
+                    {
+                        "traits": {Trait.CAUTIOUS: 15, Trait.ANALYTICAL: 15},
+                        "relationships": {"sukuna": 10},
+                        "story_flags": {"questioned_sukuna_methods": True},
+                        "next_scene": "sukuna_dark_revelations"
+                    }
+                ),
+                StoryChoice(
+                    "Reject his philosophy of sacrifice",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 25, Trait.PROTECTIVE: 15},
+                        "relationships": {"sukuna": 5},
+                        "story_flags": {"rejected_sukuna_path": True},
+                        "next_scene": "sukuna_disappointed"
+                    }
+                )
+            ],
+            "Shibuya District - Dark Alley"
+        )
+        
+        # Sukuna's Plans Revealed
+        self.story_scenes["sukuna_reveals_plans"] = StoryScene(
+            "The King's Ambitions",
+            """Sukuna's eyes gleam with ancient cunning as he considers your question.
+
+"Plans? How delightfully direct. Very well." He gestures to the chaos around Shibuya. 
+"This vessel's body grants me a unique opportunity. Unlike the pink-haired brat, 
+this one's techniques complement my own. The Ten Shadows Technique... combined with 
+my cursed energy... creates possibilities that didn't exist in my original form."
+
+His expression darkens with malevolent joy. "I intend to reshape the very foundation 
+of jujutsu sorcery. The weak era of modern sorcerers ends now. I will demonstrate 
+what true power looks like, and those worthy will serve. Those who aren't..."
+
+He doesn't need to finish the threat. The implications are terrifying.
+
+"But I'm curious about you. Your cursed energy signature suggests hidden depths. 
+You could be useful in the coming transformation. Join me willingly, and I might 
+even allow you to retain your individuality. Oppose me..." The temperature seems 
+to drop several degrees.
+
+"Well, the choice is yours, young sorcerer."
+
+This is a pivotal moment that could determine the course of your entire story.""",
+            [
+                StoryChoice(
+                    "Pretend to consider his offer to learn more",
+                    {
+                        "traits": {Trait.ANALYTICAL: 20, Trait.CAUTIOUS: 15},
+                        "relationships": {"sukuna": 15},
+                        "story_flags": {"infiltrating_sukuna": True},
+                        "next_scene": "sukuna_false_alliance"
+                    }
+                ),
+                StoryChoice(
+                    "Firmly refuse and prepare for conflict",
+                    {
+                        "traits": {Trait.DETERMINED: 25, Trait.PROTECTIVE: 20},
+                        "relationships": {"sukuna": -15},
+                        "combat": True,
+                        "enemy": "sukuna_serious",
+                        "story_flags": {"opposed_sukuna": True},
+                        "next_scene": "sukuna_major_battle"
+                    }
+                ),
+                StoryChoice(
+                    "Try to appeal to any remaining part of Megumi",
+                    {
+                        "traits": {Trait.COMPASSIONATE: 20, Trait.PROTECTIVE: 20},
+                        "relationships": {"megumi": 25, "sukuna": 5},
+                        "story_flags": {"reached_for_megumi": True},
+                        "next_scene": "megumi_consciousness_struggle"
+                    }
+                )
+            ],
+            "Shibuya District - Dark Alley"
+        )
     
     def _initialize_locations(self):
         """Initialize exploration locations."""
@@ -298,10 +512,11 @@ and faculty.""",
                     "shibuya_crossing": "The famous intersection, now a battleground.",
                     "shopping_district": "Abandoned shops and cursed spirit nests.",
                     "subway_station": "Underground tunnels with dangerous curses.",
-                    "high_rise_buildings": "Tall buildings offering strategic advantages."
+                    "high_rise_buildings": "Tall buildings offering strategic advantages.",
+                    "dark_alley": "A narrow alley where ancient powers lurk."
                 },
-                "npcs": ["injured_civilians", "cursed_spirit_users"],
-                "secrets": ["hidden_passage", "powerful_curse_tools"]
+                "npcs": ["injured_civilians", "cursed_spirit_users", "sukuna"],
+                "secrets": ["hidden_passage", "powerful_curse_tools", "sukuna_manifestation_site"]
             },
             
             "kyoto_school": {
@@ -360,11 +575,32 @@ and faculty.""",
         """Get available actions for the current scene."""
         if self.current_scene not in self.story_scenes:
             # Default exploration actions
-            return [
+            actions = [
                 {"text": "Explore the area", "type": "explore"},
                 {"text": "Talk to NPCs", "type": "social"},
                 {"text": "Train your abilities", "type": "training"}
             ]
+            
+            # Add side quest options
+            available_quests = self.side_quest_manager.get_available_quests(game_state)
+            for quest in available_quests[:3]:  # Limit to 3 quests for UI clarity
+                actions.append({
+                    "text": f"🎯 Start Quest: {quest.title}",
+                    "type": "start_quest",
+                    "quest": quest
+                })
+            
+            # Add active quest progression options
+            active_quests = self.side_quest_manager.get_active_quests()
+            for quest in active_quests[:2]:  # Limit to 2 active quests
+                if quest.status.value == "active":
+                    actions.append({
+                        "text": f"📋 Continue Quest: {quest.title}",
+                        "type": "progress_quest",
+                        "quest": quest
+                    })
+            
+            return actions
         
         scene = self.story_scenes[self.current_scene]
         actions = []
@@ -415,6 +651,10 @@ and faculty.""",
             return self._handle_social_interaction(game_state)
         elif action.get("type") == "training":
             return self._handle_training(game_state)
+        elif action.get("type") == "start_quest":
+            return self._handle_start_quest(action["quest"], game_state)
+        elif action.get("type") == "progress_quest":
+            return self._handle_progress_quest(action["quest"], game_state)
         
         # Handle story choice
         choice = action["choice"]
@@ -441,6 +681,19 @@ and faculty.""",
         if "story_flags" in consequences:
             for flag, value in consequences["story_flags"].items():
                 game_state.add_story_flag(flag, value)
+        
+        # Learn story techniques
+        if "learn_technique" in consequences:
+            technique_name = consequences["learn_technique"]
+            context = consequences.get("technique_context", "")
+            game_state.player.learn_story_technique(technique_name, context)
+        
+        # Grant cursed energy bonus
+        if "cursed_energy_bonus" in consequences:
+            bonus = consequences["cursed_energy_bonus"]
+            game_state.player.max_cursed_energy += bonus
+            game_state.player.cursed_energy = game_state.player.max_cursed_energy
+            print(f"💫 Maximum Cursed Energy increased by {bonus}!")
         
         # Handle combat
         if consequences.get("combat"):
@@ -559,3 +812,68 @@ and faculty.""",
             # This would trigger technique learning in a full implementation
         
         return {}
+    
+    def _handle_start_quest(self, quest, game_state) -> Dict[str, Any]:
+        """Handle starting a side quest."""
+        print(f"\n🎯 QUEST STARTED: {quest.title}")
+        print(f"📝 {quest.description}")
+        print(f"Given by: {quest.npc_giver.title()}")
+        print("\nObjectives:")
+        for i, objective in enumerate(quest.objectives, 1):
+            print(f"  {i}. {objective}")
+        
+        # Start the quest
+        success = self.side_quest_manager.start_quest(quest.quest_id, game_state)
+        
+        if success:
+            print(f"\n✅ Quest '{quest.title}' has been added to your active quests!")
+            # Improve relationship with quest giver
+            game_state.update_relationship(quest.npc_giver, 10)
+            print(f"💭 Relationship with {quest.npc_giver.title()} improved by 10!")
+        else:
+            print(f"\n❌ Failed to start quest '{quest.title}'")
+        
+        return {"quest_started": success}
+    
+    def _handle_progress_quest(self, quest, game_state) -> Dict[str, Any]:
+        """Handle progressing an active quest."""
+        print(f"\n📋 CONTINUING QUEST: {quest.title}")
+        print(f"Progress: {quest.get_progress()}")
+        print("\nChoose an objective to work on:")
+        
+        incomplete_objectives = []
+        for i, objective in enumerate(quest.objectives):
+            if objective not in quest.completed_objectives:
+                incomplete_objectives.append((i, objective))
+                print(f"  {len(incomplete_objectives)}. {objective}")
+        
+        if not incomplete_objectives:
+            print("All objectives completed!")
+            return {}
+        
+        # For demo purposes, auto-complete first incomplete objective
+        # In a full implementation, this would involve specific quest mechanics
+        obj_index, objective = incomplete_objectives[0]
+        
+        print(f"\n🎬 Working on: {objective}")
+        print("...")
+        
+        # Simulate quest progression
+        import time
+        time.sleep(1)
+        
+        # Progress the quest
+        result = self.side_quest_manager.progress_quest(quest.quest_id, obj_index, game_state)
+        
+        if result.get("quest_progressed"):
+            print(f"✅ Objective completed: {objective}")
+            
+            # Check if quest is fully completed
+            if quest.status.value == "completed":
+                print(f"\n🎉 QUEST COMPLETED: {quest.title}!")
+                if "rewards" in result:
+                    print("Rewards received:")
+                    for reward in result["rewards"]:
+                        print(f"  🎁 {reward}")
+        
+        return result

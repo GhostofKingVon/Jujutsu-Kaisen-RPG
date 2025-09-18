@@ -75,27 +75,57 @@ class NPCManager:
                 "neutral": [
                     "Hey there! I'm Yuji. Nice to meet you!",
                     "Are you a new student? Welcome to the school!",
-                    "This place can be pretty intense, but you'll get used to it."
+                    "This place can be pretty intense, but you'll get used to it.",
+                    "Want to hear about the time I fought a special grade curse?",
+                    "Gojo-sensei says I'm getting stronger every day!"
                 ],
                 "acquaintance": [
                     "Hey! How's your training going?",
                     "Want to grab some food later? I know a great place!",
-                    "I've been working on my cursed energy control. It's tough!"
+                    "I've been working on my cursed energy control. It's tough!",
+                    "Your technique is really cool! Can you teach me sometime?",
+                    "Fushiguro's been helping me with strategy. You should join us!"
                 ],
                 "friend": [
                     "You're getting really strong! I'm impressed.",
                     "Thanks for always having my back in fights.",
-                    "We make a pretty good team, don't we?"
+                    "We make a pretty good team, don't we?",
+                    "I love how passionate you are about protecting people.",
+                    "Sometimes I think about what Sukuna would say... but with friends like you, I don't worry."
                 ],
                 "good_friend": [
                     "I'm really glad we became friends. You're someone I can count on.",
                     "Your determination reminds me why I became a sorcerer.",
-                    "Let's protect people together!"
+                    "Let's protect people together!",
+                    "You understand what it's like to carry something heavy, don't you?",
+                    "When I'm around you, I remember what it feels like to just be... normal."
                 ],
                 "close_friend": [
                     "You're like family to me. I'd do anything to protect you.",
                     "Together, we can face any curse that comes our way!",
-                    "I believe in you completely. Let's save everyone we can!"
+                    "I believe in you completely. Let's save everyone we can!",
+                    "Promise me something - if Sukuna ever takes over completely, you'll stop me.",
+                    "You make me believe that even someone like me can make a difference."
+                ],
+                "neutral_training": [
+                    "Physical training is my specialty! Want to spar?",
+                    "I learned this move from watching movies. Surprisingly effective!",
+                    "Let's focus on building your core strength first."
+                ],
+                "friend_training": [
+                    "I'll share some techniques Todo taught me!",
+                    "Your form is getting much better. Keep it up!",
+                    "Training with friends makes everything more fun!"
+                ],
+                "neutral_mission": [
+                    "Stay close and watch my back, okay?",
+                    "Remember - saving people comes first, everything else second.",
+                    "I've got a good feeling about this mission!"
+                ],
+                "friend_mission": [
+                    "With you here, I know we can handle anything!",
+                    "Let's show these curses what real teamwork looks like!",
+                    "I trust you completely. Let's save everyone!"
                 ],
                 "neutral_combat": [
                     "Let's work together on this one!",
@@ -125,27 +155,57 @@ class NPCManager:
                 "neutral": [
                     "I'm Megumi Fushiguro. Let's work well together.",
                     "Focus on your training. This isn't a game.",
-                    "Understanding your cursed technique is crucial."
+                    "Understanding your cursed technique is crucial.",
+                    "The Ten Shadows Technique requires constant vigilance.",
+                    "Every mission is a life-or-death situation. Remember that."
                 ],
                 "acquaintance": [
                     "Your technique has potential. Keep refining it.",
                     "Strategy is just as important as power.",
-                    "You're more capable than I initially thought."
+                    "You're more capable than I initially thought.",
+                    "I've noticed you adapt quickly to new situations.",
+                    "Your cursed energy control is improving steadily."
                 ],
                 "friend": [
                     "I respect your dedication to improvement.",
                     "Your analytical approach is impressive.",
-                    "I can rely on you in difficult situations."
+                    "I can rely on you in difficult situations.",
+                    "You remind me why teamwork matters in this job.",
+                    "I appreciate having someone who thinks before acting."
                 ],
                 "good_friend": [
                     "You understand the weight of our responsibilities.",
                     "Your growth has been remarkable to witness.",
-                    "I'm glad to have someone like you as an ally."
+                    "I'm glad to have someone like you as an ally.",
+                    "Sometimes I wonder if my shadows would accept you...",
+                    "You've become someone I genuinely care about."
                 ],
                 "close_friend": [
                     "You're one of the few people I trust completely.",
                     "Our strategies work because we understand each other.",
-                    "I'll always have your back, no matter what."
+                    "I'll always have your back, no matter what.",
+                    "My shadows respond to you almost as well as they do to me.",
+                    "If something ever happens to me... protect the others."
+                ],
+                "neutral_training": [
+                    "Shadow techniques require perfect emotional control.",
+                    "Let me show you proper stance for summoning.",
+                    "Your foundation needs work before advanced techniques."
+                ],
+                "friend_training": [
+                    "I'll share some shadow manipulation secrets with you.",
+                    "Watch carefully - this technique saved my life once.",
+                    "Your progress makes teaching worthwhile."
+                ],
+                "neutral_mission": [
+                    "Stick to the plan. Improvisation leads to casualties.",
+                    "I'll handle reconnaissance. You focus on support.",
+                    "Keep your cursed energy signature low."
+                ],
+                "friend_mission": [
+                    "I trust your judgment on this one.",
+                    "Let's coordinate our techniques for maximum impact.",
+                    "With you here, I feel more confident about success."
                 ],
                 "friend_combat": [
                     "Let's use the strategy we discussed.",
@@ -290,6 +350,71 @@ class NPCManager:
                 40: "Master's Guidance - Gojo provides advanced training tips",
                 70: "Limitless Insights - Learn advanced cursed energy manipulation",
                 100: "Special Grade Potential - Unlock hidden power within yourself"
+            }
+        )
+        
+        # Ryomen Sukuna (in Megumi's body)
+        self.npcs["sukuna"] = NPC(
+            "Ryomen Sukuna",
+            ["malevolent", "powerful", "ancient", "cunning", "arrogant"],
+            {
+                "neutral": [
+                    "Interesting... You dare approach me?",
+                    "Another weak sorcerer seeks my attention.",
+                    "Do you comprehend who stands before you?",
+                    "Your cursed energy is... amusing."
+                ],
+                "dislike": [
+                    "You disgust me with your weakness.",
+                    "Begone from my sight, insect.",
+                    "Your very existence offends me.",
+                    "I have no time for pathetic worms like you."
+                ],
+                "acquaintance": [
+                    "You show promise... for a modern sorcerer.",
+                    "Your technique has caught my interest.",
+                    "Perhaps you're not entirely worthless.",
+                    "I acknowledge your... potential."
+                ],
+                "friend": [
+                    "You have earned a measure of my respect.",
+                    "Your power grows... impressive for this era.",
+                    "Few have shown such understanding of true strength.",
+                    "You begin to comprehend the nature of cursed energy."
+                ],
+                "good_friend": [
+                    "You possess the spirit of a true sorcerer.",
+                    "Your evolution has been... entertaining to observe.",
+                    "Perhaps this body has found a worthy ally.",
+                    "Your cursed techniques show remarkable finesse."
+                ],
+                "close_friend": [
+                    "You have transcended the limitations of your generation.",
+                    "In you, I see echoes of the Golden Age of Jujutsu.",
+                    "Your power approaches something worthy of my acknowledgment.",
+                    "Together, we could reshape this world of sorcery."
+                ],
+                "neutral_combat": [
+                    "Witness the power of the King of Curses!",
+                    "I'll show you what true malevolence looks like!",
+                    "Prepare yourself for divine techniques!"
+                ],
+                "friend_combat": [
+                    "Fight alongside me, worthy one!",
+                    "Let us demonstrate our combined might!",
+                    "Your techniques complement my power well!"
+                ],
+                "close_friend_combat": [
+                    "Together, we are unstoppable!",
+                    "Our bond transcends the boundaries of vessel and curse!",
+                    "Witness the pinnacle of jujutsu sorcery!"
+                ]
+            },
+            {
+                25: "Malevolent Insight - Sukuna reveals enemy weaknesses",
+                50: "Cursed Energy Mastery - Enhanced technique power",
+                75: "Divine Techniques - Access to ancient cursed methods",
+                100: "King's Authority - Ultimate power sharing with Sukuna"
             }
         )
     
