@@ -2,7 +2,7 @@
 Turn-Based Combat System
 
 Handles combat mechanics including attacks, cursed techniques, dodging, counters,
-and multi-phase boss battles.
+and multi-phase boss battles. Enhanced with stamina system and environmental advantages.
 """
 
 import random
@@ -17,6 +17,7 @@ class CombatAction:
         self.action_type = action_type  # attack, technique, dodge, guard, item
         self.name = name
         self.description = description
+        self.technique = None  # For technique actions
 
 
 class CombatSystem:
@@ -27,11 +28,24 @@ class CombatSystem:
         self.combat_log = []
         self.player_dodge_ready = False
         self.enemy_dodge_ready = False
+        self.current_environment = "neutral"
+        
+        # Import environmental advantages
+        from stamina_system import EnvironmentalAdvantages
+        self.environmental_system = EnvironmentalAdvantages()
     
-    def start_combat(self, player: Player, enemy: Enemy) -> bool:
+    def start_combat(self, player: Player, enemy: Enemy, environment: str = "neutral") -> bool:
         """Start a combat encounter. Returns True if player wins, False if defeated."""
         print(f"\n⚔️  COMBAT BEGINS ⚔️")
         print(f"{player.name} vs {enemy.name}")
+        
+        # Set environment
+        self.current_environment = environment
+        if environment != "neutral":
+            env_data = self.environmental_system.get_advantage(environment)
+            if env_data:
+                print(f"🌍 Environment: {env_data.get('description', environment.title())}")
+        
         print("=" * 50)
         
         self.turn_count = 0
@@ -69,6 +83,11 @@ class CombatSystem:
     def display_combat_status(self, player: Player, enemy: Enemy):
         """Display current combat status for both characters."""
         print(f"\n{player.name}: {player.hp}/{player.max_hp} HP | {player.cursed_energy}/{player.max_cursed_energy} CE")
+        
+        # Show stamina if available
+        if hasattr(player, 'stamina_system'):
+            print(f"  {player.stamina_system.get_status_display()}")
+        
         if player.transformation_active:
             print(f"  🌟 {player.transformation_name} ({player.transformation_turns} turns left)")
         
@@ -84,6 +103,12 @@ class CombatSystem:
         if enemy.status_effects:
             effects = ", ".join(enemy.status_effects.keys())
             print(f"  {enemy.name} effects: {effects}")
+        
+        # Show environmental effects
+        if self.current_environment != "neutral":
+            env_effects = self.environmental_system.apply_environmental_effects(player, self.current_environment)
+            if env_effects:
+                print(f"  🌍 {env_effects}")
     
     def player_turn(self, player: Player, enemy: Enemy) -> bool:
         """Handle player's turn. Returns False if player flees."""
@@ -110,30 +135,68 @@ class CombatSystem:
     
     def get_player_actions(self, player: Player) -> List[CombatAction]:
         """Get list of available actions for the player."""
-        actions = [
-            CombatAction("attack", "Basic Attack", "A standard physical attack"),
-            CombatAction("dodge", "Dodge", "Prepare to dodge the next attack and counter"),
-            CombatAction("guard", "Guard", "Reduce incoming damage this turn"),
-        ]
+        actions = []
+        
+        # Check if player has stamina system
+        has_stamina = hasattr(player, 'stamina_system')
+        
+        # Basic actions (always available)
+        if not has_stamina or player.stamina_system.can_perform_action("basic_attack"):
+            actions.append(CombatAction("attack", "Basic Attack", "A standard physical attack"))
+        
+        if not has_stamina or player.stamina_system.can_perform_action("dodge"):
+            actions.append(CombatAction("dodge", "Dodge", "Prepare to dodge the next attack and counter"))
+        
+        if not has_stamina or player.stamina_system.can_perform_action("guard"):
+            actions.append(CombatAction("guard", "Guard", "Reduce incoming damage this turn"))
+        
+        # Add rest action if stamina system exists
+        if has_stamina:
+            actions.append(CombatAction("rest", "Rest", "Recover stamina but forfeit attack"))
         
         # Add available techniques
         available_techniques = player.get_available_techniques()
         for technique in available_techniques:
-            action = CombatAction(
-                "technique",
-                technique.name,
-                f"{technique.description} (Cost: {technique.cost} CE)"
-            )
-            action.technique = technique
-            actions.append(action)
+            # Check both cursed energy and stamina requirements
+            can_use = True
+            description = f"{technique.description} (Cost: {technique.cost} CE"
+            
+            if has_stamina:
+                if not player.stamina_system.can_perform_action("technique"):
+                    can_use = False
+                    description += " - Insufficient stamina"
+                else:
+                    description += f", {player.stamina_system.action_costs['technique']} Stamina"
+            
+            description += ")"
+            
+            if can_use:
+                action = CombatAction(
+                    "technique",
+                    technique.name,
+                    description
+                )
+                action.technique = technique
+                actions.append(action)
         
         # Add transformation if available
         if player.level >= 10 and not player.transformation_active:
-            actions.append(CombatAction(
-                "transform",
-                "Ultra Instinct Monkey",
-                "Activate transformation for enhanced abilities"
-            ))
+            can_transform = True
+            transform_desc = "Activate transformation for enhanced abilities"
+            
+            if has_stamina:
+                if not player.stamina_system.can_perform_action("transform"):
+                    can_transform = False
+                    transform_desc += " - Insufficient stamina"
+                else:
+                    transform_desc += f" (Cost: {player.stamina_system.action_costs['transform']} Stamina)"
+            
+            if can_transform:
+                actions.append(CombatAction(
+                    "transform",
+                    "Ultra Instinct Monkey",
+                    transform_desc
+                ))
         
         actions.append(CombatAction("flee", "Flee", "Escape from combat"))
         
@@ -160,11 +223,37 @@ class CombatSystem:
     
     def execute_player_action(self, player: Player, enemy: Enemy, action: CombatAction):
         """Execute the player's chosen action."""
+        # Use stamina if system exists
+        if hasattr(player, 'stamina_system') and action.action_type != "flee":
+            if action.action_type == "rest":
+                restored = player.stamina_system.rest_turn()
+                print(f"{player.name} rests and recovers {restored} stamina!")
+                return
+            
+            # Try to use stamina for action
+            action_type_map = {
+                "attack": "basic_attack",
+                "technique": "technique", 
+                "dodge": "dodge",
+                "guard": "guard",
+                "transform": "transform"
+            }
+            
+            stamina_action = action_type_map.get(action.action_type, action.action_type)
+            if not player.stamina_system.use_stamina(stamina_action):
+                print(f"{player.name} is too exhausted to perform {action.name}!")
+                return
+        
+        # Apply performance modifier from stamina state
+        performance_modifier = 1.0
+        if hasattr(player, 'stamina_system'):
+            performance_modifier = player.stamina_system.get_performance_modifier()
+        
         if action.action_type == "attack":
-            self.basic_attack(player, enemy)
+            self.basic_attack(player, enemy, performance_modifier)
         
         elif action.action_type == "technique":
-            self.use_technique(player, enemy, action.technique)
+            self.use_technique(player, enemy, action.technique, performance_modifier)
         
         elif action.action_type == "dodge":
             self.player_dodge_ready = True
@@ -190,27 +279,36 @@ class CombatSystem:
         action = enemy.choose_action(player)
         
         if action == "attack":
-            self.basic_attack(enemy, player, is_enemy=True)
+            self.basic_attack(enemy, player, 1.0, True)
         
         elif action == "technique":
             available_techniques = enemy.get_available_techniques()
             if available_techniques:
                 technique = random.choice(available_techniques)
-                self.use_technique(enemy, player, technique, is_enemy=True)
+                self.use_technique(enemy, player, technique, 1.0, True)
             else:
-                self.basic_attack(enemy, player, is_enemy=True)
+                self.basic_attack(enemy, player, 1.0, True)
         
         elif action == "guard":
             enemy.add_status_effect("guarding", 1)
             print(f"{enemy.name} takes a defensive stance!")
     
-    def basic_attack(self, attacker, defender, is_enemy: bool = False):
+    def basic_attack(self, attacker, defender, performance_modifier: float = 1.0, is_enemy: bool = False):
         """Execute a basic attack."""
         base_damage = 20 + (attacker.level * 2)
+        
+        # Apply performance modifier from stamina
+        base_damage = int(base_damage * performance_modifier)
         
         # Check for dodge
         if self.check_dodge(attacker, defender, is_enemy):
             return
+        
+        # Apply environmental advantages
+        if not is_enemy and self.current_environment != "neutral":
+            env_data = self.environmental_system.get_advantage(self.current_environment)
+            if "damage_bonus" in env_data:
+                base_damage = int(base_damage * env_data["damage_bonus"])
         
         # Apply damage modifiers
         damage = self.calculate_damage(base_damage, attacker, defender)
@@ -218,12 +316,19 @@ class CombatSystem:
         actual_damage = defender.take_damage(damage)
         print(f"{attacker.name} attacks {defender.name} for {actual_damage} damage!")
         
+        # Show performance effects
+        if performance_modifier != 1.0:
+            if performance_modifier > 1.0:
+                print(f"💪 High energy enhances the attack!")
+            else:
+                print(f"😓 Fatigue weakens the attack!")
+        
         # Check for counter after successful dodge
         if not is_enemy and self.player_dodge_ready:
             self.execute_counter(defender, attacker)
             self.player_dodge_ready = False
     
-    def use_technique(self, user, target, technique: CursedTechnique, is_enemy: bool = False):
+    def use_technique(self, user, target, technique: CursedTechnique, performance_modifier: float = 1.0, is_enemy: bool = False):
         """Execute a cursed technique."""
         if not technique.can_use(user.cursed_energy):
             print(f"{user.name} doesn't have enough cursed energy for {technique.name}!")
@@ -239,9 +344,27 @@ class CombatSystem:
         
         # Execute technique
         if technique.technique_type == "offensive":
-            damage = self.calculate_damage(technique.damage, user, target)
+            base_damage = technique.damage
+            
+            # Apply performance modifier
+            base_damage = int(base_damage * performance_modifier)
+            
+            # Apply environmental bonuses for player
+            if not is_enemy and self.current_environment != "neutral":
+                env_data = self.environmental_system.get_advantage(self.current_environment)
+                if "technique_power" in env_data:
+                    base_damage = int(base_damage * env_data["technique_power"])
+            
+            damage = self.calculate_damage(base_damage, user, target)
             actual_damage = target.take_damage(damage)
             print(f"{user.name} uses {technique.name} on {target.name} for {actual_damage} damage!")
+            
+            # Show performance effects
+            if performance_modifier != 1.0:
+                if performance_modifier > 1.0:
+                    print(f"💪 Enhanced energy amplifies the technique!")
+                else:
+                    print(f"😓 Fatigue diminishes the technique's power!")
         
         elif technique.technique_type == "defensive":
             user.add_status_effect("enhanced_guard", 2)
