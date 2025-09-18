@@ -14,6 +14,7 @@ from game_state import GameState
 from character import Player
 from story import StoryManager
 from combat import CombatSystem
+from character_creation import CharacterCreationManager
 
 
 class JujutsuKaisenRPG:
@@ -24,6 +25,7 @@ class JujutsuKaisenRPG:
         self.player: Optional[Player] = None
         self.story_manager = StoryManager()
         self.combat_system = CombatSystem()
+        self.character_creator = CharacterCreationManager()
         self.running = True
     
     def start_game(self):
@@ -62,20 +64,12 @@ class JujutsuKaisenRPG:
                 print("Invalid choice. Please enter 1, 2, or 3.")
     
     def new_game(self):
-        """Start a new game with character creation."""
+        """Start a new game with enhanced character creation."""
         print("\n=== NEW GAME ===")
-        print("Creating your sorcerer...")
         
-        # Character creation
-        name = input("Enter your character's name: ").strip()
-        if not name:
-            name = "Unnamed Sorcerer"
-        
-        self.player = Player(name)
+        # Enhanced character creation process
+        self.player = self.character_creator.create_character()
         self.game_state.set_player(self.player)
-        
-        print(f"\nWelcome, {name}!")
-        print("Your journey as a Jujutsu Sorcerer begins...")
         
         # Start the story
         self.story_manager.start_story(self.game_state)

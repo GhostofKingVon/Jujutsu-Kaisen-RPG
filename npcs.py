@@ -292,6 +292,71 @@ class NPCManager:
                 100: "Special Grade Potential - Unlock hidden power within yourself"
             }
         )
+        
+        # Ryomen Sukuna (in Megumi's body)
+        self.npcs["sukuna"] = NPC(
+            "Ryomen Sukuna",
+            ["malevolent", "powerful", "ancient", "cunning", "arrogant"],
+            {
+                "neutral": [
+                    "Interesting... You dare approach me?",
+                    "Another weak sorcerer seeks my attention.",
+                    "Do you comprehend who stands before you?",
+                    "Your cursed energy is... amusing."
+                ],
+                "dislike": [
+                    "You disgust me with your weakness.",
+                    "Begone from my sight, insect.",
+                    "Your very existence offends me.",
+                    "I have no time for pathetic worms like you."
+                ],
+                "acquaintance": [
+                    "You show promise... for a modern sorcerer.",
+                    "Your technique has caught my interest.",
+                    "Perhaps you're not entirely worthless.",
+                    "I acknowledge your... potential."
+                ],
+                "friend": [
+                    "You have earned a measure of my respect.",
+                    "Your power grows... impressive for this era.",
+                    "Few have shown such understanding of true strength.",
+                    "You begin to comprehend the nature of cursed energy."
+                ],
+                "good_friend": [
+                    "You possess the spirit of a true sorcerer.",
+                    "Your evolution has been... entertaining to observe.",
+                    "Perhaps this body has found a worthy ally.",
+                    "Your cursed techniques show remarkable finesse."
+                ],
+                "close_friend": [
+                    "You have transcended the limitations of your generation.",
+                    "In you, I see echoes of the Golden Age of Jujutsu.",
+                    "Your power approaches something worthy of my acknowledgment.",
+                    "Together, we could reshape this world of sorcery."
+                ],
+                "neutral_combat": [
+                    "Witness the power of the King of Curses!",
+                    "I'll show you what true malevolence looks like!",
+                    "Prepare yourself for divine techniques!"
+                ],
+                "friend_combat": [
+                    "Fight alongside me, worthy one!",
+                    "Let us demonstrate our combined might!",
+                    "Your techniques complement my power well!"
+                ],
+                "close_friend_combat": [
+                    "Together, we are unstoppable!",
+                    "Our bond transcends the boundaries of vessel and curse!",
+                    "Witness the pinnacle of jujutsu sorcery!"
+                ]
+            },
+            {
+                25: "Malevolent Insight - Sukuna reveals enemy weaknesses",
+                50: "Cursed Energy Mastery - Enhanced technique power",
+                75: "Divine Techniques - Access to ancient cursed methods",
+                100: "King's Authority - Ultimate power sharing with Sukuna"
+            }
+        )
     
     def get_npc(self, name: str) -> Optional[NPC]:
         """Get an NPC by name."""

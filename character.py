@@ -149,6 +149,10 @@ class Player(Character):
         self.transformation_name = ""
         self.transformation_turns = 0
         
+        # Character creation attributes
+        self.background = None
+        self.appearance = {}
+        
         # Start with basic techniques
         self._initialize_basic_techniques()
     
@@ -252,6 +256,59 @@ class Player(Character):
             self.add_technique(technique)
             print(f"🌟 New technique learned: {technique.name}!")
             print(f"   {technique.description}")
+    
+    def learn_story_technique(self, technique_name: str, story_context: str = ""):
+        """Learn a technique through story events rather than leveling."""
+        story_techniques = {
+            "Sukuna's Insight": CursedTechnique(
+                "Sukuna's Insight",
+                damage=70,
+                cost=45,
+                description="Ancient technique learned from the King of Curses.",
+                cooldown=5
+            ),
+            "Shadow Mastery": CursedTechnique(
+                "Shadow Mastery",
+                damage=55,
+                cost=35,
+                description="Advanced shadow manipulation learned through bonds.",
+                cooldown=3
+            ),
+            "Protective Burst": CursedTechnique(
+                "Protective Burst",
+                damage=40,
+                cost=30,
+                description="Defensive technique born from desire to protect others.",
+                technique_type="defensive",
+                cooldown=2
+            ),
+            "Analytical Strike": CursedTechnique(
+                "Analytical Strike",
+                damage=65,
+                cost=40,
+                description="Precise attack that exploits enemy weaknesses.",
+                cooldown=4
+            ),
+            "Bond of Friendship": CursedTechnique(
+                "Bond of Friendship",
+                damage=80,
+                cost=50,
+                description="Powerful technique strengthened by deep relationships.",
+                cooldown=6
+            )
+        }
+        
+        if technique_name in story_techniques:
+            technique = story_techniques[technique_name]
+            # Check if already known
+            if not any(t.name == technique.name for t in self.techniques):
+                self.add_technique(technique)
+                print(f"\n✨ STORY TECHNIQUE LEARNED: {technique.name}!")
+                print(f"   {technique.description}")
+                if story_context:
+                    print(f"   Context: {story_context}")
+                return True
+        return False
     
     def activate_transformation(self, transformation_name: str, duration: int):
         """Activate a transformation like Ultra Instinct Monkey."""
